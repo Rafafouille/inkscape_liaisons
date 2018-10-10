@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+  <_name>Liaisons</_name>
+  <id>org.ekips.filter.liaisons</id>
+  
+  <!-- FICHIERS LIES ================================  -->
+  <dependency type="executable" location="extensions">liaisons.py</dependency>
+  <dependency type="executable" location="extensions">inkex.py</dependency>
+  
+  <!-- ====================================================  -->
+  <!-- INTERFACE GRPAHIQUE ================================  -->
+  <!-- ====================================================  -->
+  
+  
+  
+  <!-- LIAISONS ================================  -->
+  <param name="titre_liaisons" type="description" appearance="header">Sélectionnez l'onglet de votre liaison</param>
+  <param name="liaison" type="notebook">
+	<page name="liaison_pivot" gui-text="Pivot">
+		<param name="liaison_pivot_type" type="notebook">
+			<page name="liaison_pivot_2D_cote" gui-text="2D (coté)">
+  				<param name="titre_position_pivot2D_cote" type="description" appearance="header">Position</param>
+  					<param name="liaison_pivot_2D_cote_x" type="float" _gui-text="X" min="-1000000" max="1000000" >0</param>
+  					<param name="liaison_pivot_2D_cote_y" type="float" _gui-text="Y" min="-1000000" max="1000000" >0</param>
+  				<param name="titre_orientation_pivot2D_cote" type="description" appearance="header">Orientation</param>
+					<param name="liaison_pivot2D_cote_axe" type="enum" gui-text="Axe">
+						<item value="autre">Via l'angle ci-dessous</item>
+						<item value="x">X</item>
+						<item value="y">Y</item>
+						<item value="-x">-X</item>
+						<item value="-y">-Y</item>
+					</param>
+					<param name="liaison_pivot2D_cote_orientation" type="float"  min="-360" max="360" precision="1" gui-text="Orientation (deg) : ">0</param>
+			</page>
+			<page name="liaison_pivot_2D_face" gui-text="2D (Face)">
+  				<param name="titre_position_pivot2D_face" type="description" appearance="header">Position</param>
+  					<param name="liaison_pivot_2D_face_x" type="float" _gui-text="X" min="-1000000" max="1000000" >0</param>
+  					<param name="liaison_pivot_2D_face_y" type="float" _gui-text="Y" min="-1000000" max="1000000" >0</param>
+  				<param name="titre_orientation_pivot2D_face" type="description" appearance="header">Orientation</param>
+					<param name="liaison_pivot2D_face_axe1" type="enum" gui-text="Axe pièce 1">
+						<item value="x">X</item>
+						<item value="autre">Via l'angle ci-dessous</item>
+						<item value="y">Y</item>
+						<item value="-x">-X</item>
+						<item value="-y">-Y</item>
+					</param>
+					<param name="liaison_pivot2D_face_orientation1" type="float"  min="-360" max="360" precision="1" gui-text="Orientation Pièce 1 (deg) : ">0</param>
+					<param name="liaison_pivot2D_face_axe2" type="enum" gui-text="Axe pièce 2">
+						<item value="-y">-Y</item>
+						<item value="autre">Via l'angle ci-dessous</item>
+						<item value="x">X</item>
+						<item value="y">Y</item>
+						<item value="-x">-X</item>
+					</param>
+					<param name="liaison_pivot2D_face_orientation2" type="float"  min="-360" max="360" precision="1" gui-text="Orientation Pièce 2 (deg) : ">90</param>
+			</page>
+			<page name="liaison_pivot_2D_3D" gui-text="3D">
+			
+			</page>
+		</param>
+	</page>
+  </param>
+  
+  <!-- PARAMETRES GENERAUX ================================  -->
+  <param name="titre_opt_generales" type="description" appearance="header">Options générales</param>
+  <param name="opt_generales" type="notebook">
+	<page name="opt_gene_gene" gui-text="Général">
+		<param name="opt_gene_gene_old" type="boolean" gui-text="Some label text">Utiliser les anciennes représentations</param>
+	</page>
+	<page name="opt_gene_origine" gui-text="Origine">
+		<param name="x0" type="float" _gui-text="X0" min="-1000000" max="1000000" >0</param>
+		<param name="y0" type="float" _gui-text="Y0" min="-1000000" max="1000000" >0</param>
+		<param name="echelle" type="float" _gui-text="Coef. d'échelle" precision="0.1" min="0.00001" max="10" >1</param>
+	</page>
+	<page name="opt_gene_piece1" gui-text="Pièce 1 (mâle?)">
+		<param name="opt_gene_piece1_couleur" type="color"></param>
+	</page>
+	<page name="opt_gene_piece2" gui-text="Pièce 2 (Femelle?)">
+		<param name="opt_gene_piece2_couleur" type="color"></param>
+	</page>
+  </param>
+  
+  
+  <!-- MENU ================================  -->
+  <effect>
+    <object-type>all</object-type>
+    <effects-menu>
+       <submenu _name="Enseignement"/>
+    </effects-menu>
+  </effect>
+  <!-- EXECUTION ================================  -->
+  <script>
+    <command reldir="extensions" interpreter="python">liaisons.py</command>
+  </script>
+</inkscape-extension>
