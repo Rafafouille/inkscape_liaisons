@@ -43,6 +43,8 @@ class Liaisons(inkex.Effect):
         self.OptionParser.add_option('--liaison_pivot2D_face_axe2', action = 'store', type = 'string', dest = 'liaison_pivot2D_face_axe2', default = '-y', help = u"Principales directions du bras 2 d'une pivot vue de face")
         self.OptionParser.add_option('--liaison_pivot2D_face_orientation2', action = 'store', type = 'float', dest = 'liaison_pivot2D_face_orientation2', default = '0', help = u"Orientation du bras 2 d'une pivot vue de face en degres")
 
+        self.OptionParser.add_option('--liaison_pivot3D_axe', action = 'store', type = 'str', dest = 'liaison_pivot3D_axe', default = 'x', help = u"Orientation de l'axe de la pivot")
+
         self.OptionParser.add_option('--opt_generales', action = 'store', type = 'string', dest = 'opt_generales', default = 'opt_gene_origine', help = u"Onglet des options generales")
         
         self.OptionParser.add_option('--opt_gene_gene_old', action = 'store', type = 'inkbool', dest = 'opt_gene_gene_old', default = 'False', help = u"Utilisation des anciennes normes")
@@ -83,6 +85,8 @@ class Liaisons(inkex.Effect):
 			dessin_Pivot_2D_cote(self.options,svg)
 		elif(type_liaison=="\"liaison_pivot_2D_face\""):
 			dessin_Pivot_2D_face(self.options,svg)
+		elif(type_liaison=="\"liaison_pivot_3D\""):
+			dessin_Pivot_3D(self.options,svg)
 	
 	
         # Create text element
@@ -125,6 +129,36 @@ class v2D:
 			theta*=-1
 		self.x,self.y=math.cos(theta)*self.x-math.sin(theta)*self.y , math.sin(theta)*self.x+math.cos(theta)*self.y
 		
+	def prodSca(self,v2):
+		"""Prod scalaire entre ce vecteur et un autre"""
+		return self.x*v2.x+self.y*v2.y
+		
+	def copy(self):
+		return v2D(self.x,self.y)
+		
+class v3D:
+	def __init__(self,_x,_y,_z,_base=None):
+		self.x=_x
+		self.y=_y
+		self.z=_z
+		self.base=_base
+		
+		
+	def setBase(self,_b):
+		self.base=_b
+		
+	def str(self):
+		return "["+str(self.x)+","+str(self.y)+","+str(self.y)+"]"
+
+	def copy(self):
+		return v3D(self.x,self.y,self.z)
+		
+	def getProjX(self):
+		return self.x*self.base[0].x+self.y*self.base[1].x+self.z*self.base[2].x
+	def getProjY(self):
+		return self.x*self.base[0].y+self.y*self.base[1].y+self.z*self.base[2].y
+	def getVec2DProj(self):
+		return v2D(self.getProjX(),self.getProjY())
 		
 def points_to_svgd(p, close=True):
     """ convert list of points (x,y) pairs
@@ -138,6 +172,40 @@ def points_to_svgd(p, close=True):
     if close:
         svgd += 'z'
     return svgd
+    
+def points3D_to_svgd(base3D,p3D, close=True):
+    """ convert list of points (x,y) pairs
+        into a closed SVG path list
+        base 3D est un triplet de vecteurs projetes dans le plan (eventuellement, on peut y rajouter l'axe z, mais cela n'intervient pas)
+    """
+    (Vx,Vy,Vz)=base3D
+    p=[]
+    for point in p3D:
+    	p.append( (point[0]*Vx.x+point[1]*Vy.x+point[2]*Vz.x	,	point[0]*Vx.y+point[1]*Vy.y+point[2]*Vz.y) )
+    return points_to_svgd(p,close)
+  
+#def recherchePointsEloignes(v,l):
+#	"""Cherche les indices des points les plus eloignes par rapport a une droite.
+#	v=vecteur directeur de la droite qui definit l'origine
+#	"""
+#	imax=imin=0
+#	vn=v2D(-v.y,v.x)
+#	vvv=v2D(l[0][0],l[0][1])#Coordonnees 1er point
+#	mini=maxi=vn.prodSca(vvv)
+#	for i in range(1,len(l)):
+#		p=l[i]
+#		vvv=v2D(p[0],p[1])
+#		d=vn.prodSca(vvv)
+#		if d>maxi:
+#			maxi=d
+#			imax=i
+#		if d<mini:
+#			mini=d
+#			imin=i
+#	return imax,imin
+			
+	
+	
 
 #=================================================
 # Fonctions utiles
@@ -257,17 +325,241 @@ def dessin_Pivot_2D_cote(options,contexte):
 def dessin_Pivot_2D_face(options,contexte):
 	x0=options.x0
 	y0=options.y0
-	x=options.liaison_pivot_2D_cote_x
-	y=options.liaison_pivot_2D_cote_y
-
+	x=options.liaison_pivot_2D_face_x
+	y=options.liaison_pivot_2D_face_y
+	rayon=15./2
+	couleur_femelle="red"#getCouleurFromInt(options.opt_gene_piece2_couleur)
+	couleur_male="blue"#getCouleurFromInt(options.opt_gene_piece1_couleur)
+	epaisseur_femelle=3
+	epaisseur_male=1
+	rotation1=-options.liaison_pivot2D_face_orientation1 #Angle par defaut (sens trigo)
+	if(options.liaison_pivot2D_face_axe1=="x"):
+		rotation1=0
+	elif(options.liaison_pivot2D_face_axe1=="y"):
+		rotation1=-90
+	elif(options.liaison_pivot2D_face_axe1=="-x"):
+		rotation1=180
+	elif(options.liaison_pivot2D_face_axe1=="-y"):
+		rotation1=90
+	rotation2=-options.liaison_pivot2D_face_orientation2 #Angle par defaut (sens trigo)
+	if(options.liaison_pivot2D_face_axe2=="x"):
+		rotation2=0
+	elif(options.liaison_pivot2D_face_axe2=="y"):
+		rotation2=-90
+	elif(options.liaison_pivot2D_face_axe2=="-x"):
+		rotation2=180
+	elif(options.liaison_pivot2D_face_axe2=="-y"):
+		rotation2=90
+	
 	#Groupes ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
         #groupe_rotation = inkex.etree.SubElement(liaison, 'g')
 	male=inkex.etree.SubElement(liaison,'g')
 	femelle=inkex.etree.SubElement(liaison,'g')
 
+	# Male ***************************************
+	axe1=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin=points_to_svgd([	(0	,	0),
+				(2*rayon,	0)	])
+	axe1.set('d',chemin)
+	axe1.set('stroke',couleur_male)
+	axe1.set('stroke-width',str(epaisseur_male))
+	male.append(axe1)
+	
+	# Femelle ***************************************	
+	#axe
+	axe2=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin=points_to_svgd([	(0	,	0),
+				(2*rayon,	0)	])
+	axe2.set('d',chemin)
+	axe2.set('stroke',couleur_femelle)
+	axe2.set('stroke-width',str(epaisseur_femelle))
+	femelle.append(axe2)
+	#cercle
+	cercle=inkex.etree.Element(inkex.addNS('circle','svg'))
+	cercle.set('cx',"0")
+	cercle.set('cy',"0")
+	cercle.set('r',str(rayon))
+	cercle.set('stroke',str(couleur_femelle))
+	cercle.set('stroke-width',str(epaisseur_femelle))
+	cercle.set('style','fill:white')
+	femelle.append(cercle)
+	
+	# Transformations ***************************************
+	male.set("transform","rotate("+str(rotation1)+")")
+	femelle.set("transform","rotate("+str(rotation2)+")")
+	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	
 
 
+	
+def dessin_Pivot_3D(options,contexte):
+	largeur=30.*math.sqrt(2./3)
+	rayon=7.5*math.sqrt(2./3)
+	couleur_femelle="red"#getCouleurFromInt(options.opt_gene_piece2_couleur)
+	couleur_male="blue"#getCouleurFromInt(options.opt_gene_piece1_couleur)
+	epaisseur_femelle=2
+	epaisseur_male=1
+	#Base de Vecteur ******************************************
+	Vx=v3D(	-math.sqrt(2./3)*math.cos(math.pi/6),	math.sqrt(2./3)*math.sin(math.pi/6),	math.sqrt(2./3)*math.tan(math.acos(math.sqrt(2/3))))
+	Vy=v3D(	math.sqrt(2./3)*math.cos(math.pi/6),	math.sqrt(2./3)*math.sin(math.pi/6),	math.sqrt(2./3)*math.tan(math.acos(math.sqrt(2/3))))
+	Vz=v3D(	0,				math.sqrt(2./3),			math.sqrt(2./3)*math.tan(math.acos(math.sqrt(2./3))))
+	#Repere local de la liaison
+	if(options.liaison_pivot3D_axe=="x"):
+		Vx1=Vx.copy()
+		Vy1=Vy.copy()
+		Vz1=Vz.copy()
+	elif(options.liaison_pivot3D_axe=="y"):
+		Vx1=Vy.copy()
+		Vy1=Vz.copy()
+		Vz1=Vx.copy()
+	else:
+		Vx1=Vz.copy()
+		Vy1=Vx.copy()
+		Vz1=Vy.copy()
+	
+	#Groupes ******************************************
+        liaison = inkex.etree.SubElement(contexte, 'g')
+	femelle_derriere=inkex.etree.SubElement(liaison,'g')
+	male=inkex.etree.SubElement(liaison,'g')
+	femelle_devant=inkex.etree.SubElement(liaison,'g')
+	
+	# Male ***************************************
+	axe=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin=points3D_to_svgd((Vx1,Vy1,Vz1),[
+					(-largeur,	0,	0	),
+					(largeur,	0,	0	)
+				])
+	axe.set('d',chemin)
+	axe.set('stroke',couleur_male)
+	axe.set('stroke-width',str(epaisseur_male))
+	male.append(axe)
+	arret1=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin=points3D_to_svgd((Vx1,Vy1,Vz1),[
+					(2*largeur/3,	rayon,	0	),
+					(2*largeur/3,	-rayon,	0	)
+				])
+	arret1.set('d',chemin)
+	arret1.set('stroke',couleur_male)
+	arret1.set('stroke-width',str(epaisseur_male))
+	male.append(arret1)
+	arret2=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin=points3D_to_svgd((Vx1,Vy1,Vz1),[
+					(-2*largeur/3,	rayon,	0	),
+					(-2*largeur/3,	-rayon,	0	)
+				])
+	arret2.set('d',chemin)
+	arret2.set('stroke',couleur_male)
+	arret2.set('stroke-width',str(epaisseur_male))
+	male.append(arret2)
+	
+	# Femelle ***************************************
+
+
+ 	#Recherche des points extremes de l'ellipse
+	theta1=theta2=None
+	dist=distPrec=distPrecPrec=0
+	dtheta=math.pi/30.
+	theta=0.
+	vNormal=v2D(Vx1.x,Vx1.y)	#Vecteur normal au vecteur directeur projete dans le plan, de l'axe de la pivot
+	vNormal.rotation(math.pi/2.)
+	while theta1==None or theta2==None:
+		point3D=v3D(largeur/2.,rayon*math.cos(theta),rayon*math.sin(theta),(Vx1,Vy1,Vz1))
+		point2D=point3D.getVec2DProj()
+		dist,distPrec,distPrecPrec=point2D.prodSca(vNormal),dist,distPrec
+		
+		if dist<distPrec and distPrec>distPrecPrec:
+			theta1=theta-dtheta
+		elif dist>distPrec and distPrec<distPrecPrec:#A SUPPRIMER On n'a pas besoin de theta2
+			theta2=theta-dtheta
+		
+		
+		theta+=dtheta
+		
+
+	nbPoints=8
+	#Objectif : Creer des cercles en 3D et les couper en deux chacun
+	listeDemiCercle1sup=[]
+	listeDemiCercle1inf=[]
+	listeDemiCercle2sup=[]
+	listeDemiCercle2inf=[]
+	theta=0
+	while theta<=math.pi:
+		listeDemiCercle1sup.append((largeur/2.,rayon*math.cos(theta1+theta),rayon*math.sin(theta1+theta)))
+		listeDemiCercle1inf.append((largeur/2.,rayon*math.cos(theta1-theta),rayon*math.sin(theta1-theta)))
+		listeDemiCercle2sup.append((-largeur/2.,rayon*math.cos(theta1+theta),rayon*math.sin(theta1+theta)))
+		listeDemiCercle2inf.append((-largeur/2.,rayon*math.cos(theta1-theta),rayon*math.sin(theta1-theta)))
+		theta+=0.5
+	
+	
+	listeDerriere=listeDemiCercle1inf
+	listeDerriere+=[(largeur/2.,rayon*math.cos(theta1+math.pi),rayon*math.sin(theta1+math.pi)),(-largeur/2.,rayon*math.cos(theta1+math.pi),rayon*math.sin(theta1+math.pi))]
+	listeDemiCercle2inf.reverse()
+	listeDerriere+=listeDemiCercle2inf
+	listeDerriere+=[(-largeur/2.,rayon*math.cos(theta1),rayon*math.sin(theta1)),(largeur/2.,rayon*math.cos(theta1),rayon*math.sin(theta1))]
+
+	listeDevant=listeDemiCercle1sup
+	listeDevant+=[(largeur/2.,rayon*math.cos(theta1+math.pi),rayon*math.sin(theta1+math.pi)),(-largeur/2.,rayon*math.cos(theta1+math.pi),rayon*math.sin(theta1+math.pi))]
+	listeDemiCercle2sup.reverse()
+	listeDevant+=listeDemiCercle2sup
+	listeDevant+=[(-largeur/2.,rayon*math.cos(theta1),rayon*math.sin(theta1)),(largeur/2.,rayon*math.cos(theta1),rayon*math.sin(theta1))]
+	
+	
+	
+	pathDerriere=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin=points3D_to_svgd((Vx1,Vy1,Vz1),listeDerriere)
+	pathDerriere.set('d',chemin)
+	pathDerriere.set('stroke',couleur_femelle)
+	pathDerriere.set('stroke-width',str(epaisseur_femelle))
+	pathDerriere.set('style','fill:white')
+	#cercle1.set('sodipodi:nodetypes','s'*nbPoints)
+	femelle_derriere.append(pathDerriere)
+	
+	pathDevant=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin=points3D_to_svgd((Vx1,Vy1,Vz1),listeDevant)
+	pathDevant.set('d',chemin)
+	pathDevant.set('stroke',couleur_femelle)
+	pathDevant.set('stroke-width',str(epaisseur_femelle))
+	pathDevant.set('style','fill:white')
+	#cercle1.set('sodipodi:nodetypes','s'*nbPoints)
+	femelle_devant.append(pathDevant)
+	
+#	cercle1sup=inkex.etree.Element(inkex.addNS('path','svg'))
+#	chemin=points3D_to_svgd((Vx1,Vy1,Vz1),listeDemiCercle1sup,False)
+#	cercle1sup.set('d',chemin)
+#	cercle1sup.set('stroke',couleur_femelle)
+#	cercle1sup.set('stroke-width',str(epaisseur_femelle))
+#	cercle1sup.set('style','fill:none')
+#	#cercle1.set('sodipodi:nodetypes','s'*nbPoints)
+#	femelle_devant.append(cercle1sup)
+	
+#	cercle1inf=inkex.etree.Element(inkex.addNS('path','svg'))
+#	chemin=points3D_to_svgd((Vx1,Vy1,Vz1),listeDemiCercle1inf,False)
+#	cercle1inf.set('d',chemin)
+#	cercle1inf.set('stroke',couleur_femelle)
+#	cercle1inf.set('stroke-width',str(epaisseur_femelle))
+#	cercle1inf.set('style','fill:none')
+	#cercle1.set('sodipodi:nodetypes','s'*nbPoints)
+#	femelle_derriere.append(cercle1inf)
+	
+#	cercle2sup=inkex.etree.Element(inkex.addNS('path','svg'))
+#	chemin=points3D_to_svgd((Vx1,Vy1,Vz1),listeDemiCercle2sup,False)
+#	cercle2sup.set('d',chemin)
+#	cercle2sup.set('stroke',couleur_femelle)
+#	cercle2sup.set('stroke-width',str(epaisseur_femelle))
+#	cercle2sup.set('style','fill:none')
+#	#cercle2.set('sodipodi:nodetypes','s'*nbPoints)
+#	femelle_devant.append(cercle2sup)
+	
+# 	cercle2inf=inkex.etree.Element(inkex.addNS('path','svg'))
+#	chemin=points3D_to_svgd((Vx1,Vy1,Vz1),listeDemiCercle2inf,False)
+#	cercle2inf.set('d',chemin)
+#	cercle2inf.set('stroke',couleur_femelle)
+#	cercle2inf.set('stroke-width',str(epaisseur_femelle))
+#	cercle2inf.set('style','fill:none')
+	#cercle2.set('sodipodi:nodetypes','s'*nbPoints)
+#	femelle_derriere.append(cercle2inf)
+	
 	
 # Create effect instance and apply it.
 effect = Liaisons()
