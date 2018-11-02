@@ -235,6 +235,14 @@
 		<page name="opt_gene_piece2" gui-text="Couleur (Femelle?)">
 			<param name="opt_gene_piece2_couleur" type="color">4278190080</param>
 		</page>
+		<page name="opt_gene_A_Propos" gui-text="A Propos">
+			<param name="" type="description" appearance="header">Auteur :</param>
+				<param name="" type="description">Raphaël ALLAIS (allais.raphael@free.fr)</param>
+			<param name="" type="description" appearance="header">Dernière version :</param>
+				<param name="" type="description">https://github.com/Rafafouille/inkscape_liaisons</param>
+			<param name="" type="description" appearance="header">Licence :</param>
+				<param name="" type="description">Creative Commons : CC-BY-NC</param>
+		</page>
 	  </param>
       </page>
    </param>
