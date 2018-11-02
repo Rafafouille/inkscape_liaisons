@@ -32,6 +32,10 @@ class Liaisons(inkex.Effect):
         inkex.Effect.__init__(self)
 
         # Define string option "--what" with "-w" shortcut and default value "World".
+        #PRINCIPAL
+        self.OptionParser.add_option('--onglets_pricipaux', action = 'store', type = 'string', dest = 'onglets_pricipaux', default = '', help = u"Choix de la liaison")
+        
+        #LIAISONS...
         self.OptionParser.add_option('--liaison', action = 'store', type = 'string', dest = 'liaison', default = '', help = u"Choix de la liaison")
         
         #LIAISON PIVOT ***************************************************
@@ -52,11 +56,13 @@ class Liaisons(inkex.Effect):
         self.OptionParser.add_option('--liaison_pivot_3D_position_x', action = 'store', type = 'float', dest = 'liaison_pivot_3D_position_x', default = 0, help = u"Coordonnee sur x du centre de la liaison pivot 3D")
         self.OptionParser.add_option('--liaison_pivot_3D_position_y', action = 'store', type = 'float', dest = 'liaison_pivot_3D_position_y', default = 0, help = u"Coordonnee sur y du centre de la liaison pivot 3D")
         self.OptionParser.add_option('--liaison_pivot_3D_position_z', action = 'store', type = 'float', dest = 'liaison_pivot_3D_position_z', default = 0, help = u"Coordonnee sur z du centre de la liaison pivot 3D")
-        self.OptionParser.add_option('--liaison_pivot_type_orientation', action = 'store', type = 'str', dest = 'liaison_pivot_type_orientation', default = "liaison_pivot_type_orientation_standard", help = u"Choix du type d'orientation de la pivot 3D")
-        self.OptionParser.add_option('--liaison_pivot3D_axe', action = 'store', type = 'str', dest = 'liaison_pivot3D_axe', default = 'x', help = u"Orientations standard de l'axe de la pivot 3D")
-        self.OptionParser.add_option('--liaison_pivot_type_orientation_quelconque_x', action = 'store', type = 'float', dest = 'liaison_pivot_type_orientation_quelconque_x', default = 1, help = u"Coordonnee sur x du vecteur direceur de la pivot 3D")
-        self.OptionParser.add_option('--liaison_pivot_type_orientation_quelconque_y', action = 'store', type = 'float', dest = 'liaison_pivot_type_orientation_quelconque_y', default = 0, help = u"Coordonnee sur y du vecteur direceur de la pivot 3D")
-        self.OptionParser.add_option('--liaison_pivot_type_orientation_quelconque_z', action = 'store', type = 'float', dest = 'liaison_pivot_type_orientation_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur direceur de la pivot 3D")
+        self.OptionParser.add_option('--liaison_pivot_3D_type_direction', action = 'store', type = 'str', dest = 'liaison_pivot_3D_type_direction', default = "liaison_pivot_3D_type_direction_standard", help = u"Choix du type de direction de la pivot 3D")
+        self.OptionParser.add_option('--liaison_pivot_3D_axe', action = 'store', type = 'str', dest = 'liaison_pivot_3D_axe', default = 'x', help = u"Directions standard de l'axe de la pivot 3D")
+        self.OptionParser.add_option('--liaison_pivot_3D_type_direction_quelconque_x', action = 'store', type = 'float', dest = 'liaison_pivot_3D_type_direction_quelconque_x', default = 1, help = u"Coordonnee sur x du vecteur direceur de la pivot 3D")
+        self.OptionParser.add_option('--liaison_pivot_3D_type_direction_quelconque_y', action = 'store', type = 'float', dest = 'liaison_pivot_3D_type_direction_quelconque_y', default = 0, help = u"Coordonnee sur y du vecteur direceur de la pivot 3D")
+        self.OptionParser.add_option('--liaison_pivot_3D_type_direction_quelconque_z', action = 'store', type = 'float', dest = 'liaison_pivot_3D_type_direction_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur direceur de la pivot 3D")
+        self.OptionParser.add_option('--liaison_pivot_3D_orientation_male', action = 'store', type = 'float', dest = 'liaison_pivot_3D_orientation_male', default = 0, help = u"Orientation en degres de la piece male de la pivot")
+        self.OptionParser.add_option('--liaison_pivot_3D_orientation_femelle', action = 'store', type = 'float', dest = 'liaison_pivot_3D_orientation_femelle', default = 0, help = u"Orientation en degres de la piece femelle de la pivot")
 
         #LIAISON PIVOT GLISSANT ******************************************
         self.OptionParser.add_option('--liaison_pivot_glissant_type', action = 'store', type = 'string', dest = 'liaison_pivot_glissant_type', default = 'liaison_pivot_glissant_2D_cote', help = u"Type de representation de la pivot glissant")
@@ -76,11 +82,13 @@ class Liaisons(inkex.Effect):
         self.OptionParser.add_option('--liaison_pivot_glissant_3D_position_x', action = 'store', type = 'float', dest = 'liaison_pivot_glissant_3D_position_x', default = 0, help = u"Coordonnee sur x du centre de la liaison pivot glissant 3D")
         self.OptionParser.add_option('--liaison_pivot_glissant_3D_position_y', action = 'store', type = 'float', dest = 'liaison_pivot_glissant_3D_position_y', default = 0, help = u"Coordonnee sur y du centre de la liaison pivot glissant 3D")
         self.OptionParser.add_option('--liaison_pivot_glissant_3D_position_z', action = 'store', type = 'float', dest = 'liaison_pivot_glissant_3D_position_z', default = 0, help = u"Coordonnee sur z du centre de la liaison pivot glissant 3D")
-        self.OptionParser.add_option('--liaison_pivot_glissant_3D_type_orientation', action = 'store', type = 'str', dest = 'liaison_pivot_glissant_3D_type_orientation', default = "liaison_pivot_glissant_3D_type_orientation_standard", help = u"Choix du type d'orientation de la pivot glissant 3D")
+        self.OptionParser.add_option('--liaison_pivot_glissant_3D_type_direction', action = 'store', type = 'str', dest = 'liaison_pivot_glissant_3D_type_direction', default = "liaison_pivot_glissant_3D_type_direction_standard", help = u"Choix du type de direction de la pivot glissant 3D")
         self.OptionParser.add_option('--liaison_pivot_glissant_3D_axe', action = 'store', type = 'str', dest = 'liaison_pivot_glissant_3D_axe', default = 'x', help = u"Orientations standard de l'axe de la pivot glissant 3D")
-        self.OptionParser.add_option('--liaison_pivot_glissant_3D_type_orientation_quelconque_x', action = 'store', type = 'float', dest = 'liaison_pivot_glissant_3D_type_orientation_quelconque_x', default = 1, help = u"Coordonnee sur x du vecteur direceur de la pivot glissant 3D")
-        self.OptionParser.add_option('--liaison_pivot_glissant_3D_type_orientation_quelconque_y', action = 'store', type = 'float', dest = 'liaison_pivot_glissant_3D_type_orientation_quelconque_y', default = 0, help = u"Coordonnee sur y du vecteur direceur de la pivot glissant 3D")
-        self.OptionParser.add_option('--liaison_pivot_glissant_3D_type_orientation_quelconque_z', action = 'store', type = 'float', dest = 'liaison_pivot_glissant_3D_type_orientation_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur direceur de la pivot glissant 3D")
+        self.OptionParser.add_option('--liaison_pivot_glissant_3D_type_direction_quelconque_x', action = 'store', type = 'float', dest = 'liaison_pivot_glissant_3D_type_direction_quelconque_x', default = 1, help = u"Coordonnee sur x du vecteur directeur de la pivot glissant 3D")
+        self.OptionParser.add_option('--liaison_pivot_glissant_3D_type_direction_quelconque_y', action = 'store', type = 'float', dest = 'liaison_pivot_glissant_3D_type_direction_quelconque_y', default = 0, help = u"Coordonnee sur y du vecteur directeur de la pivot glissant 3D")
+        self.OptionParser.add_option('--liaison_pivot_glissant_3D_type_direction_quelconque_z', action = 'store', type = 'float', dest = 'liaison_pivot_glissant_3D_type_direction_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur directeur de la pivot glissant 3D")
+        self.OptionParser.add_option('--liaison_pivot_glissant_3D_orientation_male', action = 'store', type = 'float', dest = 'liaison_pivot_glissant_3D_orientation_male', default = 0, help = u"Orientation en degres de la piece male de la pivot glissant 3D")
+        self.OptionParser.add_option('--liaison_pivot_glissant_3D_orientation_femelle', action = 'store', type = 'float', dest = 'liaison_pivot_glissant_3D_orientation_femelle', default = 0, help = u"Orientation en degres de la piece femelle de la pivot glissant 3D")
 
 
         #LIAISON GLISSIERE ******************************************

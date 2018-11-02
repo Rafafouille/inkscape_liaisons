@@ -207,19 +207,25 @@ def dessin_Pivot_3D(options,contexte):
 	couleur_male=options.opt_gene_piece1_couleur
 	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
 	epaisseur_male=options.opt_gene_lignes_epaisseur_1
+	angle_male=float(options.liaison_pivot_3D_orientation_male)/180.*math.pi
+	angle_femelle=float(options.liaison_pivot_3D_orientation_femelle)/180.*math.pi
 	#Repere local de la liaison
-	if(options.liaison_pivot_type_orientation=="\"liaison_pivot_type_orientation_quelconque\""):
-		V=v3D(options.liaison_pivot_type_orientation_quelconque_x,options.liaison_pivot_type_orientation_quelconque_y,options.liaison_pivot_type_orientation_quelconque_z,base)
-		Vx1,Vy1,Vz1=getBaseFromVecteur(V)
+	if(options.liaison_pivot_3D_type_direction=="\"liaison_pivot_3D_type_direction_quelconque\""):
+		V=v3D(options.liaison_pivot_3D_type_direction_quelconque_x,options.liaison_pivot_3D_type_direction_quelconque_y,options.liaison_pivot_3D_type_direction_quelconque_z,base)
+		Vx1,Vy1,Vz1=getBaseFromVecteur(V,angle_male)#Repere male
+		Vx2,Vy2,Vz2=getBaseFromVecteur(V,angle_femelle)#Repere Femelle
 	else:	#Si vecteur standard
-		if(options.liaison_pivot3D_axe=="x"):
-			Vx1,Vy1,Vz1=getBaseFromVecteur(Vx)
-		elif(options.liaison_pivot3D_axe=="y"):
-			Vx1,Vy1,Vz1=getBaseFromVecteur(Vy)
+		if(options.liaison_pivot_3D_axe=="x"):
+			Vx1,Vy1,Vz1=getBaseFromVecteur(Vx,angle_male)#Repere male
+			Vx2,Vy2,Vz2=getBaseFromVecteur(Vx,angle_femelle)#Repere Femelle
+		elif(options.liaison_pivot_3D_axe=="y"):
+			Vx1,Vy1,Vz1=getBaseFromVecteur(Vy,angle_male)#Repere male
+			Vx2,Vy2,Vz2=getBaseFromVecteur(Vy,angle_femelle)#Repere Femelle
 		else:#z
-			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz)
-	#A FAIRE : Ajouter le cas d'un vecteur directeur quelconque...
-	baseLocale=(Vx1,Vy1,Vz1)
+			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz,angle_male)#Repere male
+			Vx2,Vy2,Vz2=getBaseFromVecteur(Vz,angle_femelle)#Repere Femelle
+	baseLocale1=(Vx1,Vy1,Vz1)
+	baseLocale2=(Vx2,Vy2,Vz2)
 
 	
 	# Male ***************************************
@@ -227,7 +233,7 @@ def dessin_Pivot_3D(options,contexte):
 	chemin,profondeur=points3D_to_svgd([
 					(-largeur,	0,	0	),
 					(largeur,	0,	0	)
-				],False,baseLocale)
+				],False,baseLocale1)
 	axe.set('d',chemin)
 	axe.set('stroke',couleur_male)
 	axe.set('stroke-width',str(epaisseur_male))
@@ -239,7 +245,7 @@ def dessin_Pivot_3D(options,contexte):
 	chemin,profondeur=points3D_to_svgd([
 					(2*largeur/3,	rayon,	0	),
 					(2*largeur/3,	-rayon,	0	)
-				],False,baseLocale,)
+				],False,baseLocale1,)
 	arret1.set('d',chemin)
 	arret1.set('stroke',couleur_male)
 	arret1.set('stroke-width',str(epaisseur_male))
@@ -250,24 +256,23 @@ def dessin_Pivot_3D(options,contexte):
 	chemin,profondeur=points3D_to_svgd([
 					(-2*largeur/3,	rayon,	0	),
 					(-2*largeur/3,	-rayon,	0	)
-				],False,baseLocale)
+				],False,baseLocale1)
 	arret2.set('d',chemin)
 	arret2.set('stroke',couleur_male)
 	arret2.set('stroke-width',str(epaisseur_male))
 	arret2.set('style','stroke-linecap:round')
+	arret2.set('profondeur',str(profondeur))
 
 	
 	# Femelle ***************************************
-
-
 	#On recupere les deux angles qui correspondent aux tangentes par rapport a la vue
-	thetaCoupure1,thetaCoupure2=getAnglesCoupure(baseLocale)
+	thetaCoupure1,thetaCoupure2=getAnglesCoupure(baseLocale2)
 	
 	#On construit les arcs de cercles projete
-	centre1=v3D(-largeur/2,0,0,baseLocale) #Vecteur OC1, O=centre liaison
-	centre2=v3D(largeur/2,0,0,baseLocale) #Vecteur OC1, O=centre liaison
-	listeArcs1=getListePoints2DCercle(baseLocale,centre1,rayon,0,math.pi*2,thetaCoupure1,thetaCoupure2)
-	listeArcs2=getListePoints2DCercle(baseLocale,centre2,rayon,0,math.pi*2,thetaCoupure1,thetaCoupure2)
+	centre1=v3D(-largeur/2,0,0,baseLocale2) #Vecteur OC1, O=centre liaison
+	centre2=v3D(largeur/2,0,0,baseLocale2) #Vecteur OC1, O=centre liaison
+	listeArcs1=getListePoints2DCercle(baseLocale2,centre1,rayon,0,math.pi*2,thetaCoupure1,thetaCoupure2)
+	listeArcs2=getListePoints2DCercle(baseLocale2,centre2,rayon,0,math.pi*2,thetaCoupure1,thetaCoupure2)
 	listeArcs2[0].reverse()#On inverse les arcs de cercle
 	listeArcs2[1].reverse()
 	
@@ -277,53 +282,48 @@ def dessin_Pivot_3D(options,contexte):
 	
 	
 	chemin,profondeurDemiCylindre1=points3D_to_svgd(listeDemiCylindre1,True)
+	#formesFemelles1.append((chemin,profondeur))
 	demiCylindre1=inkex.etree.Element(inkex.addNS('path','svg'))
 	demiCylindre1.set('d',chemin)
 	demiCylindre1.set('stroke',couleur_femelle)
 	demiCylindre1.set('stroke-width',str(epaisseur_femelle))
 	demiCylindre1.set('style','stroke-linecap:round')
-	demiCylindre1.set('profondeur',str(profondeurDemiCylindre1))
 	demiCylindre1.set('style','fill:white')
+	demiCylindre1.set('profondeur',str(profondeurDemiCylindre1))
 	
 	chemin,profondeurDemiCylindre2=points3D_to_svgd(listeDemiCylindre2,True)
+	#formesFemelles2.append((chemin,profondeur))
 	demiCylindre2=inkex.etree.Element(inkex.addNS('path','svg'))
 	demiCylindre2.set('d',chemin)
 	demiCylindre2.set('stroke',couleur_femelle)
 	demiCylindre2.set('stroke-width',str(epaisseur_femelle))
 	demiCylindre2.set('style','stroke-linecap:round')
-	demiCylindre2.set('profondeur',str(profondeurDemiCylindre2))
 	demiCylindre2.set('style','fill:white')
+	demiCylindre2.set('profondeur',str(profondeurDemiCylindre2))
+	
+	#barre femelle
+	barreFemelle=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin,profondeur=points3D_to_svgd([
+					(0,	0,	rayon	),
+					(0,	0,	3.*rayon)
+				],False,baseLocale2)
+	barreFemelle.set('d',chemin)
+	barreFemelle.set('stroke',couleur_femelle)
+	barreFemelle.set('stroke-width',str(epaisseur_femelle))
+	barreFemelle.set('style','stroke-linecap:round')
+	barreFemelle.set('profondeur',str(profondeur*1e10))
 	
 
 
-	#Groupes ******************************************
+	# Ajout au Groupe ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
-        #On choisit dans quel ordre on ajoute les elements (arriere plan / avant plan)
-     	if(profondeurDemiCylindre1<profondeurDemiCylindre2):
-        	femelle1=inkex.etree.SubElement(liaison,'g')
-		male=inkex.etree.SubElement(liaison,'g')
-		femelle2=inkex.etree.SubElement(liaison,'g')
-	else:
-		femelle2=inkex.etree.SubElement(liaison,'g')
-		male=inkex.etree.SubElement(liaison,'g')
-        	femelle1=inkex.etree.SubElement(liaison,'g')
-		
-	#REmplissage des groupes
-	male.append(axe)
-	male.append(arret1)
-	male.append(arret2)
-	
-	femelle1.append(demiCylindre1)
+        
+        listeObjets=[axe,arret1,arret2,demiCylindre1,demiCylindre2,barreFemelle]
+        
+        ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
 
-	femelle2.append(demiCylindre2)
-	
-	"""femelle_devant.append(pathDevant)
-	femelle_devant.set('profondeur',str(profondeur_devant))"""
-	
-	
-	#Debug *************
-	liaison.set("listePoints",str(baseLocale[0].z))
-	
-	# Transformations ***************************************
-	liaison.set("transform","translate("+str(x0+x*Vx.x+y*Vy.x+z*Vz.x)+","+str(y0+x*Vx.y+y*Vy.y+z*Vz.y)+")")
-	
+        
+        #Pour chaque groupe, on trie les elements
+        
+        #On choisit dans quel ordre on ajoute les elements (arriere plan / avant plan)
+ 

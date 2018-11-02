@@ -55,7 +55,6 @@ class v3D:
 		return "[x="+str(self.x)+",y="+str(self.y)+",z="+str(self.z)+"]"
 
 	def __add__(self,v):
-		
 		return v3D(self.x+v.x,self.y+v.y,self.z+v.z)
 	def __radd__(self,v):
 		return self+v
@@ -64,18 +63,33 @@ class v3D:
 		self.y+=v.y
 		self.z+=v.z
 		return self
+		
 	def __sub__(self,v):
-		res=self.copy()
-		res.x+=v.x
-		res.y+=v.y
-		res.z+=v.z
-		return res
+		return v3D(self.x-v.x,self.y-v.y,self.z-v.z)
 	def __rsub__(self,v):
-		return self+v
+		return self-v
 	def __isub__(self,v):
-		self.x+=v.x
-		self.y+=v.y
-		self.z+=v.z
+		self.x-=v.x
+		self.y-=v.y
+		self.z-=v.z
+		return self
+		
+	def __mul__(self,l):
+		return v3D(self.x*l,self.y*l,self.z*l)
+	def __rmul__(self,l):
+		return self*l
+	def __imul__(self,l):
+		self.x*=float(l)
+		self.y*=float(l)
+		self.z*=float(l)
+		return self
+		
+	def __div__(self,l):
+		return v3D(self.x/float(l),self.y/float(l),self.z/float(l))
+	def __idiv__(self,l):
+		self.x/=float(l)
+		self.y/=float(l)
+		self.z/=float(l)
 		return self
 		
 	def str(self):
@@ -87,10 +101,10 @@ class v3D:
 	def norme(self):
 		return math.sqrt(self.x**2+self.y**2+self.z**2)
 		
-	def additionne(self,v):
-		self.x+=v.x
-		self.y+=v.y
-		self.z+=v.z
+#	def additionne(self,v):
+#		self.x+=v.x
+#		self.y+=v.y
+#		self.z+=v.z
 		
 	def normalise(self):
 		n=self.norme()
@@ -192,16 +206,23 @@ def getBaseFromVecteur(vec,theta=0):
 	if vec.prodVect(Vz).norme()<1e-3:#Si vDiff colineaire
 		vDiff=Vy	#On change
 	u=vec.copy()
-	u.nom="u"
+	
+	#Base de base
 	u.normalise()
 	v=vDiff.prodVect(u)
-	v.nom="v"
 	v.normalise()
 	w=u.prodVect(v)
 	
+	#base tournee
 	
-	
-	return u,v,w
+	X=u
+	X.nom="X"
+	Y=math.cos(theta)*v+math.sin(theta)*w
+	Y.nom="Y"
+	Z=-math.sin(theta)*v+math.cos(theta)*w
+	Z.nom="Z"
+
+	return X,Y,Z
 	
 	
 #Fonction qui recherche les angles de "coupure" entre l'avant plan et l'arriere plan d'un cercle
@@ -238,7 +259,7 @@ def getListePoints2DCercle(axes,centre,R,thetaDeb,thetaFin,thetaCoupure1,thetaCo
 	arcs=[[]]	#Liste des arcs
 	theta=thetaDeb
 	dtheta=0.1
-	def getPointForCercle(axes,centre,R,theta):
+	def getPointForCercle(axes,vcentre,R,theta):
 		Vx1,Vy1,Vz1=axes
 		
 		x1=0
@@ -246,8 +267,8 @@ def getListePoints2DCercle(axes,centre,R,thetaDeb,thetaFin,thetaCoupure1,thetaCo
 		z1=R*math.sin(theta)
 		vRayon=v3D(x1,y1,z1,axes)
 		
-		point=centre.copy()
-		point.additionne(vRayon)
+		point=vcentre+vRayon
+		#point.additionne(vRayon)
 		return (point.x,point.y,point.z)
 			
 
@@ -273,3 +294,27 @@ def getListePoints2DCercle(axes,centre,R,thetaDeb,thetaFin,thetaCoupure1,thetaCo
 	return arcs
 
 
+#Fonction qui trie les listes de couple (chemin,profondeur) dans l'ordre croissant
+#Et renvoie la profondeur moyenne (non coefficientee)
+#Trie bulle
+def trieChemins(liste):
+	for i in range(len(liste)):
+		for j in range(len(liste)-i-1):
+			if(float(liste[j].get("profondeur"))>float(liste[j+1].get("profondeur"))):
+				liste[j],liste[j+1]=liste[j+1],liste[j]
+	moyenne=0.
+	for i in range(len(liste)):
+		moyenne+=float(liste[i].get("profondeur"))
+	moyenne/=len(liste)
+	return moyenne
+	
+#Fonction qui trie une liste de chemin
+#en fonction de leur attribut "profondeur" (str, mais qui represente un flottant)
+#et les ajoute dans l'ordre dans le groupe de inkscape
+def ajouteCheminDansLOrdreAuGroupe(groupe,listeChemins):
+	trieChemins(listeChemins)
+	for obj in listeChemins:
+		groupe.append(obj)
+#	assert 0,str(listeChemins)
+
+		
