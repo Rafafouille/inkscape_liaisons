@@ -185,7 +185,8 @@ def dessin_Pivot_Glissant_3D(options,contexte):
 	x0=options.x0
 	y0=options.y0
 	#Base Axonometrique
-	Vx,Vy,Vz=getVecteursAxonometriques()
+	echelle=options.echelle
+	Vx,Vy,Vz=getVecteursAxonometriques(echelle)
 	base=(Vx,Vy,Vz)
 	#Centre de la liaison dans le repere 3D
 	x=options.liaison_pivot_glissant_3D_position_x
@@ -204,18 +205,18 @@ def dessin_Pivot_Glissant_3D(options,contexte):
 	#Repere local de la liaison
 	if(options.liaison_pivot_glissant_3D_type_direction=="\"liaison_pivot_glissant_3D_type_direction_quelconque\""):
 		V=v3D(options.liaison_pivot_glissant_3D_type_direction_quelconque_x,options.liaison_pivot_glissant_3D_type_direction_quelconque_y,options.liaison_pivot_glissant_3D_type_direction_quelconque_z,base)
-		Vx1,Vy1,Vz1=getBaseFromVecteur(V,angle_male)#Repere male
-		Vx2,Vy2,Vz2=getBaseFromVecteur(V,angle_femelle)#Repere Femelle
+		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle,angle_male)#Repere male
+		Vx2,Vy2,Vz2=getBaseFromVecteur(V,echelle,angle_femelle)#Repere Femelle
 	else:	#Si vecteur standard
 		if(options.liaison_pivot_glissant_3D_axe=="x"):
-			Vx1,Vy1,Vz1=getBaseFromVecteur(Vx,angle_male)#Repere male
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vx,angle_femelle)#Repere Femelle
+			Vx1,Vy1,Vz1=getBaseFromVecteur(Vx,echelle,angle_male)#Repere male
+			Vx2,Vy2,Vz2=getBaseFromVecteur(Vx,echelle,angle_femelle)#Repere Femelle
 		elif(options.liaison_pivot_glissant_3D_axe=="y"):
-			Vx1,Vy1,Vz1=getBaseFromVecteur(Vy,angle_male)#Repere male
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vy,angle_femelle)#Repere Femelle
+			Vx1,Vy1,Vz1=getBaseFromVecteur(Vy,echelle,angle_male)#Repere male
+			Vx2,Vy2,Vz2=getBaseFromVecteur(Vy,echelle,angle_femelle)#Repere Femelle
 		else:#z
-			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz,angle_male)#Repere male
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vz,angle_femelle)#Repere Femelle
+			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz,echelle,angle_male)#Repere male
+			Vx2,Vy2,Vz2=getBaseFromVecteur(Vz,echelle,angle_femelle)#Repere Femelle
 	baseLocale1=(Vx1,Vy1,Vz1)
 	baseLocale2=(Vx2,Vy2,Vz2)
 
@@ -291,4 +292,8 @@ def dessin_Pivot_Glissant_3D(options,contexte):
         listeObjets=[axe,demiCylindre1,demiCylindre2,barreFemelle]
         
         ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
+        
+        
+	# Transformations ***************************************
+	liaison.set("transform","translate("+str(x0+x*Vx.x+y*Vy.x+z*Vz.x)+","+str(y0+x*Vx.y+y*Vy.y+z*Vz.y)+")")
 	

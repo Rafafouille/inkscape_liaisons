@@ -192,15 +192,15 @@ def convertIntColor2Hex(i):
 
 
 #Fonction qui renvoie 3 vecteur 3D, dans la base Bfeuille
-def getVecteursAxonometriques():
-	Vx=v3D(	-math.sqrt(2./3)*math.cos(math.pi/6),	math.sqrt(2./3)*math.sin(math.pi/6),	math.sqrt(2./3)*math.tan(math.acos(math.sqrt(2./3))))
-	Vy=v3D(	math.sqrt(2./3)*math.cos(math.pi/6),	math.sqrt(2./3)*math.sin(math.pi/6),	math.sqrt(2./3)*math.tan(math.acos(math.sqrt(2./3))))
-	Vz=v3D(	0,				-math.sqrt(2./3),			math.sqrt(2./3)*math.tan(math.acos(math.sqrt(2./3))))
+def getVecteursAxonometriques(echelle=1):
+	Vx=echelle*v3D(	-math.sqrt(2./3)*math.cos(math.pi/6),	math.sqrt(2./3)*math.sin(math.pi/6),	math.sqrt(2./3)*math.tan(math.acos(math.sqrt(2./3))))
+	Vy=echelle*v3D(	math.sqrt(2./3)*math.cos(math.pi/6),	math.sqrt(2./3)*math.sin(math.pi/6),	math.sqrt(2./3)*math.tan(math.acos(math.sqrt(2./3))))
+	Vz=echelle*v3D(	0,				-math.sqrt(2./3),			math.sqrt(2./3)*math.tan(math.acos(math.sqrt(2./3))))
 	return Vx,Vy,Vz
 
 #Fonction qui construit une base a partir d'un vecteur directeur vec (v3D)
 #theta est un angle de rotation par rapport a la base initiale
-def getBaseFromVecteur(vec,theta=0):
+def getBaseFromVecteur(vec,echelle=1,theta=0):
 	Vx,Vy,Vz=getVecteursAxonometriques()
 	vDiff=Vz
 	if vec.prodVect(Vz).norme()<1e-3:#Si vDiff colineaire
@@ -215,11 +215,11 @@ def getBaseFromVecteur(vec,theta=0):
 	
 	#base tournee
 	
-	X=u
+	X=echelle*u
 	X.nom="X"
-	Y=math.cos(theta)*v+math.sin(theta)*w
+	Y=echelle*(math.cos(theta)*v+math.sin(theta)*w)
 	Y.nom="Y"
-	Z=-math.sin(theta)*v+math.cos(theta)*w
+	Z=echelle*(-math.sin(theta)*v+math.cos(theta)*w)
 	Z.nom="Z"
 
 	return X,Y,Z
