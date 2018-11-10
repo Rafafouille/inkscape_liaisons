@@ -225,6 +225,17 @@ def points3D_to_svgd(p3D,close=True,base3D=None):
 	else:
 		profondeur+=0.5*((p1[0]*Vx.z+p1[1]*Vy.z+p1[2]*Vz.z)+(p2[0]*Vx.z+p2[1]*Vy.z+p2[2]*Vz.z))*l
     	longueur+=l
+    if close:#Ajout du dernier segment
+    	p1=p3D[0]
+    	p2=p3D[-1]
+    	P1P2=(p2[0]-p1[0],p2[1]-p1[1],p2[2]-p1[2])
+    	l=math.sqrt(P1P2[0]**2+P1P2[1]**2+P1P2[2]**2)
+    	if(base3D==None):
+	    	profondeur+=0.5*(p1[2]+p2[2])*l
+	else:
+		profondeur+=0.5*((p1[0]*Vx.z+p1[1]*Vy.z+p1[2]*Vz.z)+(p2[0]*Vx.z+p2[1]*Vy.z+p2[2]*Vz.z))*l
+    	longueur+=l
+    	
     #profondeur/=longueur
     return points_to_svgd(p,close),profondeur
   

@@ -107,11 +107,12 @@ class Liaisons(inkex.Effect):
         self.OptionParser.add_option('--liaison_glissiere_3D_position_x', action = 'store', type = 'float', dest = 'liaison_glissiere_3D_position_x', default = 0, help = u"Coordonnee sur x du centre de la liaison glissiere 3D")
         self.OptionParser.add_option('--liaison_glissiere_3D_position_y', action = 'store', type = 'float', dest = 'liaison_glissiere_3D_position_y', default = 0, help = u"Coordonnee sur y du centre de la liaison glissiere 3D")
         self.OptionParser.add_option('--liaison_glissiere_3D_position_z', action = 'store', type = 'float', dest = 'liaison_glissiere_3D_position_z', default = 0, help = u"Coordonnee sur z du centre de la liaison glissiere 3D")
-        self.OptionParser.add_option('--liaison_glissiere_3D_type_orientation', action = 'store', type = 'str', dest = 'liaison_glissiere_3D_type_orientation', default = "liaison_glissiere_3D_type_orientation_standard", help = u"Choix du type d'orientation de la glissiere 3D")
-        self.OptionParser.add_option('--liaison_glissiere_3D_axe', action = 'store', type = 'str', dest = 'liaison_glissiere_3D_axe', default = 'x', help = u"Orientations standard de l'axe de la glissiere 3D")
-        self.OptionParser.add_option('--liaison_glissiere_3D_type_orientation_quelconque_x', action = 'store', type = 'float', dest = 'liaison_glissiere_3D_type_orientation_quelconque_x', default = 1, help = u"Coordonnee sur x du vecteur direceur de la glissiere 3D")
-        self.OptionParser.add_option('--liaison_glissiere_3D_type_orientation_quelconque_y', action = 'store', type = 'float', dest = 'liaison_glissiere_3D_type_orientation_quelconque_y', default = 0, help = u"Coordonnee sur y du vecteur direceur de la glissiere 3D")
-        self.OptionParser.add_option('--liaison_glissiere_3D_type_orientation_quelconque_z', action = 'store', type = 'float', dest = 'liaison_glissiere_3D_type_orientation_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur direceur de la glissiere 3D")
+        self.OptionParser.add_option('--liaison_glissiere_3D_type_direction', action = 'store', type = 'str', dest = 'liaison_glissiere_3D_type_direction', default = "liaison_glissiere_3D_type_orientation_standard", help = u"Choix du type de direction de la glissiere 3D")
+        self.OptionParser.add_option('--liaison_glissiere_3D_axe', action = 'store', type = 'str', dest = 'liaison_glissiere_3D_axe', default = 'x', help = u"Direction standard de l'axe de la glissiere 3D")
+        self.OptionParser.add_option('--liaison_glissiere_3D_type_direction_quelconque_x', action = 'store', type = 'float', dest = 'liaison_glissiere_3D_type_direction_quelconque_x', default = 1, help = u"Coordonnee sur x du vecteur direceur de la glissiere 3D")
+        self.OptionParser.add_option('--liaison_glissiere_3D_type_direction_quelconque_y', action = 'store', type = 'float', dest = 'liaison_glissiere_3D_type_direction_quelconque_y', default = 0, help = u"Coordonnee sur y du vecteur direceur de la glissiere 3D")
+        self.OptionParser.add_option('--liaison_glissiere_3D_type_direction_quelconque_z', action = 'store', type = 'float', dest = 'liaison_glissiere_3D_type_direction_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur direceur de la glissiere 3D")
+        self.OptionParser.add_option('--liaison_glissiere_3D_orientation', action = 'store', type = 'float', dest = 'liaison_glissiere_3D_orientation', default = 0, help = u"Orientation de la glissiere 3D")
 
         
 
@@ -180,6 +181,8 @@ class Liaisons(inkex.Effect):
 			dessin_Glissiere_2D_cote(self.options,svg)
 		if(type_liaison=="\"liaison_glissiere_2D_face\""):
 			dessin_Glissiere_2D_face(self.options,svg)
+		if(type_liaison=="\"liaison_glissiere_3D\""):
+			dessin_Glissiere_3D(self.options,svg)
 		
 	
 	

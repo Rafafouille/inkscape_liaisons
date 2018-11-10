@@ -228,8 +228,8 @@ def dessin_Pivot_3D(options,contexte):
 	couleur_male=options.opt_gene_piece1_couleur
 	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
 	epaisseur_male=options.opt_gene_lignes_epaisseur_1
-	angle_male=float(options.liaison_pivot_3D_orientation_male)/180.*math.pi
-	angle_femelle=float(options.liaison_pivot_3D_orientation_femelle)/180.*math.pi
+	angle_male=-float(options.liaison_pivot_3D_orientation_male)/180.*math.pi
+	angle_femelle=-float(options.liaison_pivot_3D_orientation_femelle)/180.*math.pi
 	#Repere local de la liaison
 	if(options.liaison_pivot_3D_type_direction=="\"liaison_pivot_3D_type_direction_quelconque\""):
 		V=v3D(options.liaison_pivot_3D_type_direction_quelconque_x,options.liaison_pivot_3D_type_direction_quelconque_y,options.liaison_pivot_3D_type_direction_quelconque_z,base)
@@ -266,7 +266,7 @@ def dessin_Pivot_3D(options,contexte):
 	chemin,profondeur=points3D_to_svgd([
 					(2*largeur/3,	rayon,	0	),
 					(2*largeur/3,	-rayon,	0	)
-				],False,baseLocale1,)
+				],False,baseLocale1)
 	arret1.set('d',chemin)
 	arret1.set('stroke',couleur_male)
 	arret1.set('stroke-width',str(epaisseur_male))
