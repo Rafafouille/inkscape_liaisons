@@ -18,11 +18,49 @@ def deriv(f,x):
 
 # Objet vecteur en 2D *******************************************
 class v2D:
-	def __init__(self,_x,_y):
-		self.x0=_x
-		self.y0=_y
+	def __init__(self,_x,_y,_direct=True):
 		self.x=_x
-		self.y=_y
+		if(_direct):
+			self.y=_y
+		else:
+			self.y=-_y
+		
+	def __repr__(self):
+		return "[x="+str(self.x)+",y="+str(self.y)+"]"
+		
+	def __add__(self,v):
+		return v2D(self.x+v.x,self.y+v.y)
+	def __radd__(self,v):
+		return self+v
+	def __iadd__(self,v):
+		self.x+=v.x
+		self.y+=v.y
+		return self
+
+	def __sub__(self,v):
+		return v2D(self.x-v.x,self.y-v.y)
+	def __rsub__(self,v):
+		return v-self
+	def __isub__(self,v):
+		self.x-=v.x
+		self.y-=v.y
+		return self
+		
+	def __mul__(self,l):
+		return v2D(self.x*l,self.y*l)
+	def __rmul__(self,l):
+		return self*l
+	def __imul__(self,l):
+		self.x*=l
+		self.y*=l
+		return self
+		
+	def __div__(self,l):
+		return v2D(self.x/float(l),self.y/float(l))
+	def __idiv__(self,l):
+		self.x/=float(l)
+		self.y/=float(l)
+		return self
 		
 	def rotation(self,theta,trigo=False):
 		"""Theta en rad"""
@@ -67,7 +105,7 @@ class v3D:
 	def __sub__(self,v):
 		return v3D(self.x-v.x,self.y-v.y,self.z-v.z)
 	def __rsub__(self,v):
-		return self-v
+		return v-self
 	def __isub__(self,v):
 		self.x-=v.x
 		self.y-=v.y
@@ -146,13 +184,25 @@ def points_to_svgd(p, close=True):
     return svgd
 
 
+#Idem que points_ti_svgd, mais pour de la 2D projetee sur une base *******************************************
+def points2D_to_svgd(p2D,close=True,base2D=None):
+	if(base2D!=None):
+	    (Vx,Vy)=base2D
+	p=[]
+	for point in p2D:
+		if(base2D==None):
+			p.append(point)
+		else:
+	 	   	p.append( (point[0]*Vx.x+point[1]*Vy.x	,	point[0]*Vx.y+point[1]*Vy.y) )
+	return points_to_svgd(p,close)
+    
+    
 
 #Idem que points_ti_svgd, mais pour de la 3D projetee *******************************************
 def points3D_to_svgd(p3D,close=True,base3D=None):
     """ convert list of points (x,y) pairs
         into a closed SVG path list
         base 3D est un triplet de vecteurs projetes dans le plan. Si absent, on prend la base brute de la feuille
-        
     """
     if(base3D!=None):
 	    (Vx,Vy,Vz)=base3D
@@ -191,14 +241,26 @@ def convertIntColor2Hex(i):
 
 
 
-#Fonction qui renvoie 3 vecteur 3D, dans la base Bfeuille
+#Fonction qui renvoie 2 vecteurs 2D, dans la base Bfeuille, avec une rotation de theta ****************************************
+def getBase2D(echelle=1,theta=0,direct=True):
+	if direct:
+		theta*=-1
+	Vx=echelle*v2D(	math.cos(theta),	math.sin(theta)	)
+	Vy=echelle*v2D(	-math.sin(theta),	math.cos(theta)	)
+	if direct:
+		Vy*=-1
+	return Vx,Vy
+
+
+
+#Fonction qui renvoie 3 vecteurs 3D, dans la base Bfeuille ****************************************
 def getVecteursAxonometriques(echelle=1):
 	Vx=echelle*v3D(	-math.sqrt(2./3)*math.cos(math.pi/6),	math.sqrt(2./3)*math.sin(math.pi/6),	math.sqrt(2./3)*math.tan(math.acos(math.sqrt(2./3))))
 	Vy=echelle*v3D(	math.sqrt(2./3)*math.cos(math.pi/6),	math.sqrt(2./3)*math.sin(math.pi/6),	math.sqrt(2./3)*math.tan(math.acos(math.sqrt(2./3))))
 	Vz=echelle*v3D(	0,				-math.sqrt(2./3),			math.sqrt(2./3)*math.tan(math.acos(math.sqrt(2./3))))
 	return Vx,Vy,Vz
 
-#Fonction qui construit une base a partir d'un vecteur directeur vec (v3D)
+#Fonction qui construit une base a partir d'un vecteur directeur vec (v3D) ******************************
 #theta est un angle de rotation par rapport a la base initiale
 def getBaseFromVecteur(vec,echelle=1,theta=0):
 	Vx,Vy,Vz=getVecteursAxonometriques()

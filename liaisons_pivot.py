@@ -5,46 +5,50 @@ from liaisons_fonctions_utiles import *
 
 def dessin_Pivot_2D_cote(options,contexte):
 	#https://doczz.fr/doc/4506137/comment-installer-et-programmer-des-scripts-python-dans-i...
-	#Variables *****************************************
+	#Position *****************************************
 	x0=options.x0
 	y0=options.y0
 	x=options.liaison_pivot_2D_cote_x
 	y=options.liaison_pivot_2D_cote_y
-	old_liaisons=options.opt_gene_gene_old
+	#Orientation **************************************
+	rotation=options.liaison_pivot2D_cote_orientation #Angle par defaut (sens trigo)
+	if(options.liaison_pivot2D_cote_axe=="x"):
+		rotation=0
+	elif(options.liaison_pivot2D_cote_axe=="y"):
+		rotation=90.
+	elif(options.liaison_pivot2D_cote_axe=="-x"):
+		rotation=180.
+	elif(options.liaison_pivot2D_cote_axe=="-y"):
+		rotation=-90.
+	#Base *********************
 	echelle=options.echelle
+	Vx1,Vy1=getBase2D(echelle)
+	base2D=(Vx1,Vy1)
+	#Parametres ****************************
+	old_liaisons=options.opt_gene_gene_old
 	largeur=30.
 	hauteur=15.
+	espace_arrets=hauteur/3.
+	longueur_axe=2.*largeur
+	longueur_tige=hauteur/2.
 	couleur_femelle=options.opt_gene_piece2_couleur
 	couleur_male=options.opt_gene_piece1_couleur
 	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
 	epaisseur_male=options.opt_gene_lignes_epaisseur_1
-	rotation=-options.liaison_pivot2D_cote_orientation #Angle par defaut (sens trigo)
-	if(options.liaison_pivot2D_cote_axe=="x"):
-		rotation=0
-	elif(options.liaison_pivot2D_cote_axe=="y"):
-		rotation=-90.
-	elif(options.liaison_pivot2D_cote_axe=="-x"):
-		rotation=180.
-	elif(options.liaison_pivot2D_cote_axe=="-y"):
-		rotation=90.
+
 	
 	#Groupes ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
-        #groupe_rotation = inkex.etree.SubElement(liaison, 'g')
 	male=inkex.etree.SubElement(liaison,'g')
 	femelle=inkex.etree.SubElement(liaison,'g')
 	
-	#Base
-	vx=v2D(echelle,0)
-	vy=v2D(0,echelle)
-	vx.rotation(rotation)
-	vy.rotation(rotation)
 	
 	# Male ***************************************
 	#Ligne male
 	ligneM=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(-largeur/2-epaisseur_femelle-10*epaisseur_male	,	0),
-				(largeur/2+epaisseur_femelle+10*epaisseur_male	,	0)	])
+	chemin=points2D_to_svgd([	(-longueur_axe/2.,0),
+					(longueur_axe/2.,0)]
+				,False,base2D)
 	ligneM.set('d',chemin)
 	ligneM.set('stroke',couleur_male)
 	ligneM.set('stroke-width',str(epaisseur_male))
@@ -52,8 +56,9 @@ def dessin_Pivot_2D_cote(options,contexte):
 	
 	#Arret male 1
 	arretM1=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(-largeur/2-epaisseur_femelle-3*epaisseur_male	,	-hauteur/2),
-				(-largeur/2-epaisseur_femelle-3*epaisseur_male	,	hauteur/2)	])
+	chemin=points2D_to_svgd([	(-largeur/2.-espace_arrets	,	-hauteur/2),
+					(-largeur/2.-espace_arrets	,	hauteur/2)	]
+				,False,base2D)
 	arretM1.set('d',chemin)
 	arretM1.set('stroke',couleur_male)
 	arretM1.set('stroke-width',str(epaisseur_male))
@@ -61,8 +66,9 @@ def dessin_Pivot_2D_cote(options,contexte):
 	
 	#Arret male 2
 	arretM2=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(largeur/2+epaisseur_femelle+3*epaisseur_male	,	-hauteur/2),
-				(largeur/2+epaisseur_femelle+3*epaisseur_male	,	hauteur/2)	])
+	chemin=points2D_to_svgd([	(largeur/2.+espace_arrets	,	-hauteur/2),
+					(largeur/2.+espace_arrets	,	hauteur/2)	]
+				,False,base2D)
 	arretM2.set('d',chemin)
 	arretM2.set('stroke',couleur_male)
 	arretM2.set('stroke-width',str(epaisseur_male))
@@ -71,16 +77,18 @@ def dessin_Pivot_2D_cote(options,contexte):
 	# Femelle ***************************************
 	if(old_liaisons):
 		barreF1=inkex.etree.Element(inkex.addNS('path','svg'))
-		chemin=points_to_svgd([	(-largeur/2	,	-hauteur/2),
-					(largeur/2	,	-hauteur/2)	])
+		chemin=points2D_to_svgd([	(-largeur/2.	,	-hauteur/2),
+						(largeur/2.	,	-hauteur/2.)	]
+					,False,base2D)
 		barreF1.set('d',chemin)
 		barreF1.set('stroke',couleur_femelle)
 		barreF1.set('stroke-width',str(epaisseur_femelle))
 		male.append(barreF1)
 		
 		barreF2=inkex.etree.Element(inkex.addNS('path','svg'))
-		chemin=points_to_svgd([	(-largeur/2	,	hauteur/2),
-					(largeur/2	,	hauteur/2)	])
+		chemin=points2D_to_svgd([	(-largeur/2.	,	hauteur/2),
+						(largeur/2.	,	hauteur/2.)	]
+					,False,base2D)
 		barreF2.set('d',chemin)
 		barreF2.set('stroke',couleur_femelle)
 		barreF2.set('stroke-width',str(epaisseur_femelle))
@@ -88,10 +96,10 @@ def dessin_Pivot_2D_cote(options,contexte):
 	else:
 		#Rectangle
 		rectangle=inkex.etree.Element(inkex.addNS('rect','svg'))
-		rectangle.set('x',str(-largeur/2) )
-		rectangle.set('y',str(-hauteur/2) )
-		rectangle.set('width',str(largeur))
-		rectangle.set('height',str(hauteur))
+		rectangle.set('x',str(-largeur*echelle/2) )
+		rectangle.set('y',str(-hauteur*echelle/2) )
+		rectangle.set('width',str(largeur*echelle))
+		rectangle.set('height',str(hauteur*echelle))
 		rectangle.set('style','fill:none')
 		rectangle.set('stroke',couleur_femelle)
 		rectangle.set('stroke-width',str(epaisseur_femelle))
@@ -99,30 +107,28 @@ def dessin_Pivot_2D_cote(options,contexte):
 	
 	#Ligne femelle
 	ligneF=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(0	,	hauteur/2),
-				(0	,	hauteur)	])
+	chemin=points2D_to_svgd([	(0	,	-hauteur/2.),
+					(0	,	-hauteur/2.-longueur_tige)	]
+				,True,base2D)
 	ligneF.set('d',chemin)
 	ligneF.set('stroke',couleur_femelle)
-	ligneF.set('stroke-width',str(epaisseur_femelle*echelle))
+	ligneF.set('stroke-width',str(epaisseur_femelle))
 	femelle.append(ligneF)
 	
 	# Transformations ***************************************
-	male.set("transform","rotate("+str(rotation)+")")
-	femelle.set("transform","rotate("+str(rotation)+")")
+	male.set("transform","rotate("+str(-rotation)+")")
+	femelle.set("transform","rotate("+str(-rotation)+")")
 	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
 
 	
 
 def dessin_Pivot_2D_face(options,contexte):
+	#Position *****************************************
 	x0=options.x0
 	y0=options.y0
 	x=options.liaison_pivot_2D_face_x
 	y=options.liaison_pivot_2D_face_y
-	rayon=15./2
-	couleur_femelle=options.opt_gene_piece2_couleur
-	couleur_male=options.opt_gene_piece1_couleur
-	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
-	epaisseur_male=options.opt_gene_lignes_epaisseur_1
+	#Orientation **************************************
 	rotation1=-options.liaison_pivot2D_face_orientation1 #Angle par defaut (sens trigo)
 	if(options.liaison_pivot2D_face_axe1=="x"):
 		rotation1=0
@@ -141,6 +147,18 @@ def dessin_Pivot_2D_face(options,contexte):
 		rotation2=180
 	elif(options.liaison_pivot2D_face_axe2=="-y"):
 		rotation2=90
+	#Base *********************
+	echelle=options.echelle
+	Vx1,Vy1=getBase2D(echelle)
+	base2D=(Vx1,Vy1)
+	#Parametres ****************************
+	rayon=15./2
+	longueur_tige=rayon
+	couleur_femelle=options.opt_gene_piece2_couleur
+	couleur_male=options.opt_gene_piece1_couleur
+	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
+	epaisseur_male=options.opt_gene_lignes_epaisseur_1
+
 	
 	#Groupes ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
@@ -150,8 +168,9 @@ def dessin_Pivot_2D_face(options,contexte):
 
 	# Male ***************************************
 	axe1=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(0	,	0),
-				(2*rayon,	0)	])
+	chemin=points2D_to_svgd([	(0	,	0),
+					(0	,	-rayon-longueur_tige)	]
+				,False,base2D)
 	axe1.set('d',chemin)
 	axe1.set('stroke',couleur_male)
 	axe1.set('stroke-width',str(epaisseur_male))
@@ -160,8 +179,9 @@ def dessin_Pivot_2D_face(options,contexte):
 	# Femelle ***************************************	
 	#axe
 	axe2=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(0	,	0),
-				(2*rayon,	0)	])
+	chemin=points2D_to_svgd([	(0	,	0),
+					(longueur_tige+rayon	,	0)	]
+				,False,base2D)	
 	axe2.set('d',chemin)
 	axe2.set('stroke',couleur_femelle)
 	axe2.set('stroke-width',str(epaisseur_femelle))
@@ -170,7 +190,7 @@ def dessin_Pivot_2D_face(options,contexte):
 	cercle=inkex.etree.Element(inkex.addNS('circle','svg'))
 	cercle.set('cx',"0")
 	cercle.set('cy',"0")
-	cercle.set('r',str(rayon))
+	cercle.set('r',str(rayon*echelle))
 	cercle.set('stroke',str(couleur_femelle))
 	cercle.set('stroke-width',str(epaisseur_femelle))
 	cercle.set('style','fill:white')

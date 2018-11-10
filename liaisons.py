@@ -174,6 +174,14 @@ class Liaisons(inkex.Effect):
 			dessin_Pivot_Glissant_2D_face(self.options,svg)
 		elif(type_liaison=="\"liaison_pivot_glissant_3D\""):
 			dessin_Pivot_Glissant_3D(self.options,svg)
+	if(liaison=="\"liaison_glissiere\""):
+		type_liaison=self.options.liaison_glissiere_type
+		if(type_liaison=="\"liaison_glissiere_2D_cote\""):
+			dessin_Glissiere_2D_cote(self.options,svg)
+		if(type_liaison=="\"liaison_glissiere_2D_face\""):
+			dessin_Glissiere_2D_face(self.options,svg)
+		
+	
 	
 
 
