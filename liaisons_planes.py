@@ -5,21 +5,12 @@ from liaisons_fonctions_utiles import *
 
 def dessin_plane_2D_cote(options,contexte):
 	#https://doczz.fr/doc/4506137/comment-installer-et-programmer-des-scripts-python-dans-i...
-	#Variables *****************************************
+	#Position *****************************************
 	x0=options.x0
 	y0=options.y0
 	x=options.liaison_plane_2D_cote_x
 	y=options.liaison_plane_2D_cote_y
-	#old_liaisons=options.opt_gene_gene_old
-	echelle=options.echelle
-	largeur=30.
-	#hauteur=15.
-	ecart=5.
-	longueurTige=10.
-	couleur_femelle=options.opt_gene_piece2_couleur
-	couleur_male=options.opt_gene_piece1_couleur
-	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
-	epaisseur_male=options.opt_gene_lignes_epaisseur_1
+	#Orientation **************************************
 	rotation=-options.liaison_plane_2D_cote_orientation #Angle par defaut (sens trigo)
 	if(options.liaison_plane_2D_cote_axe=="y"):
 		rotation=0
@@ -29,18 +20,24 @@ def dessin_plane_2D_cote(options,contexte):
 		rotation=-90
 	elif(options.liaison_plane_2D_cote_axe=="-y"):
 		rotation=180
+	#Base *********************
+	echelle=options.echelle
+	Vx1,Vy1=getBase2D(echelle)
+	base2D=(Vx1,Vy1)
+	#Parametres ****************************
+	largeur=30.
+	ecart=5.
+	longueurTige=10.
+	couleur_femelle=options.opt_gene_piece2_couleur
+	couleur_male=options.opt_gene_piece1_couleur
+	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
+	epaisseur_male=options.opt_gene_lignes_epaisseur_1
 	
 	#Groupes ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
-        #groupe_rotation = inkex.etree.SubElement(liaison, 'g')
 	dessus=inkex.etree.SubElement(liaison,'g')
 	dessous=inkex.etree.SubElement(liaison,'g')
-	
-	#Base
-	vx=v2D(echelle,0)
-	vy=v2D(0,echelle)
-	vx.rotation(rotation)
-	vy.rotation(rotation)
+
 	
 	# DESSUS ***************************************
 	#plan dessus
@@ -88,81 +85,92 @@ def dessin_plane_2D_cote(options,contexte):
 	
 
 def dessin_plane_2D_dessus(options,contexte):
+	#Position *****************************************
 	x0=options.x0
 	y0=options.y0
-	x=options.liaison_pivot_glissant_2D_face_x
-	y=options.liaison_pivot_glissant_2D_face_y
-	rayon=15./2
+	x=options.liaison_plane_2D_dessus_x
+	y=options.liaison_plane_2D_dessus_y
+	#Orientation **************************************
+	rotationDessous=-options.liaison_plane_2D_orientation_dessous #Angle par defaut (sens trigo)
+	if(options.liaison_plane_2D_axe_dessous=="x"):
+		rotationDessous=0
+	elif(options.liaison_plane_2D_axe_dessous=="y"):
+		rotationDessous=-90
+	elif(options.liaison_plane_2D_axe_dessous=="-x"):
+		rotationDessous=180
+	elif(options.liaison_plane_2D_axe_dessous=="-y"):
+		rotationDessous=90
+	rotationDessus=-options.liaison_plane_2D_orientation_dessus #Angle par defaut (sens trigo)
+	if(options.liaison_plane_2D_axe_dessus=="x"):
+		rotationDessus=0
+	elif(options.liaison_plane_2D_axe_dessus=="y"):
+		rotationDessus=-90
+	elif(options.liaison_plane_2D_axe_dessus=="-x"):
+		rotationDessus=180
+	elif(options.liaison_plane_2D_axe_dessus=="-y"):
+		rotationDessus=90
+	#Base *********************
+	echelle=options.echelle
+	Vx1,Vy1=getBase2D(echelle)
+	base2D=(Vx1,Vy1)
+	#Parametres ****************************
+	coteDessous=30.
+	coteDessus=20.
+	longueurTrait=10.
 	couleur_femelle=options.opt_gene_piece2_couleur
 	couleur_male=options.opt_gene_piece1_couleur
 	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
 	epaisseur_male=options.opt_gene_lignes_epaisseur_1
-	rotation1=-options.liaison_pivot_glissant_2D_face_orientation1 #Angle par defaut (sens trigo)
-	if(options.liaison_pivot_glissant_2D_face_axe1=="x"):
-		rotation1=0
-	elif(options.liaison_pivot_glissant_2D_face_axe1=="y"):
-		rotation1=-90
-	elif(options.liaison_pivot_glissant_2D_face_axe1=="-x"):
-		rotation1=180
-	elif(options.liaison_pivot_glissant_2D_face_axe1=="-y"):
-		rotation1=90
-	rotation2=-options.liaison_pivot_glissant_2D_face_orientation2 #Angle par defaut (sens trigo)
-	if(options.liaison_pivot_glissant_2D_face_axe2=="x"):
-		rotation2=0
-	elif(options.liaison_pivot_glissant_2D_face_axe2=="y"):
-		rotation2=-90
-	elif(options.liaison_pivot_glissant_2D_face_axe2=="-x"):
-		rotation2=180
-	elif(options.liaison_pivot_glissant_2D_face_axe2=="-y"):
-		rotation2=90
 	
 	#Groupes ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
-        #groupe_rotation = inkex.etree.SubElement(liaison, 'g')
-	femelle=inkex.etree.SubElement(liaison,'g')
-	male=inkex.etree.SubElement(liaison,'g')
+	dessous=inkex.etree.SubElement(liaison,'g')
+	dessus=inkex.etree.SubElement(liaison,'g')
 
 	
-	# Femelle ***************************************	
-	#axe
-	axe2=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(0	,	0),
-				(2*rayon,	0)	])
-	axe2.set('d',chemin)
-	axe2.set('stroke',couleur_femelle)
-	axe2.set('stroke-width',str(epaisseur_femelle))
-	femelle.append(axe2)
-	#cercle
-	cercle=inkex.etree.Element(inkex.addNS('circle','svg'))
-	cercle.set('cx',"0")
-	cercle.set('cy',"0")
-	cercle.set('r',str(rayon))
-	cercle.set('stroke',str(couleur_femelle))
-	cercle.set('stroke-width',str(epaisseur_femelle))
-	cercle.set('style','fill:white')
-	femelle.append(cercle)
+	# Dessous ***************************************	
+	# rectangle dessous
+	rectangleDessous=inkex.etree.Element(inkex.addNS('rect','svg'))
+	rectangleDessous.set('x',str(-coteDessous*echelle/2) )
+	rectangleDessous.set('y',str(-coteDessous*echelle/2) )
+	rectangleDessous.set('width',str(coteDessous*echelle))
+	rectangleDessous.set('height',str(coteDessous*echelle))
+	rectangleDessous.set('style','fill:white')
+	rectangleDessous.set('stroke',couleur_femelle)
+	rectangleDessous.set('stroke-width',str(epaisseur_femelle))
+	dessous.append(rectangleDessous)
+
+	traitDessous=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin=points_to_svgd([	(coteDessous/2.	,	0),
+				(coteDessous/2.+longueurTrait	,	0)	])
+	traitDessous.set('d',chemin)
+	traitDessous.set('stroke',couleur_femelle)
+	traitDessous.set('stroke-width',str(epaisseur_femelle))
+	dessous.append(traitDessous)
 	
-	# Male ***************************************
-	axe1=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(0	,	0),
-				(2*rayon,	0)	])
-	axe1.set('d',chemin)
-	axe1.set('stroke',couleur_male)
-	axe1.set('stroke-width',str(epaisseur_male))
-	male.append(axe1)
-	#Puce
-	puce=inkex.etree.Element(inkex.addNS('circle','svg'))
-	puce.set('cx',"0")
-	puce.set('cy',"0")
-	puce.set('r',str(2*epaisseur_male))
-	puce.set('stroke','none')
-#	puce.set('stroke-width',str(epaisseur_femelle))
-	puce.set('style','fill:'+couleur_male)
-	male.append(puce)
-		
+	# Dessus ***************************************
+	# rectangle dessus
+	rectangleDessus=inkex.etree.Element(inkex.addNS('rect','svg'))
+	rectangleDessus.set('x',str(-coteDessus*echelle/2) )
+	rectangleDessus.set('y',str(-coteDessus*echelle/2) )
+	rectangleDessus.set('width',str(coteDessus*echelle))
+	rectangleDessus.set('height',str(coteDessus*echelle))
+	rectangleDessus.set('style','fill:white')
+	rectangleDessus.set('stroke',couleur_male)
+	rectangleDessus.set('stroke-width',str(epaisseur_male))
+	dessus.append(rectangleDessus)
+
+	traitDessus=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin=points_to_svgd([	(coteDessus/2.	,	0),
+				(coteDessous/2.+longueurTrait	,	0)	])
+	traitDessus.set('d',chemin)
+	traitDessus.set('stroke',couleur_male)
+	traitDessus.set('stroke-width',str(epaisseur_male))
+	dessus.append(traitDessus)
+	
 	# Transformations ***************************************
-	male.set("transform","rotate("+str(rotation1)+")")
-	femelle.set("transform","rotate("+str(rotation2)+")")
+	dessous.set("transform","rotate("+str(rotationDessous)+")")
+	dessus.set("transform","rotate("+str(rotationDessus)+")")
 	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
 	
 

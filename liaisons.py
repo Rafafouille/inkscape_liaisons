@@ -124,7 +124,13 @@ class Liaisons(inkex.Effect):
         self.OptionParser.add_option('--liaison_plane_2D_cote_axe', action = 'store', type = 'string', dest = 'liaison_plane_2D_cote_axe', default = 'x', help = u"Principales directions de l'axe d'une plane 2D vue de cote")
         self.OptionParser.add_option('--liaison_plane_2D_cote_orientation', action = 'store', type = 'float', dest = 'liaison_plane_2D_cote_orientation', default = '0', help = u"Orientation plane 2D en degres")
 
-
+        self.OptionParser.add_option('--liaison_plane_2D_dessus_x', action = 'store', type = 'float', dest = 'liaison_plane_2D_dessus_x', default = '0', help = u"Position sur X de la liaison plane 2D dessus relativement a l'origine")
+        self.OptionParser.add_option('--liaison_plane_2D_dessus_y', action = 'store', type = 'float', dest = 'liaison_plane_2D_dessus_y', default = '0', help = u"Position sur Y de la liaison plane 2D dessus relativement a l'origine")
+        self.OptionParser.add_option('--liaison_plane_2D_axe_dessous', action = 'store', type = 'string', dest = 'liaison_plane_2D_axe_dessous', default = 'y', help = u"Principales directions de l'axe d'une plane 2D dessous")
+        self.OptionParser.add_option('--liaison_plane_2D_orientation_dessous', action = 'store', type = 'float', dest = 'liaison_plane_2D_orientation_dessous', default = '0', help = u"Orientation plane 2D dessous en degres")
+        self.OptionParser.add_option('--liaison_plane_2D_axe_dessus', action = 'store', type = 'string', dest = 'liaison_plane_2D_axe_dessus', default = '-y', help = u"Principales directions de l'axe d'une plane 2D dessus")
+        self.OptionParser.add_option('--liaison_plane_2D_orientation_dessus', action = 'store', type = 'float', dest = 'liaison_plane_2D_orientation_dessus', default = '0', help = u"Orientation plane 2D dessus en degres")
+        
         #OPTIONS GENERALES ******************************************
         self.OptionParser.add_option('--opt_generales', action = 'store', type = 'string', dest = 'opt_generales', default = 'opt_gene_origine', help = u"Onglet des options generales")
         
@@ -196,6 +202,8 @@ class Liaisons(inkex.Effect):
 		type_liaison=self.options.liaison_plane_type
 		if(type_liaison=="\"liaison_plane_2D_cote\""):
 			dessin_plane_2D_cote(self.options,svg)
+		if(type_liaison=="\"liaison_plane_2D_dessus\""):
+			dessin_plane_2D_dessus(self.options,svg)
 		
 	
 	

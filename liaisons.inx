@@ -222,21 +222,30 @@
 						</param>
 						<param name="liaison_plane_2D_cote_orientation" type="float"  min="-360" max="360" precision="1" gui-text="Orientation (deg) :">0</param>
 				</page>
-				<!--<page name="liaison_plane_2D_dessus" gui-text="2D (Dessus)">
+				<page name="liaison_plane_2D_dessus" gui-text="2D (Dessus)">
 	  				<param name="titre_position_plane_2D_dessus" type="description" appearance="header">Position</param>
 	  					<param name="liaison_plane_2D_dessus_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
 	  					<param name="liaison_plane_2D_dessus_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
-	  				<param name="titre_orientation_dessous_plane_2D_dessus" type="description" appearance="header">Orientation dessous</param>
-						<param name="liaison_plane_2D_face_axe_dessous" type="enum" gui-text="Direction trait">
-							<item value="x">X</item>
-							<item value="autre">Via l'angle ci-dessous</item>
+	  				<param name="titre_orientation_dessous_plane_2D_dessous" type="description" appearance="header">Orientation dessous</param>
+						<param name="liaison_plane_2D_axe_dessous" type="enum" gui-text="Direction trait">
 							<item value="y">Y</item>
+							<item value="autre">Via l'angle ci-dessous</item>
+							<item value="x">X</item>
 							<item value="-x">-X</item>
 							<item value="-y">-Y</item>
 						</param>
-						<param name="liaison_plane_2D_face_orientation_dessous" type="float"  min="-360" max="360" precision="1" gui-text="Orientation Dessous (deg) : ">0</param>
+						<param name="liaison_plane_2D_orientation_dessous" type="float"  min="-360" max="360" precision="1" gui-text="Angle (deg) : ">0</param>
+	  				<param name="titre_orientation_dessous_plane_2D_dessus" type="description" appearance="header">Orientation dessus</param>
+						<param name="liaison_plane_2D_axe_dessus" type="enum" gui-text="Direction trait">
+							<item value="-y">-Y</item>
+							<item value="autre">Via l'angle ci-dessous</item>
+							<item value="x">X</item>
+							<item value="y">Y</item>
+							<item value="-x">-X</item>
+						</param>
+						<param name="liaison_plane_2D_orientation_dessus" type="float"  min="-360" max="360" precision="1" gui-text="Angle (deg) : ">0</param>
 				</page>
-				<page name="liaison_glissiere_3D" gui-text="3D">
+				<!--<page name="liaison_glissiere_3D" gui-text="3D">
 					<param name="titre_position_glissiere_3D" type="description" appearance="header">Position</param>
 	  					<param name="liaison_glissiere_3D_position_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
 	  					<param name="liaison_glissiere_3D_position_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>

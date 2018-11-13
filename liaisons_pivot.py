@@ -159,7 +159,6 @@ def dessin_Pivot_2D_face(options,contexte):
 	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
 	epaisseur_male=options.opt_gene_lignes_epaisseur_1
 
-	
 	#Groupes ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
         #groupe_rotation = inkex.etree.SubElement(liaison, 'g')
@@ -175,7 +174,7 @@ def dessin_Pivot_2D_face(options,contexte):
 	axe1.set('stroke',couleur_male)
 	axe1.set('stroke-width',str(epaisseur_male))
 	male.append(axe1)
-	
+
 	# Femelle ***************************************	
 	#axe
 	axe2=inkex.etree.Element(inkex.addNS('path','svg'))
@@ -195,7 +194,7 @@ def dessin_Pivot_2D_face(options,contexte):
 	cercle.set('stroke-width',str(epaisseur_femelle))
 	cercle.set('style','fill:white')
 	femelle.append(cercle)
-	
+
 	# Transformations ***************************************
 	male.set("transform","rotate("+str(rotation1)+")")
 	femelle.set("transform","rotate("+str(rotation2)+")")
