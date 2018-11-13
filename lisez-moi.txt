@@ -1,0 +1,67 @@
+==============================================================
+
+	LIAISONS CINEMATIQUES POUR INKSCAPE
+	
+==============================================================
+
+
+Auteur : Raphaël ALLAIS (Lycée G.Eiffel de DIJON)
+
+Dernière version : https://github.com/Rafafouille/inkscape_liaisons/archive/master.zip
+Version de développement : https://github.com/Rafafouille/inkscape_liaisons/archive/develop.zip
+
+==============================================================
+I . QU'EST CE QUE C'EST ?
+==============================================================
+
+Cet ensemble de fichiers est une extension pour le logiciel de dessin vectoriel Inkscape (https://inkscape.org/fr/),
+permettant de dessiner relativement simplement des liaisons cinématiques normalisées en 2D ou en 3D
+
+
+==============================================================
+II . INSTALLATION
+==============================================================
+
+Ce qu'il faut avoir déjà :
+------------------------------
+* Inkscape : dans sa version 0.92. (Les plus vieilles version ne fonctionnent pas)
+--> Lien de téléchargement : https://inkscape.org/release
+
+* Python 2.x : Normalement, je crois qu'il est installé avec Inkscape par défaut.
+
+Comment installer l'extension ?
+-----------------------------------
+
+En copiant tous les fichiers dans le dossier d'extension d'Inkscape.
+Pour savoir où se trouve ce dossier, dans la version 0.92, il faut aller dans les menus :
+[Édition] --> [Préférences] --> [Système] --> [Extensions de l'utilisateur]
+
+
+==============================================================
+III . FONCTIONNEMENT
+==============================================================
+
+Pour ouvrir le module, il faut aller dans le menu :
+[Extensions] --> [Enseignement] --> [Liaisons]
+
+Une fenêtre s'ouvre avec 2 onglets.
+Je vous conseille de commencer par l'onglet [Options générales], puis de revenir sur [Choix Liaison]
+
+Dans [Choix Liaison], les sous-onglets sont comme des "boutons" que vous sélectionnez :
+La liaison dessinées sera celle dont le sous-onglet est sélectionnée.
+
+
+==============================================================
+IV . ÇA NE MARCHE PAS ?
+==============================================================
+
+
+Problème de version de Python :
+----------------------------------
+Peut-être avez-vous également installé, par vous-même,
+une autre version, dans un autre dossier d'installation
+(et peut-être qu'il s'agit d'une version par défaut).
+Dans ce cas, il vous faura vous rendre dans les configuration d'Inscape
+pour lui indiquer explicitement le chemin vers le programme python 2.x.
+
+

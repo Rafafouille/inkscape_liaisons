@@ -9,6 +9,7 @@
   <dependency type="executable" location="extensions">liaisons_pivot.py</dependency>
   <dependency type="executable" location="extensions">liaisons_pivot_glissant.py</dependency>
   <dependency type="executable" location="extensions">liaisons_glissiere.py</dependency>
+  <dependency type="executable" location="extensions">liaisons_planes.py</dependency>
   <dependency type="executable" location="extensions">inkex.py</dependency>
   
   <!-- ====================================================  -->
@@ -151,7 +152,7 @@
 				</page>
 			</param>
 		</page>
-	<page name="liaison_glissiere" gui-text="Glissière">
+		<page name="liaison_glissiere" gui-text="Glissière">
 			<param name="liaison_glissiere_type" type="notebook">
 				<page name="liaison_glissiere_2D_cote" gui-text="2D (coté)">
 	  				<param name="titre_position_glissiere_2D_cote" type="description" appearance="header">Position</param>
@@ -203,6 +204,60 @@
 					<param name="titre_direction_glissiere_3D" type="description" appearance="header">Orientation</param>
 	  					<param name="liaison_glissiere_3D_orientation" type="float" _gui-text="Angle (deg) :" precision="1" min="-360" max="360" >0</param>
 				</page>
+			</param>
+		</page>
+		<page name="liaison_plane" gui-text="Plane">
+			<param name="liaison_plane_type" type="notebook">
+				<page name="liaison_plane_2D_cote" gui-text="2D (coté)">
+	  				<param name="titre_position_plane_2D_cote" type="description" appearance="header">Position</param>
+	  					<param name="liaison_plane_2D_cote_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_plane_2D_cote_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+	  				<param name="titre_orientation_plane_2D_cote" type="description" appearance="header">Orientation de la normale</param>
+						<param name="liaison_plane_2D_cote_axe" type="enum" gui-text="Axe :">
+							<item value="y">Y</item>
+							<item value="autre">Via l'angle ci-dessous</item>
+							<item value="x">X</item>
+							<item value="-x">-X</item>
+							<item value="-y">-Y</item>
+						</param>
+						<param name="liaison_plane_2D_cote_orientation" type="float"  min="-360" max="360" precision="1" gui-text="Orientation (deg) :">0</param>
+				</page>
+				<!--<page name="liaison_plane_2D_dessus" gui-text="2D (Dessus)">
+	  				<param name="titre_position_plane_2D_dessus" type="description" appearance="header">Position</param>
+	  					<param name="liaison_plane_2D_dessus_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_plane_2D_dessus_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+	  				<param name="titre_orientation_dessous_plane_2D_dessus" type="description" appearance="header">Orientation dessous</param>
+						<param name="liaison_plane_2D_face_axe_dessous" type="enum" gui-text="Direction trait">
+							<item value="x">X</item>
+							<item value="autre">Via l'angle ci-dessous</item>
+							<item value="y">Y</item>
+							<item value="-x">-X</item>
+							<item value="-y">-Y</item>
+						</param>
+						<param name="liaison_plane_2D_face_orientation_dessous" type="float"  min="-360" max="360" precision="1" gui-text="Orientation Dessous (deg) : ">0</param>
+				</page>
+				<page name="liaison_glissiere_3D" gui-text="3D">
+					<param name="titre_position_glissiere_3D" type="description" appearance="header">Position</param>
+	  					<param name="liaison_glissiere_3D_position_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_glissiere_3D_position_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_glissiere_3D_position_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >0</param>
+					<param name="liaison_glissiere_3D_type_direction" type="notebook">
+						<page name="liaison_glissiere_3D_type_direction_standard" gui-text="Directions simples">
+								<param name="liaison_glissiere_3D_axe" type="enum" gui-text="Direction de l'axe :">
+									<item value="x">X</item>
+									<item value="y">Y</item>
+									<item value="z">Z</item>
+								</param>
+						</page>
+						<page name="liaison_glissiere_3D_type_direction_quelconque" gui-text="Vecteur Directeur">
+		  					<param name="liaison_glissiere_3D_type_direction_quelconque_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >1</param>
+		  					<param name="liaison_glissiere_3D_type_direction_quelconque_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+		  					<param name="liaison_glissiere_3D_type_direction_quelconque_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >0</param>
+						</page>
+					</param>
+					<param name="titre_direction_glissiere_3D" type="description" appearance="header">Orientation</param>
+	  					<param name="liaison_glissiere_3D_orientation" type="float" _gui-text="Angle (deg) :" precision="1" min="-360" max="360" >0</param>
+				</page>-->
 			</param>
 		</page>
 	  </param>

@@ -15,6 +15,7 @@ from liaisons_fonctions_utiles import *
 from liaisons_pivot import *
 from liaisons_pivot_glissant import *
 from liaisons_glissiere import *
+from liaisons_planes import *
 
 
 
@@ -115,6 +116,14 @@ class Liaisons(inkex.Effect):
         self.OptionParser.add_option('--liaison_glissiere_3D_orientation', action = 'store', type = 'float', dest = 'liaison_glissiere_3D_orientation', default = 0, help = u"Orientation de la glissiere 3D")
 
         
+        #LIAISON PLANE ******************************************
+        self.OptionParser.add_option('--liaison_plane_type', action = 'store', type = 'string', dest = 'liaison_plane_type', default = 'liaison_plane_2D_cote', help = u"Type de representation de la liaison plane")
+        
+        self.OptionParser.add_option('--liaison_plane_2D_cote_x', action = 'store', type = 'float', dest = 'liaison_plane_2D_cote_x', default = '0', help = u"Position sur X de la liaison plane 2D face relativement a l'origine")
+        self.OptionParser.add_option('--liaison_plane_2D_cote_y', action = 'store', type = 'float', dest = 'liaison_plane_2D_cote_y', default = '0', help = u"Position sur Y de la liaison plane 2D face relativement a l'origine")
+        self.OptionParser.add_option('--liaison_plane_2D_cote_axe', action = 'store', type = 'string', dest = 'liaison_plane_2D_cote_axe', default = 'x', help = u"Principales directions de l'axe d'une plane 2D vue de cote")
+        self.OptionParser.add_option('--liaison_plane_2D_cote_orientation', action = 'store', type = 'float', dest = 'liaison_plane_2D_cote_orientation', default = '0', help = u"Orientation plane 2D en degres")
+
 
         #OPTIONS GENERALES ******************************************
         self.OptionParser.add_option('--opt_generales', action = 'store', type = 'string', dest = 'opt_generales', default = 'opt_gene_origine', help = u"Onglet des options generales")
@@ -183,6 +192,10 @@ class Liaisons(inkex.Effect):
 			dessin_Glissiere_2D_face(self.options,svg)
 		if(type_liaison=="\"liaison_glissiere_3D\""):
 			dessin_Glissiere_3D(self.options,svg)
+	if(liaison=="\"liaison_plane\""):
+		type_liaison=self.options.liaison_plane_type
+		if(type_liaison=="\"liaison_plane_2D_cote\""):
+			dessin_plane_2D_cote(self.options,svg)
 		
 	
 	
