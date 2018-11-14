@@ -130,7 +130,19 @@ class Liaisons(inkex.Effect):
         self.OptionParser.add_option('--liaison_plane_2D_orientation_dessous', action = 'store', type = 'float', dest = 'liaison_plane_2D_orientation_dessous', default = '0', help = u"Orientation plane 2D dessous en degres")
         self.OptionParser.add_option('--liaison_plane_2D_axe_dessus', action = 'store', type = 'string', dest = 'liaison_plane_2D_axe_dessus', default = '-y', help = u"Principales directions de l'axe d'une plane 2D dessus")
         self.OptionParser.add_option('--liaison_plane_2D_orientation_dessus', action = 'store', type = 'float', dest = 'liaison_plane_2D_orientation_dessus', default = '0', help = u"Orientation plane 2D dessus en degres")
-        
+ 
+        self.OptionParser.add_option('--liaison_plane_3D_position_x', action = 'store', type = 'float', dest = 'liaison_plane_3D_position_x', default = 0, help = u"Coordonnee sur x du centre de la liaison plane 3D")
+        self.OptionParser.add_option('--liaison_plane_3D_position_y', action = 'store', type = 'float', dest = 'liaison_plane_3D_position_y', default = 0, help = u"Coordonnee sur y du centre de la liaison plane 3D")
+        self.OptionParser.add_option('--liaison_plane_3D_position_z', action = 'store', type = 'float', dest = 'liaison_plane_3D_position_z', default = 0, help = u"Coordonnee sur z du centre de la liaison plane 3D")
+        self.OptionParser.add_option('--liaison_plane_3D_type_normale', action = 'store', type = 'str', dest = 'liaison_plane_3D_type_normale', default = "liaison_plane_3D_type_normale_standard", help = u"Choix du type de direction de la glissiere 3D")
+        self.OptionParser.add_option('--liaison_plane_3D_axe', action = 'store', type = 'str', dest = 'liaison_plane_3D_axe', default = 'x', help = u"Direction standard de l'axe de la liaison plane 3D")
+        self.OptionParser.add_option('--liaison_plane_3D_type_direction_quelconque_x', action = 'store', type = 'float', dest = 'liaison_plane_3D_type_direction_quelconque_x', default = 1, help = u"Coordonnee sur x du vecteur direceur de la liaison plane 3D")
+        self.OptionParser.add_option('--liaison_plane_3D_type_direction_quelconque_y', action = 'store', type = 'float', dest = 'liaison_plane_3D_type_direction_quelconque_y', default = 0, help = u"Coordonnee sur y du vecteur direceur de la liaison plane 3D")
+        self.OptionParser.add_option('--liaison_plane_3D_type_direction_quelconque_z', action = 'store', type = 'float', dest = 'liaison_plane_3D_type_direction_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur direceur de la liaison plane 3D")
+        self.OptionParser.add_option('--liaison_plane_3D_orientation1', action = 'store', type = 'float', dest = 'liaison_plane_3D_orientation1', default = 10, help = u"Orientation de la liaison plane 3D - piece 1")
+        self.OptionParser.add_option('--liaison_plane_3D_orientation2', action = 'store', type = 'float', dest = 'liaison_plane_3D_orientation2', default = 0, help = u"Orientation de la liaison plane 3D - piece 2")
+       
+	
         #OPTIONS GENERALES ******************************************
         self.OptionParser.add_option('--opt_generales', action = 'store', type = 'string', dest = 'opt_generales', default = 'opt_gene_origine', help = u"Onglet des options generales")
         
@@ -169,9 +181,8 @@ class Liaisons(inkex.Effect):
 	self.options.opt_gene_piece1_couleur=convertIntColor2Hex(self.options.opt_gene_piece1_couleur)
 	self.options.opt_gene_piece2_couleur=convertIntColor2Hex(self.options.opt_gene_piece2_couleur)
 
-
         # Create a new layer.
-        groupe = inkex.etree.SubElement(svg, 'g')
+        #groupe = inkex.etree.SubElement(svg, 'g')
         
 	#Dessin :
 	if(liaison=="\"liaison_pivot\""):
@@ -204,6 +215,8 @@ class Liaisons(inkex.Effect):
 			dessin_plane_2D_cote(self.options,svg)
 		if(type_liaison=="\"liaison_plane_2D_dessus\""):
 			dessin_plane_2D_dessus(self.options,svg)
+		if(type_liaison=="\"liaison_plane_3D\""):
+			dessin_plane_3D(self.options,svg)
 		
 	
 	

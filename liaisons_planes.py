@@ -181,6 +181,7 @@ def dessin_plane_2D_dessus(options,contexte):
 
 #===============================================================
 def dessin_plane_3D(options,contexte):
+
 	#Origine 2D
 	x0=options.x0
 	y0=options.y0
@@ -189,108 +190,94 @@ def dessin_plane_3D(options,contexte):
 	Vx,Vy,Vz=getVecteursAxonometriques(echelle)
 	base=(Vx,Vy,Vz)
 	#Centre de la liaison dans le repere 3D
-	x=options.liaison_pivot_glissant_3D_position_x
-	y=options.liaison_pivot_glissant_3D_position_y
-	z=options.liaison_pivot_glissant_3D_position_z
+	x=options.liaison_plane_3D_position_x
+	y=options.liaison_plane_3D_position_y
+	z=options.liaison_plane_3D_position_z
 	vPosition=v3D(x,y,z,base)#Vecteur position exprime dans la base axono
 	#Parametres de la liaison
-	largeur=30.*math.sqrt(2./3)
-	rayon=7.5*math.sqrt(2./3)
-	couleur_femelle=options.opt_gene_piece2_couleur
-	couleur_male=options.opt_gene_piece1_couleur
-	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
-	epaisseur_male=options.opt_gene_lignes_epaisseur_1
-#	angle_male-=float(options.liaison_pivot_glissant_3D_orientation_male)/180.*math.pi
-	angle_femelle=-float(options.liaison_pivot_glissant_3D_orientation_femelle)/180.*math.pi
+	largeur=30.
+	longueur_tige=25.
+	ecart=2.5
+	couleur_dessus=options.opt_gene_piece1_couleur
+	couleur_dessous=options.opt_gene_piece2_couleur
+	epaisseur_dessus=options.opt_gene_lignes_epaisseur_1
+	epaisseur_dessous=options.opt_gene_lignes_epaisseur_2
+	angle_dessus=-float(options.liaison_plane_3D_orientation1)/180.*math.pi
+	angle_dessous=-float(options.liaison_plane_3D_orientation2)/180.*math.pi
 	#Repere local de la liaison
-	if(options.liaison_pivot_glissant_3D_type_direction=="\"liaison_pivot_glissant_3D_type_direction_quelconque\""):
-		V=v3D(options.liaison_pivot_glissant_3D_type_direction_quelconque_x,options.liaison_pivot_glissant_3D_type_direction_quelconque_y,options.liaison_pivot_glissant_3D_type_direction_quelconque_z,base)
-#		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle,angle_male)#Repere male
-		Vx2,Vy2,Vz2=getBaseFromVecteur(V,echelle,angle_femelle)#Repere Femelle
+	if(options.liaison_plane_3D_type_normale=="\"liaison_plane_3D_type_normale_quelconque\""):
+		V=v3D(options.liaison_plane_3D_type_direction_quelconque_x,options.liaison_plane_3D_type_direction_quelconque_y,options.liaison_plane_3D_type_direction_quelconque_z,base)
+		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle,angle_dessus)#Repere male
+		Vx2,Vy2,Vz2=getBaseFromVecteur(V,echelle,angle_dessous)#Repere Femelle
 	else:	#Si vecteur standard
-		if(options.liaison_pivot_glissant_3D_axe=="x"):
-#			Vx1,Vy1,Vz1=getBaseFromVecteur(Vx,echelle,angle_male)#Repere male
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vx,echelle,angle_femelle)#Repere Femelle
-		elif(options.liaison_pivot_glissant_3D_axe=="y"):
-#			Vx1,Vy1,Vz1=getBaseFromVecteur(Vy,echelle,angle_male)#Repere male
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vy,echelle,angle_femelle)#Repere Femelle
+		if(options.liaison_plane_3D_axe=="x"):
+			Vx1,Vy1,Vz1=getBaseFromVecteur(Vx,echelle,angle_dessus)#Repere dessus
+			Vx2,Vy2,Vz2=getBaseFromVecteur(Vx,echelle,angle_dessous)#Repere dessous
+		elif(options.liaison_plane_3D_axe=="y"):
+			Vx1,Vy1,Vz1=getBaseFromVecteur(Vy,echelle,angle_dessus)#Repere dessus
+			Vx2,Vy2,Vz2=getBaseFromVecteur(Vy,echelle,angle_dessous)#Repere dessous
 		else:#z
-#			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz,echelle,angle_male)#Repere male
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vz,echelle,angle_femelle)#Repere Femelle
-#	baseLocale1=(Vx1,Vy1,Vz1)
-	baseLocale=(Vx2,Vy2,Vz2)
+			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz,echelle,angle_dessus)#Repere dessus
+			Vx2,Vy2,Vz2=getBaseFromVecteur(Vz,echelle,angle_dessous)#Repere dessous
+	baseLocale1=(Vx1,Vy1,Vz1)
+	baseLocale2=(Vx2,Vy2,Vz2)
 
-	
-	# Male ***************************************
-	axe=inkex.etree.Element(inkex.addNS('path','svg'))
+	# Dessus ***************************************
+	planDessus=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
-					(-largeur,	0,	0	),
-					(largeur,	0,	0	)
-				],False,baseLocale)
-	axe.set('d',chemin)
-	axe.set('stroke',couleur_male)
-	axe.set('stroke-width',str(epaisseur_male))
-	axe.set('style','stroke-linecap:round')
-	axe.set('profondeur',str(profondeur))
+					(ecart,	-largeur/2.,	-largeur/2.	),
+					(ecart,	-largeur/2.,	largeur/2.	),
+					(ecart,	largeur/2.,	largeur/2.	),
+					(ecart,	largeur/2.,	-largeur/2.	)
+				],True,baseLocale1)
+	planDessus.set('d',chemin)
+	planDessus.set('stroke',couleur_dessus)
+	planDessus.set('stroke-width',str(epaisseur_dessus))
+	planDessus.set('style','fill:white')
+	planDessus.set('profondeur',str(profondeur))
+	
 
-
-	
-	# Femelle ***************************************
-	#On recupere les deux angles qui correspondent aux tangentes par rapport a la vue
-	thetaCoupure1,thetaCoupure2=getAnglesCoupure(baseLocale)
-	
-	#On construit les arcs de cercles projete
-	centre1=v3D(-largeur/2,0,0,baseLocale) #Vecteur OC1, O=centre liaison
-	centre2=v3D(largeur/2,0,0,baseLocale) #Vecteur OC1, O=centre liaison
-	listeArcs1=getListePoints2DCercle(baseLocale,centre1,rayon,0,math.pi*2,thetaCoupure1,thetaCoupure2)
-	listeArcs2=getListePoints2DCercle(baseLocale,centre2,rayon,0,math.pi*2,thetaCoupure1,thetaCoupure2)
-	listeArcs2[0].reverse()#On inverse les arcs de cercle
-	listeArcs2[1].reverse()
-	
-	#On construit les cylindres
-	listeDemiCylindre1=listeArcs1[0]+listeArcs2[0]
-	listeDemiCylindre2=listeArcs1[1]+listeArcs2[1]
-	
-	
-	chemin,profondeurDemiCylindre1=points3D_to_svgd(listeDemiCylindre1,True)
-	#formesFemelles1.append((chemin,profondeur))
-	demiCylindre1=inkex.etree.Element(inkex.addNS('path','svg'))
-	demiCylindre1.set('d',chemin)
-	demiCylindre1.set('stroke',couleur_femelle)
-	demiCylindre1.set('stroke-width',str(epaisseur_femelle))
-	demiCylindre1.set('style','stroke-linecap:round')
-	demiCylindre1.set('style','fill:white')
-	demiCylindre1.set('profondeur',str(profondeurDemiCylindre1))
-	
-	chemin,profondeurDemiCylindre2=points3D_to_svgd(listeDemiCylindre2,True)
-	#formesFemelles2.append((chemin,profondeur))
-	demiCylindre2=inkex.etree.Element(inkex.addNS('path','svg'))
-	demiCylindre2.set('d',chemin)
-	demiCylindre2.set('stroke',couleur_femelle)
-	demiCylindre2.set('stroke-width',str(epaisseur_femelle))
-	demiCylindre2.set('style','stroke-linecap:round')
-	demiCylindre2.set('style','fill:white')
-	demiCylindre2.set('profondeur',str(profondeurDemiCylindre2))
-	
-	#barre femelle
-	barreFemelle=inkex.etree.Element(inkex.addNS('path','svg'))
+	tigeDessus=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
-					(0,	0,	rayon	),
-					(0,	0,	3.*rayon)
-				],False,baseLocale)
-	barreFemelle.set('d',chemin)
-	barreFemelle.set('stroke',couleur_femelle)
-	barreFemelle.set('stroke-width',str(epaisseur_femelle))
-	barreFemelle.set('style','stroke-linecap:round')
-	barreFemelle.set('profondeur',str(profondeur*1e10))
+					(ecart,	0.,	0.	),
+					(longueur_tige,	0.,	0.	)
+				],False,baseLocale1)
+	tigeDessus.set('d',chemin)
+	tigeDessus.set('stroke',couleur_dessus)
+	tigeDessus.set('stroke-width',str(epaisseur_dessus))
+	tigeDessus.set('style','stroke-linecap:round')
+	tigeDessus.set('profondeur',str(profondeur))
+	
+	# Dessous ***************************************
+	planDessous=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin,profondeur=points3D_to_svgd([
+					(-ecart,	-largeur/2.,	-largeur/2.	),
+					(-ecart,	-largeur/2.,	largeur/2.	),
+					(-ecart,	largeur/2.,	largeur/2.	),
+					(-ecart,	largeur/2.,	-largeur/2.	)
+				],True,baseLocale2)
+	planDessous.set('d',chemin)
+	planDessous.set('stroke',couleur_dessous)
+	planDessous.set('stroke-width',str(epaisseur_dessous))
+	planDessous.set('style','fill:white')
+	planDessous.set('profondeur',str(profondeur))
+
+	tigeDessous=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin,profondeur=points3D_to_svgd([
+					(-ecart,	0.,	0.	),
+					(-longueur_tige,	0.,	0.	)
+				],False,baseLocale2)
+	tigeDessous.set('d',chemin)
+	tigeDessous.set('stroke',couleur_dessous)
+	tigeDessous.set('stroke-width',str(epaisseur_dessous))
+	tigeDessous.set('style','stroke-linecap:round')
+	tigeDessous.set('profondeur',str(profondeur))
 	
 
 
 	# Ajout au Groupe ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
-        
-        listeObjets=[axe,demiCylindre1,demiCylindre2,barreFemelle]
-        
+        listeObjets=[planDessous,tigeDessous,planDessus,tigeDessus]
         ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
         
         

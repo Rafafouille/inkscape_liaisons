@@ -245,28 +245,29 @@
 						</param>
 						<param name="liaison_plane_2D_orientation_dessus" type="float"  min="-360" max="360" precision="1" gui-text="Angle (deg) : ">0</param>
 				</page>
-				<!--<page name="liaison_glissiere_3D" gui-text="3D">
-					<param name="titre_position_glissiere_3D" type="description" appearance="header">Position</param>
-	  					<param name="liaison_glissiere_3D_position_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
-	  					<param name="liaison_glissiere_3D_position_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
-	  					<param name="liaison_glissiere_3D_position_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >0</param>
-					<param name="liaison_glissiere_3D_type_direction" type="notebook">
-						<page name="liaison_glissiere_3D_type_direction_standard" gui-text="Directions simples">
-								<param name="liaison_glissiere_3D_axe" type="enum" gui-text="Direction de l'axe :">
+				<page name="liaison_plane_3D" gui-text="3D">
+					<param name="titre_position_plane_3D" type="description" appearance="header">Position</param>
+	  					<param name="liaison_plane_3D_position_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_plane_3D_position_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_plane_3D_position_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >0</param>
+					<param name="liaison_plane_3D_type_normale" type="notebook">
+						<page name="liaison_plane_3D_type_normale_standard" gui-text="Normale simples">
+								<param name="liaison_plane_3D_axe" type="enum" gui-text="Direction de la normale :">
+									<item value="z">Z</item>
 									<item value="x">X</item>
 									<item value="y">Y</item>
-									<item value="z">Z</item>
 								</param>
 						</page>
-						<page name="liaison_glissiere_3D_type_direction_quelconque" gui-text="Vecteur Directeur">
-		  					<param name="liaison_glissiere_3D_type_direction_quelconque_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >1</param>
-		  					<param name="liaison_glissiere_3D_type_direction_quelconque_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
-		  					<param name="liaison_glissiere_3D_type_direction_quelconque_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >0</param>
+						<page name="liaison_plane_3D_type_normale_quelconque" gui-text="Vecteur Directeur">
+		  					<param name="liaison_plane_3D_type_direction_quelconque_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >1</param>
+		  					<param name="liaison_plane_3D_type_direction_quelconque_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+		  					<param name="liaison_plane_3D_type_direction_quelconque_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >0</param>
 						</page>
 					</param>
-					<param name="titre_direction_glissiere_3D" type="description" appearance="header">Orientation</param>
-	  					<param name="liaison_glissiere_3D_orientation" type="float" _gui-text="Angle (deg) :" precision="1" min="-360" max="360" >0</param>
-				</page>-->
+					<param name="titre_orientation_plane_3D" type="description" appearance="header">Orientation des pièces</param>
+	  					<param name="liaison_plane_3D_orientation1" type="float" _gui-text="Pièce 1 (deg) :" precision="1" min="-360" max="360" >0</param>
+	  					<param name="liaison_plane_3D_orientation2" type="float" _gui-text="Pièce 2 (deg) :" precision="1" min="-360" max="360" >0</param>
+				</page>
 			</param>
 		</page>
 	  </param>

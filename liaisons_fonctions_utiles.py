@@ -236,7 +236,7 @@ def points3D_to_svgd(p3D,close=True,base3D=None):
 		profondeur+=0.5*((p1[0]*Vx.z+p1[1]*Vy.z+p1[2]*Vz.z)+(p2[0]*Vx.z+p2[1]*Vy.z+p2[2]*Vz.z))*l
     	longueur+=l
     	
-    #profondeur/=longueur
+    profondeur/=longueur
     return points_to_svgd(p,close),profondeur
   
 
