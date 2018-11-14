@@ -194,6 +194,7 @@ def dessin_Glissiere_3D(options,contexte):
 	epaisseur=20.
 	hauteur=15.
 	largeur=30.
+	rayonTige=25.
 	couleur_femelle=options.opt_gene_piece2_couleur
 	couleur_male=options.opt_gene_piece1_couleur
 	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
@@ -346,7 +347,7 @@ def dessin_Glissiere_3D(options,contexte):
 	barreFemelle=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(0,	0,	hauteur/2.	),
-					(0,	0,	1.5*hauteur)
+					(0,	0,	rayonTige)
 				],False,baseLocale)
 	barreFemelle.set('d',chemin)
 	barreFemelle.set('stroke',couleur_femelle)

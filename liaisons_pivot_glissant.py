@@ -194,8 +194,9 @@ def dessin_Pivot_Glissant_3D(options,contexte):
 	z=options.liaison_pivot_glissant_3D_position_z
 	vPosition=v3D(x,y,z,base)#Vecteur position exprime dans la base axono
 	#Parametres de la liaison
-	largeur=30.*math.sqrt(2./3)
-	rayon=7.5*math.sqrt(2./3)
+	largeur=30.
+	rayon=7.5
+	rayonTige=25.
 	couleur_femelle=options.opt_gene_piece2_couleur
 	couleur_male=options.opt_gene_piece1_couleur
 	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
@@ -276,7 +277,7 @@ def dessin_Pivot_Glissant_3D(options,contexte):
 	barreFemelle=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(0,	0,	rayon	),
-					(0,	0,	3.*rayon)
+					(0,	0,	rayonTige)
 				],False,baseLocale)
 	barreFemelle.set('d',chemin)
 	barreFemelle.set('stroke',couleur_femelle)

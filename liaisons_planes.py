@@ -181,7 +181,6 @@ def dessin_plane_2D_dessus(options,contexte):
 
 #===============================================================
 def dessin_plane_3D(options,contexte):
-
 	#Origine 2D
 	x0=options.x0
 	y0=options.y0
@@ -196,7 +195,7 @@ def dessin_plane_3D(options,contexte):
 	vPosition=v3D(x,y,z,base)#Vecteur position exprime dans la base axono
 	#Parametres de la liaison
 	largeur=30.
-	longueur_tige=25.
+	rayonTige=25.
 	ecart=2.5
 	couleur_dessus=options.opt_gene_piece1_couleur
 	couleur_dessous=options.opt_gene_piece2_couleur
@@ -240,7 +239,7 @@ def dessin_plane_3D(options,contexte):
 	tigeDessus=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(ecart,	0.,	0.	),
-					(longueur_tige,	0.,	0.	)
+					(rayonTige,	0.,	0.	)
 				],False,baseLocale1)
 	tigeDessus.set('d',chemin)
 	tigeDessus.set('stroke',couleur_dessus)
@@ -265,7 +264,7 @@ def dessin_plane_3D(options,contexte):
 	tigeDessous=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(-ecart,	0.,	0.	),
-					(-longueur_tige,	0.,	0.	)
+					(-rayonTige,	0.,	0.	)
 				],False,baseLocale2)
 	tigeDessous.set('d',chemin)
 	tigeDessous.set('stroke',couleur_dessous)
