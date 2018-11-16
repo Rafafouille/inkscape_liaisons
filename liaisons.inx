@@ -9,7 +9,7 @@
   <dependency type="executable" location="extensions">liaisons_pivot.py</dependency>
   <dependency type="executable" location="extensions">liaisons_pivot_glissant.py</dependency>
   <dependency type="executable" location="extensions">liaisons_glissiere.py</dependency>
-  <dependency type="executable" location="extensions">liaisons_planes.py</dependency>
+  <dependency type="executable" location="extensions">liaisons_plane.py</dependency>
   <dependency type="executable" location="extensions">inkex.py</dependency>
   
   <!-- ====================================================  -->
@@ -268,6 +268,57 @@
 	  					<param name="liaison_plane_3D_orientation1" type="float" _gui-text="Pièce 1 (deg) :" precision="1" min="-360" max="360" >0</param>
 	  					<param name="liaison_plane_3D_orientation2" type="float" _gui-text="Pièce 2 (deg) :" precision="1" min="-360" max="360" >0</param>
 				</page>
+			</param>
+		</page>
+		<page name="liaison_spherique" gui-text="Sphérique">
+			<param name="liaison_spherique_type" type="notebook">
+				<page name="liaison_spherique_2D" gui-text="2D">
+	  				<param name="titre_position_spherique_2D" type="description" appearance="header">Position</param>
+	  					<param name="liaison_spherique_2D_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_spherique_2D_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+	  				<param name="titre_orientation_spherique_2D_male" type="description" appearance="header">Orientation de la pièce mâle :</param>
+						<param name="liaison_spherique_2D_axe_male" type="enum" gui-text="Axe :">
+							<item value="autre">Via l'angle ci-dessous</item>
+							<item value="x">X</item>
+							<item value="y">Y</item>
+							<item value="-x">-X</item>
+							<item value="-y">-Y</item>
+						</param>
+						<param name="liaison_spherique_2D_orientation_male" type="float"  min="-360" max="360" precision="1" gui-text="Orientation (deg) :">45</param>
+	  				<param name="titre_orientation_spherique_2D_femelle" type="description" appearance="header">Orientation de la pièce femelle :</param>
+						<param name="liaison_spherique_2D_axe_femelle" type="enum" gui-text="Axe :">
+							<item value="-y">-Y</item>
+							<item value="autre">Via l'angle ci-dessous</item>
+							<item value="x">X</item>
+							<item value="-x">-X</item>
+							<item value="y">Y</item>
+						</param>
+						<param name="liaison_spherique_2D_orientation_femelle" type="float"  min="-360" max="360" precision="1" gui-text="Orientation (deg) :">0</param>
+				</page>
+			<!--	
+				<page name="liaison_plane_3D" gui-text="3D">
+					<param name="titre_position_plane_3D" type="description" appearance="header">Position</param>
+	  					<param name="liaison_plane_3D_position_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_plane_3D_position_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_plane_3D_position_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >0</param>
+					<param name="liaison_plane_3D_type_normale" type="notebook">
+						<page name="liaison_plane_3D_type_normale_standard" gui-text="Normale simples">
+								<param name="liaison_plane_3D_axe" type="enum" gui-text="Direction de la normale :">
+									<item value="z">Z</item>
+									<item value="x">X</item>
+									<item value="y">Y</item>
+								</param>
+						</page>
+						<page name="liaison_plane_3D_type_normale_quelconque" gui-text="Vecteur Directeur">
+		  					<param name="liaison_plane_3D_type_direction_quelconque_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >1</param>
+		  					<param name="liaison_plane_3D_type_direction_quelconque_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+		  					<param name="liaison_plane_3D_type_direction_quelconque_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >0</param>
+						</page>
+					</param>
+					<param name="titre_orientation_plane_3D" type="description" appearance="header">Orientation des pièces</param>
+	  					<param name="liaison_plane_3D_orientation1" type="float" _gui-text="Pièce 1 (deg) :" precision="1" min="-360" max="360" >0</param>
+	  					<param name="liaison_plane_3D_orientation2" type="float" _gui-text="Pièce 2 (deg) :" precision="1" min="-360" max="360" >0</param>
+				</page>-->
 			</param>
 		</page>
 	  </param>
