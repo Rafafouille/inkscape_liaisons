@@ -119,6 +119,8 @@ def dessin_Pivot_2D_cote(options,contexte):
 	male.set("transform","rotate("+str(-rotation)+")")
 	femelle.set("transform","rotate("+str(-rotation)+")")
 	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	# Credits **************************************
+	liaison.set("credits",options.credits)
 
 	
 
@@ -199,6 +201,8 @@ def dessin_Pivot_2D_face(options,contexte):
 	male.set("transform","rotate("+str(rotation1)+")")
 	femelle.set("transform","rotate("+str(rotation2)+")")
 	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	# Credits **************************************
+	liaison.set("credits",options.credits)
 	
 
 
@@ -345,5 +349,7 @@ def dessin_Pivot_3D(options,contexte):
 
 	# Transformations ***************************************
 	liaison.set("transform","translate("+str(x0+x*Vx.x+y*Vy.x+z*Vz.x)+","+str(y0+x*Vx.y+y*Vy.y+z*Vz.y)+")")
+	# Credits **************************************
+	liaison.set("credits",options.credits)
 	
  

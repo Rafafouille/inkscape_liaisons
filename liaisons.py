@@ -1,3 +1,4 @@
+# -- coding: utf-8 --
 #!/usr/bin/env python
 
 # These two lines are only needed if you don't put the script directly into
@@ -17,6 +18,7 @@ from liaisons_pivot_glissant import *
 from liaisons_glissiere import *
 from liaisons_plane import *
 from liaisons_spherique import *
+
 
 
 
@@ -178,6 +180,7 @@ class Liaisons(inkex.Effect):
         """
         # Get script's "--what" option value.
         liaison=self.options.liaison
+        self.options.credits=u"Auteur : Raphaël ALLAIS (Lycee G.Eiffel de DIJON)"
 
         # Get access to main SVG document element and get its dimensions.
         svg = self.document.getroot()

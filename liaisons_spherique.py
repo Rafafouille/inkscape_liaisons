@@ -113,95 +113,15 @@ def dessin_spherique_2D(options,contexte):
 	male.set("transform","rotate("+str(-rotation_male)+")")
 	femelle.set("transform","rotate("+str(-rotation_femelle)+")")
 	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	# Credits **************************************
+	liaison.set("credits",options.credits)
 
 	
-
-def dessin_Pivot_2D_face(options,contexte):
-	#Position *****************************************
-	x0=options.x0
-	y0=options.y0
-	x=options.liaison_pivot_2D_face_x
-	y=options.liaison_pivot_2D_face_y
-	#Orientation **************************************
-	rotation1=-options.liaison_pivot2D_face_orientation1 #Angle par defaut (sens trigo)
-	if(options.liaison_pivot2D_face_axe1=="x"):
-		rotation1=0
-	elif(options.liaison_pivot2D_face_axe1=="y"):
-		rotation1=-90
-	elif(options.liaison_pivot2D_face_axe1=="-x"):
-		rotation1=180
-	elif(options.liaison_pivot2D_face_axe1=="-y"):
-		rotation1=90
-	rotation2=-options.liaison_pivot2D_face_orientation2 #Angle par defaut (sens trigo)
-	if(options.liaison_pivot2D_face_axe2=="x"):
-		rotation2=0
-	elif(options.liaison_pivot2D_face_axe2=="y"):
-		rotation2=-90
-	elif(options.liaison_pivot2D_face_axe2=="-x"):
-		rotation2=180
-	elif(options.liaison_pivot2D_face_axe2=="-y"):
-		rotation2=90
-	#Base *********************
-	echelle=options.echelle
-	Vx1,Vy1=getBase2D(echelle)
-	base2D=(Vx1,Vy1)
-	#Parametres ****************************
-	rayon=15./2
-	longueur_tige=rayon
-	couleur_femelle=options.opt_gene_piece2_couleur
-	couleur_male=options.opt_gene_piece1_couleur
-	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
-	epaisseur_male=options.opt_gene_lignes_epaisseur_1
-
-	#Groupes ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-        #groupe_rotation = inkex.etree.SubElement(liaison, 'g')
-	male=inkex.etree.SubElement(liaison,'g')
-	femelle=inkex.etree.SubElement(liaison,'g')
-
-	# Male ***************************************
-	axe1=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points2D_to_svgd([	(0	,	0),
-					(0	,	-rayon-longueur_tige)	]
-				,False,base2D)
-	axe1.set('d',chemin)
-	axe1.set('stroke',couleur_male)
-	axe1.set('stroke-width',str(epaisseur_male))
-	male.append(axe1)
-
-	# Femelle ***************************************	
-	#axe
-	axe2=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points2D_to_svgd([	(0	,	0),
-					(longueur_tige+rayon	,	0)	]
-				,False,base2D)	
-	axe2.set('d',chemin)
-	axe2.set('stroke',couleur_femelle)
-	axe2.set('stroke-width',str(epaisseur_femelle))
-	femelle.append(axe2)
-	#cercle
-	cercle=inkex.etree.Element(inkex.addNS('circle','svg'))
-	cercle.set('cx',"0")
-	cercle.set('cy',"0")
-	cercle.set('r',str(rayon*echelle))
-	cercle.set('stroke',str(couleur_femelle))
-	cercle.set('stroke-width',str(epaisseur_femelle))
-	cercle.set('style','fill:white')
-	femelle.append(cercle)
-
-	# Transformations ***************************************
-	male.set("transform","rotate("+str(rotation1)+")")
-	femelle.set("transform","rotate("+str(rotation2)+")")
-	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
-	
-
-
-
 
 
 
 #===============================================================
-def dessin_Pivot_3D(options,contexte):
+def dessin_spherique_3D(options,contexte):
 	#Origine 2D
 	x0=options.x0
 	y0=options.y0
@@ -339,5 +259,7 @@ def dessin_Pivot_3D(options,contexte):
 
 	# Transformations ***************************************
 	liaison.set("transform","translate("+str(x0+x*Vx.x+y*Vy.x+z*Vz.x)+","+str(y0+x*Vx.y+y*Vy.y+z*Vz.y)+")")
+	# Credits **************************************
+	liaison.set("credits",options.credits)
 	
  

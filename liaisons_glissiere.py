@@ -4,6 +4,7 @@ from liaisons_fonctions_utiles import *
 
 
 def dessin_Glissiere_2D_cote(options,contexte):
+
 	#https://doczz.fr/doc/4506137/comment-installer-et-programmer-des-scripts-python-dans-i...
 	#Position *****************************************
 	x0=options.x0
@@ -79,6 +80,8 @@ def dessin_Glissiere_2D_cote(options,contexte):
 	male.set("transform","rotate("+str(-rotation)+")")
 	femelle.set("transform","rotate("+str(-rotation)+")")
 	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	# Credits **************************************
+	liaison.set("credits",options.credits)
 	
 
 def dessin_Glissiere_2D_face(options,contexte):
@@ -169,6 +172,8 @@ def dessin_Glissiere_2D_face(options,contexte):
 	male.set("transform","rotate("+str(-rotation)+")")
 	femelle.set("transform","rotate("+str(-rotation)+")")
 	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	# Credits **************************************
+	liaison.set("credits",options.credits)
 	
 
 
@@ -364,3 +369,6 @@ def dessin_Glissiere_3D(options,contexte):
 
 	# Transformations ***************************************
 	liaison.set("transform","translate("+str(x0+x*Vx.x+y*Vy.x+z*Vz.x)+","+str(y0+x*Vx.y+y*Vy.y+z*Vz.y)+")")
+	
+	# Credits **************************************
+	liaison.set("credits",options.credits)

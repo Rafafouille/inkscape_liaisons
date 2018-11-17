@@ -81,6 +81,8 @@ def dessin_plane_2D_cote(options,contexte):
 	dessus.set("transform","rotate("+str(rotation)+")")
 	dessous.set("transform","rotate("+str(rotation)+")")
 	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	# Credits **************************************
+	liaison.set("credits",options.credits)
 
 	
 
@@ -172,6 +174,8 @@ def dessin_plane_2D_dessus(options,contexte):
 	dessous.set("transform","rotate("+str(rotationDessous)+")")
 	dessus.set("transform","rotate("+str(rotationDessus)+")")
 	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	# Credits **************************************
+	liaison.set("credits",options.credits)
 	
 
 
@@ -282,4 +286,6 @@ def dessin_plane_3D(options,contexte):
         
 	# Transformations ***************************************
 	liaison.set("transform","translate("+str(x0+x*Vx.x+y*Vy.x+z*Vz.x)+","+str(y0+x*Vx.y+y*Vy.y+z*Vz.y)+")")
+	# Credits **************************************
+	liaison.set("credits",options.credits)
 	
