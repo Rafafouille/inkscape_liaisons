@@ -1,3 +1,4 @@
+# -- coding: utf-8 --
 import math
 
 #=================================================
@@ -6,7 +7,13 @@ import math
 #def getCouleurFromInt(i):
 #	return "#"+("00000000"+hex(int(i))[2:])[-8:]
 
-
+CPT=1
+def debug(txt,n=1):
+	#Affiche un message d'erreur txt, après etre passe n fois par cette fonction (sinon, rien)
+	#En lien avec la variable globale CPT
+	global CPT
+	assert n>CPT,"\n"+("*"*15)+"\nDEBUG ("+str(n)+")\n"+("*"*15)+"\n"+str(txt)
+	CPT+=1
 
 #Fonction qui calcule la derivee d'une fonction
 def deriv(f,x):
@@ -146,7 +153,6 @@ class v3D:
 		
 	def normalise(self):
 		n=self.norme()
-		#assert n!=0, "erreur x="+str(self.x)+" y="+str(self.y)+" z="+str(self.z)+" nom="+self.nom
 		self.x/=n
 		self.y/=n
 		self.z/=n
@@ -157,15 +163,6 @@ class v3D:
 	def prodVect(self,v):
 		return v3D(self.y*v.z-self.z*v.y,self.z*v.x-self.x*v.z,self.x*v.y-self.y*v.x)
 		
-		
-#	def getProjX(self):
-#		if self.base==None:
-#			return self.x
-#		return self.x*self.base[0].x+self.y*self.base[1].x+self.z*self.base[2].x
-#	def getProjY(self):
-#		if self.base==None:
-#			return self.y
-#		return self.x*self.base[0].y+self.y*self.base[1].y+self.z*self.base[2].y
 	def getVec2DProj(self):
 		return v2D(self.x,self.y)
 
@@ -328,10 +325,12 @@ def getAnglesCoupure(base):
 # Les arcs sont compris entre thetaDeb et thetaFin
 # Ils sont centres sur "centre" (V3D, defini par rapport a base), et on un rayon "R"
 # La rotation se fait autour de l'axe 1 de "axe", l'angle zero correspond a la direction de l'axe2
-def getListePoints2DCercle(axes,centre,R,thetaDeb,thetaFin,thetaCoupure1,thetaCoupure2):
+def getListePoints2DCercle(axes,centre,R,thetaDeb,thetaFin,thetaCoupure1,thetaCoupure2,n=100):
 	arcs=[[]]	#Liste des arcs
 	theta=thetaDeb
-	dtheta=0.1
+	dtheta=math.pi*2./n
+
+	
 	def getPointForCercle(axes,vcentre,R,theta):
 		Vx1,Vy1,Vz1=axes
 		
@@ -341,7 +340,7 @@ def getListePoints2DCercle(axes,centre,R,thetaDeb,thetaFin,thetaCoupure1,thetaCo
 		vRayon=v3D(x1,y1,z1,axes)
 		
 		point=vcentre+vRayon
-		#point.additionne(vRayon)
+		#debug("theta = "+str(theta)+"\n(x1,y1,z1) = "+str((x1,y1,z1))+"\n\n"+"Vx1 = "+str(Vx1)+"\nVy1 = "+str(Vy1)+"\nVz1 = "+str(Vz1)+"\n\nvRayon = "+str(vRayon),2)
 		return (point.x,point.y,point.z)
 			
 
@@ -353,6 +352,7 @@ def getListePoints2DCercle(axes,centre,R,thetaDeb,thetaFin,thetaCoupure1,thetaCo
 		elif (theta-thetaCoupure2)*(theta+dtheta-thetaCoupure2)<0:#Si on passe une coupure
 			arcs[-1].append(getPointForCercle(axes,centre,R,thetaCoupure2))#On acheve le troncon precedent
 			arcs.append([getPointForCercle(axes,centre,R,thetaCoupure2)])#Nouveau troncon
+		
 		theta+=dtheta
 	arcs[-1].append(getPointForCercle(axes,centre,R,thetaFin))#On acheve le troncon precedent
 	
@@ -390,4 +390,51 @@ def ajouteCheminDansLOrdreAuGroupe(groupe,listeChemins):
 		groupe.append(obj)
 #	assert 0,str(listeChemins)
 
+	
+	
+# Fonction qui cherche dans une liste "liste" le point le plus proche (en terme de coordonnées) du point "point",
+# en 2D (en terme de norme)
+# Renvoie l'indice et la distance
+def trouvePoint2DProche(point,liste):
+	i_min=0
+	d_min=math.sqrt((point[0]-liste[0][0])**2+(point[1]-liste[0][1])**2)
+	for i in range(1,len(liste)):
+		d=math.sqrt((point[0]-liste[i][0])**2+(point[1]-liste[i][1])**2)
+		if d<d_min:
+			d_min=d
+			i_min=i
+	return d_min,i_min
+	
+#Fonction qui renvoie une liste (de la meme taille que liste1), contenant les distances
+#entre chaque point de liste1, et le point le plus proche de liste2
+def getDistancesListe2Liste(liste1,liste2):
+	distances=[]
+	for P in liste1:
+		res=trouvePoint2DProche(P,liste2)
+		distances.append(res[0])
+	return distances
+	
+#Fonction qui renvoie un couple (indices,valeur) des minimums locaux d'une liste, sous forme de liste
+def getIndicesMins(L):
+	res=[]
+	for i in range(len(L)):
+		if L[i]<L[i-1] and L[i]<L[(i+1)%len(L)]:
+			res.append((i,L[i]))
+	return res
+	
+def lisseListe(L,n):
+	aux=[0]*len(L)
+	for i in range(n):
+		aux[:]=L[:]
+		for j in range(len(L)):
+			aux[j]=1./3*(L[j-1]+L[j]+L[(j+1)%len(L)])
+		L[:]=aux[:]
+	return L
+
+#Concatène 2 listes de triplets, en inversant éventuellement la seconde pour permettre une continuité			
+def concateneContinu(L1,L2):
+	if ((L1[-1][0]-L2[0][0])**2+(L1[-1][1]-L2[0][1])**2+(L1[-1][2]-L2[0][2])**2>(L1[-1][0]-L2[-1][0])**2+(L1[-1][1]-L2[-1][1])**2+(L1[-1][2]-L2[-1][2])**2):
+		return L1+[L2[-i] for i in range(1,len(L2)+1)]
+	else:
+		return L1+L2
 		

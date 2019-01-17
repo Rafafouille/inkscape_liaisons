@@ -154,8 +154,23 @@ class Liaisons(inkex.Effect):
         self.OptionParser.add_option('--liaison_spherique_2D_orientation_male', action = 'store', type = 'float', dest = 'liaison_spherique_2D_orientation_male', default = '0', help = u"Orientation plane 2D en degres - male")
         self.OptionParser.add_option('--liaison_spherique_2D_axe_femelle', action = 'store', type = 'string', dest = 'liaison_spherique_2D_axe_femelle', default = 'x', help = u"Principales directions de l'axe d'une spherique 2D - femelle")
         self.OptionParser.add_option('--liaison_spherique_2D_orientation_femelle', action = 'store', type = 'float', dest = 'liaison_spherique_2D_orientation_femelle', default = '0', help = u"Orientation plane 2D en degres - femelle")
+        self.OptionParser.add_option('--liaison_spherique_2D_calotte_adaptative', action = 'store', type = 'inkbool', dest = 'liaison_spherique_2D_calotte_adaptative', default = 'True', help = u"Permet d'orienter automatiquement la calotte de la pièce femelle")
 
-        
+        self.OptionParser.add_option('--liaison_spherique_3D_position_x', action = 'store', type = 'float', dest = 'liaison_spherique_3D_position_x', default = 0, help = u"Coordonnee sur x du centre de la liaison sphérique 3D")
+        self.OptionParser.add_option('--liaison_spherique_3D_position_y', action = 'store', type = 'float', dest = 'liaison_spherique_3D_position_y', default = 0, help = u"Coordonnee sur y du centre de la liaison sphérique 3D")
+        self.OptionParser.add_option('--liaison_spherique_3D_position_z', action = 'store', type = 'float', dest = 'liaison_spherique_3D_position_z', default = 0, help = u"Coordonnee sur z du centre de la liaison sphérique 3D")
+        self.OptionParser.add_option('--liaison_spherique_3D_type_orientation_male', action = 'store', type = 'str', dest = 'liaison_spherique_3D_type_orientation_male', default = "liaison_spherique_3D_axe_male", help = u"Choix du type de direction de la liaison sphérique 3D mâle")
+        self.OptionParser.add_option('--liaison_spherique_3D_axe_male', action = 'store', type = 'str', dest = 'liaison_spherique_3D_axe_male', default = 'y', help = u"Direction standard de l'axe de la liaison sphérique 3D mâle")
+        self.OptionParser.add_option('--liaison_spherique_3D_type_direction_male_quelconque_x', action = 'store', type = 'float', dest = 'liaison_spherique_3D_type_direction_male_quelconque_x', default = 0, help = u"Coordonnee sur x du vecteur direceur de la liaison sphérique 3D mâle")
+        self.OptionParser.add_option('--liaison_spherique_3D_type_direction_male_quelconque_y', action = 'store', type = 'float', dest = 'liaison_spherique_3D_type_direction_male_quelconque_y', default = 1, help = u"Coordonnee sur y du vecteur direceur de la liaison sphérique 3D mâle")
+        self.OptionParser.add_option('--liaison_spherique_3D_type_direction_male_quelconque_z', action = 'store', type = 'float', dest = 'liaison_spherique_3D_type_direction_male_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur direceur de la liaison sphérique 3D mâle")
+        self.OptionParser.add_option('--liaison_spherique_3D_type_orientation_femelle', action = 'store', type = 'str', dest = 'liaison_spherique_3D_type_orientation_femelle', default = "liaison_spherique_3D_axe_male", help = u"Choix du type de direction de la liaison sphérique 3D femelle")
+        self.OptionParser.add_option('--liaison_spherique_3D_axe_femelle', action = 'store', type = 'str', dest = 'liaison_spherique_3D_axe_femelle', default = 'y', help = u"Direction standard de l'axe de la liaison sphérique 3D femelle")
+        self.OptionParser.add_option('--liaison_spherique_3D_type_direction_femelle_quelconque_x', action = 'store', type = 'float', dest = 'liaison_spherique_3D_type_direction_femelle_quelconque_x', default = 0, help = u"Coordonnee sur x du vecteur direceur de la liaison sphérique 3D femelle")
+        self.OptionParser.add_option('--liaison_spherique_3D_type_direction_femelle_quelconque_y', action = 'store', type = 'float', dest = 'liaison_spherique_3D_type_direction_femelle_quelconque_y', default = 1, help = u"Coordonnee sur y du vecteur direceur de la liaison sphérique 3D femelle")
+        self.OptionParser.add_option('--liaison_spherique_3D_type_direction_femelle_quelconque_z', action = 'store', type = 'float', dest = 'liaison_spherique_3D_type_direction_femelle_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur direceur de la liaison sphérique 3D femelle")
+
+          
         #OPTIONS GENERALES ******************************************
         self.OptionParser.add_option('--opt_generales', action = 'store', type = 'string', dest = 'opt_generales', default = 'opt_gene_origine', help = u"Onglet des options generales")
         
@@ -235,6 +250,8 @@ class Liaisons(inkex.Effect):
 		type_liaison=self.options.liaison_spherique_type
 		if(type_liaison=="\"liaison_spherique_2D\""):
 			dessin_spherique_2D(self.options,svg)
+		if(type_liaison=="\"liaison_spherique_3D\""):
+			dessin_spherique_3D(self.options,svg)
 		
 		
 	
