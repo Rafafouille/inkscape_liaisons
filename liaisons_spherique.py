@@ -140,8 +140,8 @@ def dessin_spherique_3D(options,contexte):
 	vPosition=v3D(x,y,z,base)#Vecteur position exprime dans la base axono
 	#Parametres de la liaison
 	rayon_male=25./2
-	rayon_femelle=rayon_male+3.
-	thetaOuverture=80.#90 interdit !!!
+	rayon_femelle=rayon_male+2.
+	thetaOuverture=60.#90 interdit !!!
 	rayonTige=25.
 	couleur_femelle=options.opt_gene_piece2_couleur
 	couleur_male=options.opt_gene_piece1_couleur
@@ -239,8 +239,19 @@ def dessin_spherique_3D(options,contexte):
 	#S'il n'y a pas 2 distances minimum (s'il n'y a pas 2 points de tangence, si l'un des cercles est inclu dans l'autre)
 	if len(indicesMiniCalotteAutour)<=1 or len(indicesMiniOuverture)<=1:
 		
-		assert 0,"Pas encore implémenté"
+		cheminSVGOuverture,profondeurOuverture=points3D_to_svgd(listeOuverture,True)#Attention, on travaille dans la base globale
+		cheminSVGCalotte,profondeurDerriere=points3D_to_svgd(pointsCalotteAutour,True)#Attention, on travaille dans la base globale
 		
+		
+		if(profondeurOuverture>0):#Si l'ouverture est devant, on met la coque derriere, loin !
+			profondeurDerriere=-0.0001
+		else:#Sinon, on le met juste en avant plan
+			profondeurDerriere=0.0001
+			
+		
+		#debug(cheminSVGOuverture+cheminSVGOuverture)
+		cheminSVGdevant,profondeurDevant=cheminSVGCalotte+cheminSVGOuverture,profondeurOuverture
+		cheminSVGderriere,profondeurDerriere=cheminSVGCalotte,profondeurDerriere
 		
 	else:	#S'il y a 2 points de tangence
 		#On decoupe les arcs en deux :
@@ -269,26 +280,24 @@ def dessin_spherique_3D(options,contexte):
 		#On concatene les bouts de chemin
 		cheminDevant=concateneContinu(calotteAutour,ouverture1)
 		cheminDerriere=concateneContinu(calotteAutour,ouverture2)
+		
+		cheminSVGdevant,profondeurDevant=points3D_to_svgd(cheminDevant,True)#Attention, on travaille dans la base globale
+		cheminSVGderriere,profondeurDerriere=points3D_to_svgd(cheminDerriere,True)#Attention, on travaille dans la base globale
 	
 	
-	
-	chemin,profondeur=points3D_to_svgd(cheminDevant,False)#Attention, on travaille dans la base globale
 	calotteDevant=inkex.etree.Element(inkex.addNS('path','svg'))
-	calotteDevant.set('d',chemin)
-	calotteDevant.set('d',chemin)
+	calotteDevant.set('d',cheminSVGdevant)
 	calotteDevant.set('stroke',couleur_femelle)
 	calotteDevant.set('stroke-width',str(epaisseur_femelle))
 	calotteDevant.set('style','fill:white')
-	calotteDevant.set('profondeur',str(profondeur))
+	calotteDevant.set('profondeur',str(profondeurDevant))
 	
-	chemin,profondeur=points3D_to_svgd(cheminDerriere,False)#Attention, on travaille dans la base globale
 	calotteDerriere=inkex.etree.Element(inkex.addNS('path','svg'))
-	calotteDerriere.set('d',chemin)
-	calotteDerriere.set('d',chemin)
+	calotteDerriere.set('d',cheminSVGderriere)
 	calotteDerriere.set('stroke',couleur_femelle)
 	calotteDerriere.set('stroke-width',str(epaisseur_femelle))
 	calotteDerriere.set('style','fill:white')
-	calotteDerriere.set('profondeur',str(profondeur))
+	calotteDerriere.set('profondeur',str(profondeurDerriere))
 	
 
 	
