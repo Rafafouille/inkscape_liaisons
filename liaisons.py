@@ -12,12 +12,15 @@ import math
 # The simplestyle module provides functions for style parsing.
 #from simplestyle import *
 
+
+from liaisons_parametres import *
 from liaisons_fonctions_utiles import *
 from liaisons_pivot import *
 from liaisons_pivot_glissant import *
 from liaisons_glissiere import *
 from liaisons_plane import *
 from liaisons_spherique import *
+from liaisons_helicoidale import *
 
 
 
@@ -71,8 +74,8 @@ class Liaisons(inkex.Effect):
         #LIAISON PIVOT GLISSANT ******************************************
         self.OptionParser.add_option('--liaison_pivot_glissant_type', action = 'store', type = 'string', dest = 'liaison_pivot_glissant_type', default = 'liaison_pivot_glissant_2D_cote', help = u"Type de representation de la pivot glissant")
 
-        self.OptionParser.add_option('--liaison_pivot_glissant_2D_cote_x', action = 'store', type = 'float', dest = 'liaison_pivot_glissant_2D_cote_x', default = '0', help = u"Position sur X de la liaison pivot glissant 2D face relativement a l'origine")
-        self.OptionParser.add_option('--liaison_pivot_glissant_2D_cote_y', action = 'store', type = 'float', dest = 'liaison_pivot_glissant_2D_cote_y', default = '0', help = u"Position sur Y de la liaison pivot glissant 2D face relativement a l'origine")
+        self.OptionParser.add_option('--liaison_pivot_glissant_2D_cote_x', action = 'store', type = 'float', dest = 'liaison_pivot_glissant_2D_cote_x', default = '0', help = u"Position sur X de la liaison pivot glissant 2D coté relativement a l'origine")
+        self.OptionParser.add_option('--liaison_pivot_glissant_2D_cote_y', action = 'store', type = 'float', dest = 'liaison_pivot_glissant_2D_cote_y', default = '0', help = u"Position sur Y de la liaison pivot glissant 2D coté relativement a l'origine")
         self.OptionParser.add_option('--liaison_pivot_glissant_2D_cote_axe', action = 'store', type = 'string', dest = 'liaison_pivot_glissant_2D_cote_axe', default = 'x', help = u"Principales directions de l'axe d'une pivot glissant 2D vue de cote")
         self.OptionParser.add_option('--liaison_pivot_glissant_2D_cote_orientation', action = 'store', type = 'float', dest = 'liaison_pivot_glissant_2D_cote_orientation', default = '0', help = u"Orientation Pivot glissant 2D en degres")
 
@@ -145,7 +148,7 @@ class Liaisons(inkex.Effect):
         self.OptionParser.add_option('--liaison_plane_3D_orientation1', action = 'store', type = 'float', dest = 'liaison_plane_3D_orientation1', default = 10, help = u"Orientation de la liaison plane 3D - piece 1")
         self.OptionParser.add_option('--liaison_plane_3D_orientation2', action = 'store', type = 'float', dest = 'liaison_plane_3D_orientation2', default = 0, help = u"Orientation de la liaison plane 3D - piece 2")
             
-        #LIAISON PLANE ******************************************
+        #LIAISON SPHERIQUE ******************************************
         self.OptionParser.add_option('--liaison_spherique_type', action = 'store', type = 'string', dest = 'liaison_spherique_type', default = 'liaison_spherique_2D', help = u"Type de representation de la liaison spherique")
 
         self.OptionParser.add_option('--liaison_spherique_2D_x', action = 'store', type = 'float', dest = 'liaison_spherique_2D_x', default = '0', help = u"Position sur X de la liaison spherique 2D relativement a l'origine")
@@ -169,6 +172,35 @@ class Liaisons(inkex.Effect):
         self.OptionParser.add_option('--liaison_spherique_3D_type_direction_femelle_quelconque_x', action = 'store', type = 'float', dest = 'liaison_spherique_3D_type_direction_femelle_quelconque_x', default = 0, help = u"Coordonnee sur x du vecteur direceur de la liaison sphérique 3D femelle")
         self.OptionParser.add_option('--liaison_spherique_3D_type_direction_femelle_quelconque_y', action = 'store', type = 'float', dest = 'liaison_spherique_3D_type_direction_femelle_quelconque_y', default = 1, help = u"Coordonnee sur y du vecteur direceur de la liaison sphérique 3D femelle")
         self.OptionParser.add_option('--liaison_spherique_3D_type_direction_femelle_quelconque_z', action = 'store', type = 'float', dest = 'liaison_spherique_3D_type_direction_femelle_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur direceur de la liaison sphérique 3D femelle")
+
+
+	#LIAISON HELICOIDALE **********************************************
+        self.OptionParser.add_option('--liaison_helicoidale_pas_a_gauche', action = 'store', type = 'inkbool', dest = 'liaison_helicoidale_pas_a_gauche', default = 'True', help = u"Vrai si c'est un pas à gauche")
+        self.OptionParser.add_option('--liaison_helicoidale_type', action = 'store', type = 'string', dest = 'liaison_helicoidale_type', default = 'liaison_helicoidale_2D_cote', help = u"Type de representation de la liaison hélicoïdale")
+
+        self.OptionParser.add_option('--liaison_helicoidale_2D_cote_x', action = 'store', type = 'float', dest = 'liaison_helicoidale_2D_cote_x', default = '0', help = u"Position sur X de la liaison hélicoidale 2D coté relativement a l'origine")
+	self.OptionParser.add_option('--liaison_helicoidale_2D_cote_y', action = 'store', type = 'float', dest = 'liaison_helicoidale_2D_cote_y', default = '0', help = u"Position sur Y de la liaison hélicoidale 2D coté relativement a l'origine")       
+        self.OptionParser.add_option('--liaison_helicoidale_2D_cote_axe', action = 'store', type = 'string', dest = 'liaison_helicoidale_2D_cote_axe', default = 'x', help = u"Principales directions de l'axe d'une hélicoidale 2D vue de coté")
+        self.OptionParser.add_option('--liaison_helicoidale_2D_cote_orientation', action = 'store', type = 'float', dest = 'liaison_helicoidale_2D_cote_orientation', default = '0', help = u"Orientation de l'hélicoidale 2D (coté) en degres")
+
+        self.OptionParser.add_option('--liaison_helicoidale_2D_face_x', action = 'store', type = 'float', dest = 'liaison_helicoidale_2D_face_x', default = 0, help = u"Position sur X de la liaison hélicoidale 2D face relativement a l'origine")
+        self.OptionParser.add_option('--liaison_helicoidale_2D_face_y', action = 'store', type = 'float', dest = 'liaison_helicoidale_2D_face_y', default = 0, help = u"Position sur Y de la liaison hélicoidale 2D face relativement a l'origine")
+        self.OptionParser.add_option('--liaison_helicoidale_2D_face_axe1', action = 'store', type = 'string', dest = 'liaison_helicoidale_2D_face_axe1', default = 'x', help = u"Principales directions du bras 1 d'une hélicoidale vue de face")
+        self.OptionParser.add_option('--liaison_helicoidale_2D_face_orientation1', action = 'store', type = 'float', dest = 'liaison_helicoidale_2D_face_orientation1', default = '0', help = u"Orientation du bras 1 d'une hélicoidale vue de face en degres")
+        self.OptionParser.add_option('--liaison_helicoidale_2D_face_axe2', action = 'store', type = 'string', dest = 'liaison_helicoidale_2D_face_axe2', default = '-y', help = u"Principales directions du bras 2 d'une hélicoidale vue de face")
+        self.OptionParser.add_option('--liaison_helicoidale_2D_face_orientation2', action = 'store', type = 'float', dest = 'liaison_helicoidale_2D_face_orientation2', default = '0', help = u"Orientation du bras 2 d'une hélicoidale vue de face en degres")
+
+        self.OptionParser.add_option('--liaison_helicoidale_3D_position_x', action = 'store', type = 'float', dest = 'liaison_helicoidale_3D_position_x', default = 0, help = u"Coordonnee sur x du centre de la liaison helicoidale 3D")
+        self.OptionParser.add_option('--liaison_helicoidale_3D_position_y', action = 'store', type = 'float', dest = 'liaison_helicoidale_3D_position_y', default = 0, help = u"Coordonnee sur y du centre de la liaison helicoidale 3D")
+        self.OptionParser.add_option('--liaison_helicoidale_3D_position_z', action = 'store', type = 'float', dest = 'liaison_helicoidale_3D_position_z', default = 0, help = u"Coordonnee sur z du centre de la liaison helicoidale 3D")
+        self.OptionParser.add_option('--liaison_helicoidale_3D_type_direction', action = 'store', type = 'str', dest = 'liaison_helicoidale_3D_type_direction', default = "liaison_pivot_glissant_3D_type_direction_standard", help = u"Choix du type de direction de la liaison helicoidale 3D")
+        self.OptionParser.add_option('--liaison_helicoidale_3D_axe', action = 'store', type = 'str', dest = 'liaison_helicoidale_3D_axe', default = 'x', help = u"Orientations standard de l'axe de la pivot glissant 3D")
+        self.OptionParser.add_option('--liaison_helicoidale_3D_type_direction_quelconque_x', action = 'store', type = 'float', dest = 'liaison_helicoidale_3D_type_direction_quelconque_x', default = 1, help = u"Coordonnee sur x du vecteur directeur de l'helicoidale 3D")
+        self.OptionParser.add_option('--liaison_helicoidale_3D_type_direction_quelconque_y', action = 'store', type = 'float', dest = 'liaison_helicoidale_3D_type_direction_quelconque_y', default = 0, help = u"Coordonnee sur y du vecteur directeur de l'helicoidal 3D")
+        self.OptionParser.add_option('--liaison_helicoidale_3D_type_direction_quelconque_z', action = 'store', type = 'float', dest = 'liaison_helicoidale_3D_type_direction_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur directeur de l'helicoidal 3D")
+        self.OptionParser.add_option('--liaison_helicoidale_3D_orientation_male', action = 'store', type = 'float', dest = 'liaison_helicoidale_3D_orientation_male', default = 0, help = u"Orientation en degres de la piece male de l'helicoidal 3D")
+        self.OptionParser.add_option('--liaison_helicoidale_3D_orientation_femelle', action = 'store', type = 'float', dest = 'liaison_helicoidale_3D_orientation_femelle', default = 0, help = u"Orientation en degres de la piece femelle de l'helicoidal 3D")
+
 
           
         #OPTIONS GENERALES ******************************************
@@ -252,6 +284,14 @@ class Liaisons(inkex.Effect):
 			dessin_spherique_2D(self.options,svg)
 		if(type_liaison=="\"liaison_spherique_3D\""):
 			dessin_spherique_3D(self.options,svg)
+	if(liaison=="\"liaison_helicoidale\""):
+		type_liaison=self.options.liaison_helicoidale_type
+		if(type_liaison=="\"liaison_helicoidale_2D_cote\""):
+			dessin_helicoidale_2D_cote(self.options,svg)
+		if(type_liaison=="\"liaison_helicoidale_2D_face\""):
+			dessin_helicoidale_2D_face(self.options,svg)
+		if(type_liaison=="\"liaison_helicoidale_3D\""):
+			dessin_helicoidale_2D_face(self.options,svg)
 		
 		
 	

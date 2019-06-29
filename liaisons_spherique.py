@@ -134,9 +134,9 @@ def dessin_spherique_3D(options,contexte):
 	Vx,Vy,Vz=getVecteursAxonometriques(echelle)
 	base=(Vx,Vy,Vz)
 	#Centre de la liaison dans le repere 3D
-	x=options.liaison_pivot_3D_position_x
-	y=options.liaison_pivot_3D_position_y
-	z=options.liaison_pivot_3D_position_z
+	x=options.liaison_spherique_3D_position_x
+	y=options.liaison_spherique_3D_position_y
+	z=options.liaison_spherique_3D_position_z
 	vPosition=v3D(x,y,z,base)#Vecteur position exprime dans la base axono
 	#Parametres de la liaison
 	rayon_male=25./2
