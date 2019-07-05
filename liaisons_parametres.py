@@ -23,3 +23,5 @@ h2Df_diametre_male=h2Df_diametre_femelle*0.7		#Diamètre de la portion de cercle
 #Hélicoidale 3D
 h3D_diametre=diametre_helicoidale_femelle	#Diamètre du cylindre
 h3D_longueur=h2Dc_longueur			#Longueur du cylindre
+h3D_longueur_tige_femelle=h3D_diametre/2.	#Longueur de la tige qui repart de la pièce femelle
+h3D_nombre_helices=4;

@@ -33,7 +33,7 @@ class v2D:
 			self.y=-_y
 		
 	def __repr__(self):
-		return "[x="+str(self.x)+",y="+str(self.y)+"]"
+		return "<x="+str(self.x)+",y="+str(self.y)+">"
 		
 	def __add__(self,v):
 		return v2D(self.x+v.x,self.y+v.y)
@@ -97,7 +97,7 @@ class v3D:
 		self.nom=""
 		
 	def __repr__(self):
-		return "[x="+str(self.x)+",y="+str(self.y)+",z="+str(self.z)+"]"
+		return "<x="+str(self.x)+",y="+str(self.y)+",z="+str(self.z)+">"
 
 	def __add__(self,v):
 		return v3D(self.x+v.x,self.y+v.y,self.z+v.z)
@@ -437,4 +437,19 @@ def concateneContinu(L1,L2):
 		return L1+[L2[-i] for i in range(1,len(L2)+1)]
 	else:
 		return L1+L2
+		
+#Fonction qui teste si deux valeurs a et b encadre une valeur cut %2pi
+def encadreLimite(a,b,cut):
+	if a>b:#Si dans le désordre
+		a,b=b,a
+	a=a%(2*math.pi)
+	b=b%(2*math.pi)
+	cut=cut%(2*math.pi)
+	if a>b:#Probleme du modulo 2pi : Cas où a=359° et b=362°
+		if cut<b:#cas ou cut=361°
+			cut+=2*math.pi
+		b+=2*math.pi
+	if a<cut and cut<=b:
+		return True
+	return False
 		

@@ -291,7 +291,7 @@ class Liaisons(inkex.Effect):
 		if(type_liaison=="\"liaison_helicoidale_2D_face\""):
 			dessin_helicoidale_2D_face(self.options,svg)
 		if(type_liaison=="\"liaison_helicoidale_3D\""):
-			dessin_helicoidale_2D_face(self.options,svg)
+			dessin_helicoidale_3D(self.options,svg)
 		
 		
 	
