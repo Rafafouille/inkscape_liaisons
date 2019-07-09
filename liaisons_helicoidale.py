@@ -234,9 +234,9 @@ def dessin_helicoidale_3D(options,contexte):
 	Vx,Vy,Vz=getVecteursAxonometriques(echelle)
 	base=(Vx,Vy,Vz)
 	#Centre de la liaison dans le repere 3D
-	x=options.liaison_pivot_3D_position_x
-	y=options.liaison_pivot_3D_position_y
-	z=options.liaison_pivot_3D_position_z
+	x=options.liaison_helicoidale_3D_position_x
+	y=options.liaison_helicoidale_3D_position_y
+	z=options.liaison_helicoidale_3D_position_z
 	vPosition=v3D(x,y,z,base)#Vecteur position exprime dans la base axono
 	#Parametres de la liaison
 	pas_a_gauche=options.liaison_helicoidale_pas_a_gauche
@@ -271,7 +271,8 @@ def dessin_helicoidale_3D(options,contexte):
 	centre1=v3D(-h3D_longueur/2,0,0,baseLocale2) #Vecteur OC1, O=centre liaison
 	centre2=v3D(h3D_longueur/2,0,0,baseLocale2) #Vecteur OC2, O=centre liaison
 	#On recupere les deux angles qui correspondent aux tangentes par rapport a la vue
-	thetaCoupure1,thetaCoupure2=getAnglesCoupure(baseLocale2)
+	thetaCoupure2_1,thetaCoupure2_2=getAnglesCoupure(baseLocale2)
+	thetaCoupure1_1,thetaCoupure1_2=getAnglesCoupure(baseLocale1)
 	
 	# Male ***************************************
 	axe=inkex.etree.Element(inkex.addNS('path','svg'))
@@ -303,11 +304,11 @@ def dessin_helicoidale_3D(options,contexte):
 		vRayon=v3D(0,rayon*math.cos(theta),rayon*math.sin(theta),baseLocale1)	#Vecteur rayon
 		point=centre1+Vdx+vRayon#Coordonnées du point
 		#Si on change de plan, on calcule le chemin SVG du bout d'hélice et on l'ajoute au chemin existant
-		if encadreLimite(thetaOld,theta,thetaCoupure1) or encadreLimite(thetaOld,theta,thetaCoupure2):
-			if encadreLimite(thetaOld,theta,thetaCoupure1):
-				thetaCoupure=thetaCoupure1
+		if encadreLimite(thetaOld,theta,thetaCoupure1_1) or encadreLimite(thetaOld,theta,thetaCoupure1_2):
+			if encadreLimite(thetaOld,theta,thetaCoupure1_1):
+				thetaCoupure=thetaCoupure1_1
 			else:
-				thetaCoupure=thetaCoupure2
+				thetaCoupure=thetaCoupure1_2
 			#On ajoute le dernier point entre deux jonction (pour faire un raccord continue):
 			xDernier=X-dx/2.#+(thetaCoupure-thetaOld)/(theta-thetaOld)*dx
 			vRayon=v3D(0,rayon*math.cos(thetaCoupure),rayon*math.sin(thetaCoupure),baseLocale1)	#Vecteur rayon
@@ -315,30 +316,39 @@ def dessin_helicoidale_3D(options,contexte):
 			point=centre1+Vdx+vRayon#Coordonnées du point
 			X+=dx
 			listeHelice.append((point.x,point.y,point.z))
-			#assert 0,(thetaOld,theta,thetaCoupure1,thetaCoupure2,listeHelice)
+			#assert 0,(thetaOld,theta,thetaCoupure1_1,thetaCoupure1_2,listeHelice)
 			if len(listeHelice)>1:#Cas où listeHelice n'est pas nul (probleme de theta0=0 au début)
 				chemin,profondeur=points3D_to_svgd(listeHelice,False)
-				listeHelice=[(point.x,point.y,point.z)]
+				listeHelice=[(point.x,point.y,point.z)]#On relance un nouveau bout d'hélice, à partir de la coupure
 				if(cote>0):
 					cheminHelice1+=chemin
-					profondeurHelice1+=profondeur/h3D_nombre_helices/2.
+					#profondeurHelice1+=profondeur/h3D_nombre_helices/2.
 				else:
 					cheminHelice2+=chemin
-					profondeurHelice2+=profondeur/h3D_nombre_helices/2.
+					#profondeurHelice2+=profondeur/h3D_nombre_helices/2.
 				cote*=-1
 		
 		X+=dx
 		listeHelice.append((point.x,point.y,point.z))
+
 		
-	if len(listeHelice)>10000:#S'il reste une dernier bout..
+	if len(listeHelice)>1:#S'il reste une dernier bout..
 		chemin,profondeur=points3D_to_svgd(listeHelice,False)
 		if(cote>0):
 			cheminHelice1+=chemin
-			profondeurHelice1=profondeur/h3D_nombre_helices/2.
+			#profondeurHelice1=profondeur/h3D_nombre_helices/2.
 		else:
 			cheminHelice2+=chemin
-			profondeurHelice2=profondeur/h3D_nombre_helices/2.
+			#profondeurHelice2=profondeur/h3D_nombre_helices/2.
 #	assert 0,(theta,vRayon)
+
+
+	#Gestion de la profondeur		
+	if baseLocale1[1].z>0:#Si l'axe y1 est positif (ca dit quel coté est au 1er plan)
+		profondeurHelice1=1000
+	else:
+		profondeurHelice1=-1000
+	profondeurHelice2=-profondeurHelice1
 
 	
 	helice1=inkex.etree.Element(inkex.addNS('path','svg'))
@@ -348,7 +358,7 @@ def dessin_helicoidale_3D(options,contexte):
 	helice1.set('stroke-width',str(epaisseur_male))
 	helice1.set('style','stroke-linecap:round')
 	helice1.set('style','fill:none')
-	helice1.set('profondeur',str(profondeurHelice1*100))
+	helice1.set('profondeur',str(profondeurHelice1))
 	
 	helice2=inkex.etree.Element(inkex.addNS('path','svg'))
 #	listeHelice2=[]
@@ -360,14 +370,14 @@ def dessin_helicoidale_3D(options,contexte):
 	helice2.set('stroke-width',str(epaisseur_male))
 	helice2.set('style','stroke-linecap:round')
 	helice2.set('style','fill:none')
-	helice2.set('profondeur',str(profondeurHelice2*100))
+	helice2.set('profondeur',str(profondeurHelice2))
 	
 	
 	# Femelle ***************************************
 	
 	#On construit les arcs de cercles projete
-	listeArcs1=getListePoints2DCercle(baseLocale2,centre1,rayon,0,math.pi*2,thetaCoupure1,thetaCoupure2)
-	listeArcs2=getListePoints2DCercle(baseLocale2,centre2,rayon,0,math.pi*2,thetaCoupure1,thetaCoupure2)
+	listeArcs1=getListePoints2DCercle(baseLocale2,centre1,rayon,0,math.pi*2,thetaCoupure2_1,thetaCoupure2_2)
+	listeArcs2=getListePoints2DCercle(baseLocale2,centre2,rayon,0,math.pi*2,thetaCoupure2_1,thetaCoupure2_2)
 	listeArcs2[0].reverse()#On inverse les arcs de cercle
 	listeArcs2[1].reverse()
 	
@@ -383,7 +393,7 @@ def dessin_helicoidale_3D(options,contexte):
 	demiCylindre1.set('stroke-width',str(epaisseur_femelle))
 	demiCylindre1.set('style','stroke-linecap:round')
 	demiCylindre1.set('style','fill:white')
-	demiCylindre1.set('profondeur',str(profondeurDemiCylindre1*0.999999999999999999))
+	demiCylindre1.set('profondeur',str(profondeurDemiCylindre1*0.001))
 	
 	demiCylindreContours1=inkex.etree.Element(inkex.addNS('path','svg'))
 	demiCylindreContours1.set('d',chemin)
@@ -400,7 +410,7 @@ def dessin_helicoidale_3D(options,contexte):
 	demiCylindre2.set('stroke-width',str(epaisseur_femelle))
 	demiCylindre2.set('style','stroke-linecap:round')
 	demiCylindre2.set('style','fill:white')
-	demiCylindre2.set('profondeur',str(profondeurDemiCylindre2*0.999999999999999999))
+	demiCylindre2.set('profondeur',str(profondeurDemiCylindre2*0.001))
 	
 	demiCylindreContours2=inkex.etree.Element(inkex.addNS('path','svg'))
 	demiCylindreContours2.set('d',chemin)
