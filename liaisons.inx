@@ -12,6 +12,7 @@
   <dependency type="executable" location="extensions">liaisons_glissiere.py</dependency>
   <dependency type="executable" location="extensions">liaisons_plane.py</dependency>
   <dependency type="executable" location="extensions">liaisons_helicoidale.py</dependency>
+  <dependency type="executable" location="extensions">liaisons_sphere_plan.py</dependency>
   <dependency type="executable" location="extensions">inkex.py</dependency>
   
   <!-- ====================================================  -->
@@ -406,6 +407,92 @@
 	  					<!-- <param name="liaison_pivot_glissant_3D_orientation_male" type="float" _gui-text="Angle pièce mâle (deg) :" min="-360" max="360" >0</param>-->
 	  					<param name="liaison_helicoidale_3D_orientation_femelle" type="float" _gui-text="Angle pièce femelle (deg) :" min="-360" max="360" >0</param>
 				</page>
+			</param>
+		</page>
+		<!-- SPHERE-PLAN -->
+		<page name="liaison_sphere_plan" gui-text="Sphère-Plan">
+			<param name="liaison_sphere_plan_type" type="notebook">
+				<page name="liaison_sphere_plan_2D_cote" gui-text="2D (coté)">
+					<param name="titre_position_sphere_plan_2D_cote" type="description" appearance="header">Position</param>
+	  					<param name="liaison_sphere_plan_2D_cote_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_sphere_plan_2D_cote_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+	  				<param name="titre_orientation_sphere_plan_2D_cote" type="description" appearance="header">Orientation</param>
+						<param name="liaison_sphere_plan_2D_cote_axe_normale" type="enum" gui-text="Normale :">
+							<item value="y">Y</item>
+							<item value="autre">Via l'angle ci-dessous</item>
+							<item value="x">X</item>
+							<item value="-x">-X</item>
+							<item value="-y">-Y</item>
+						</param>
+						<param name="liaison_sphere_plan_2D_cote_orientation_normale" type="float"  min="-360" max="360" precision="1" gui-text="Orientation (deg) :">0</param>
+						<param name="liaison_sphere_plan_2D_cote_axe_sphere" type="enum" gui-text="Sphère :">
+							<item value="normale">Même direction que la normale</item>
+							<item value="autre">Via l'angle ci-dessous</item>
+							<item value="x">X</item>
+							<item value="y">Y</item>
+							<item value="-x">-X</item>
+							<item value="-y">-Y</item>
+						</param>
+						<param name="liaison_sphere_plan_2D_cote_orientation_sphere" type="float"  min="-360" max="360" precision="1" gui-text="Orientation (deg) :">0</param>
+				</page>
+				<!--
+				<page name="liaison_sphere_plan_2D_dessus" gui-text="2D (Dessus)">
+	  				<param name="titre_position_sphere_plan_2D_dessus" type="description" appearance="header">Position</param>
+	  					<param name="liaison_sphere_plan_2D_dessus_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_sphere_plan_2D_dessus_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+	  				<param name="titre_orientation_sphere_plan_2D_dessus" type="description" appearance="header">Orientation</param>
+						<param name="liaison_sphere_plan_2D_dessus_axe_sphere" type="enum" gui-text="Sphère">
+							<item value="x">X</item>
+							<item value="autre">Via l'angle ci-dessous</item>
+							<item value="y">Y</item>
+							<item value="-x">-X</item>
+							<item value="-y">-Y</item>
+						</param>
+						<param name="liaison_sphere_plan_2D_dessus_orientation_sphere" type="float"  min="-360" max="360" precision="1" gui-text="Orientation Sphère (deg) : ">0</param>
+						<param name="liaison_sphere_plan_2D_dessus_orientation_plan" type="float"  min="-360" max="360" precision="1" gui-text="Orientation Plan (deg) : ">90</param>
+				</page>
+				<page name="liaison_sphere_plan_3D" gui-text="3D">
+					<param name="titre_position_sphere_plan_3D" type="description" appearance="header">Position</param>
+	  					<param name="liaison_sphere_plan_3D_position_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_sphere_plan_3D_position_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_sphere_plan_3D_position_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >0</param>
+					<param name="liaison_sphere_plan_3D_type_normale" type="notebook">
+						<page name="liaison_sphere_plan_3D_type_normale_standard" gui-text="Normales standard">
+								<param name="liaison_sphere_plan_3D_axe_normale" type="enum" gui-text="Direction de la normale :">
+									<item value="z">Z</item>
+									<item value="x">X</item>
+									<item value="y">Y</item>
+									<item value="-x">-X</item>
+									<item value="-y">-Y</item>
+									<item value="-z">-Z</item>
+								</param>
+						</page>
+						<page name="liaison_sphere_plan_3D_type_normale_quelconque" gui-text="Vecteur Directeur">
+		  					<param name="liaison_sphere_plan_3D_normale_quelconque_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >1</param>
+		  					<param name="liaison_sphere_plan_3D_normale_quelconque_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+		  					<param name="liaison_sphere_plan_3D_normale_quelconque_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >0</param>
+						</page>
+	  					<param name="liaison_sphere_plan_3D_rotation_plan" type="float" _gui-text="Rotation plan (deg) :" min="-360" max="360" >0</param>
+					</param>
+					<param name="liaison_sphere_plan_3D_type_direction_sphere" type="notebook">
+						<page name="liaison_sphere_plan_3D_type_direction_sphere_standard" gui-text="Direction Sphère standard">
+								<param name="liaison_sphere_plan_3D_axe_sphere" type="enum" gui-text="Direction de la sphère :">
+									<item value="normale">Même direction que la normale</item>
+									<item value="z">Z</item>
+									<item value="x">X</item>
+									<item value="y">Y</item>
+									<item value="-x">-X</item>
+									<item value="-y">-Y</item>
+									<item value="-z">-Z</item>
+								</param>
+						</page>
+						<page name="liaison_sphere_plan_3D_type_direction_sphere_quelconque" gui-text="Vecteur Directeur">
+		  					<param name="liaison_sphere_plan_3D_direction_sphere_quelconque_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >1</param>
+		  					<param name="liaison_sphere_plan_3D_direction_sphere_quelconque_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+		  					<param name="liaison_sphere_plan_3D_direction_sphere_quelconque_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >0</param>
+						</page>
+					</param>
+				</page>-->
 			</param>
 		</page>
 	  </param>

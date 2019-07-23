@@ -21,6 +21,7 @@ from liaisons_glissiere import *
 from liaisons_plane import *
 from liaisons_spherique import *
 from liaisons_helicoidale import *
+from liaisons_sphere_plan import *
 
 
 
@@ -201,8 +202,21 @@ class Liaisons(inkex.Effect):
         self.OptionParser.add_option('--liaison_helicoidale_3D_orientation_male', action = 'store', type = 'float', dest = 'liaison_helicoidale_3D_orientation_male', default = 0, help = u"Orientation en degres de la piece male de l'helicoidal 3D")
         self.OptionParser.add_option('--liaison_helicoidale_3D_orientation_femelle', action = 'store', type = 'float', dest = 'liaison_helicoidale_3D_orientation_femelle', default = 0, help = u"Orientation en degres de la piece femelle de l'helicoidal 3D")
 
+	#LIAISON SPHÈRE-PLAN **********************************************
+        self.OptionParser.add_option('--liaison_sphere_plan_type', action = 'store', type = 'string', dest = 'liaison_sphere_plan_type', default = 'liaison_sphere_plan_2D_cote', help = u"Type de representation de la liaison sphère-plan")
 
-          
+        self.OptionParser.add_option('--liaison_sphere_plan_2D_cote_x', action = 'store', type = 'float', dest = 'liaison_sphere_plan_2D_cote_x', default = '0', help = u"Position sur X de la liaison Sphère-plan 2D coté relativement a l'origine")
+	self.OptionParser.add_option('--liaison_sphere_plan_2D_cote_y', action = 'store', type = 'float', dest = 'liaison_sphere_plan_2D_cote_y', default = '0', help = u"Position sur Y de la liaison Sphère-plan 2D coté relativement a l'origine")       
+        self.OptionParser.add_option('--liaison_sphere_plan_2D_cote_axe_normale', action = 'store', type = 'string', dest = 'liaison_sphere_plan_2D_cote_axe_normale', default = 'y', help = u"Principales directions de la normale de la Sphère-plan 2D vue de coté")
+        self.OptionParser.add_option('--liaison_sphere_plan_2D_cote_orientation_normale', action = 'store', type = 'float', dest = 'liaison_sphere_plan_2D_cote_orientation_normale', default = '0', help = u"Orientation de la normale de la Sphère-Plan 2D (coté) en degres")
+        self.OptionParser.add_option('--liaison_sphere_plan_2D_cote_axe_sphere', action = 'store', type = 'string', dest = 'liaison_sphere_plan_2D_cote_axe_sphere', default = 'normale', help = u"Principales directions de la sphère de la Sphère-plan 2D vue de coté")
+        self.OptionParser.add_option('--liaison_sphere_plan_2D_cote_orientation_sphere', action = 'store', type = 'float', dest = 'liaison_sphere_plan_2D_cote_orientation_sphere', default = '0', help = u"Orientation de la sphère de la Sphère-Plan 2D (coté) en degres")
+
+
+
+
+
+
         #OPTIONS GENERALES ******************************************
         self.OptionParser.add_option('--opt_generales', action = 'store', type = 'string', dest = 'opt_generales', default = 'opt_gene_origine', help = u"Onglet des options generales")
         
@@ -292,6 +306,10 @@ class Liaisons(inkex.Effect):
 			dessin_helicoidale_2D_face(self.options,svg)
 		if(type_liaison=="\"liaison_helicoidale_3D\""):
 			dessin_helicoidale_3D(self.options,svg)
+	if(liaison=="\"liaison_sphere_plan\""):
+		type_liaison=self.options.liaison_sphere_plan_type
+		if(type_liaison=="\"liaison_sphere_plan_2D_cote\""):
+			dessin_sphere_plan_2D_cote(self.options,svg)
 		
 		
 	

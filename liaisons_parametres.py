@@ -25,3 +25,15 @@ h3D_diametre=diametre_helicoidale_femelle	#Diamètre du cylindre
 h3D_longueur=h2Dc_longueur			#Longueur du cylindre
 h3D_longueur_tige_femelle=h3D_diametre/2.	#Longueur de la tige qui repart de la pièce femelle
 h3D_nombre_helices=4;
+
+# ============== LIAISON SPHERE PLAN ========================
+
+# Parametres généraux
+largeur_sphere_plan_plan=30	# Largeur du plan
+diametre_sphere_plan_sphere=20	# Diamètre de la sphere
+
+#Sphère-plan 2D
+sp2Dc_largeur_plan=largeur_sphere_plan_plan		# Largeur du plan
+sp2Dc_diametre_sphere=diametre_sphere_plan_sphere	# Diamètre Sphère
+sp2Dc_longueur_axe_plan=sp2Dc_largeur_plan		#Longueur de sous le plan
+sp2Dc_longueur_tige_sphere=sp2Dc_diametre_sphere/2.		#Longueur de la tige qui part de la sphère
