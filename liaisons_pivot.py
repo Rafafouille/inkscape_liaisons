@@ -170,7 +170,7 @@ def dessin_Pivot_2D_face(options,contexte):
 	# Male ***************************************
 	axe1=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(0	,	0),
-					(0	,	-rayon-longueur_tige)	]
+					(rayon+longueur_tige	,	0)	]
 				,False,base2D)
 	axe1.set('d',chemin)
 	axe1.set('stroke',couleur_male)

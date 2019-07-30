@@ -137,6 +137,9 @@ class v3D:
 		self.z/=float(l)
 		return self
 		
+	def __neg__(self):
+		return v3D(-self.x,-self.y,-self.z)
+		
 	def str(self):
 		return "["+str(self.x)+","+str(self.y)+","+str(self.y)+"]"
 

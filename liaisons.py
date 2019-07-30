@@ -194,7 +194,7 @@ class Liaisons(inkex.Effect):
         self.OptionParser.add_option('--liaison_helicoidale_3D_position_x', action = 'store', type = 'float', dest = 'liaison_helicoidale_3D_position_x', default = 0, help = u"Coordonnee sur x du centre de la liaison helicoidale 3D")
         self.OptionParser.add_option('--liaison_helicoidale_3D_position_y', action = 'store', type = 'float', dest = 'liaison_helicoidale_3D_position_y', default = 0, help = u"Coordonnee sur y du centre de la liaison helicoidale 3D")
         self.OptionParser.add_option('--liaison_helicoidale_3D_position_z', action = 'store', type = 'float', dest = 'liaison_helicoidale_3D_position_z', default = 0, help = u"Coordonnee sur z du centre de la liaison helicoidale 3D")
-        self.OptionParser.add_option('--liaison_helicoidale_3D_type_direction', action = 'store', type = 'str', dest = 'liaison_helicoidale_3D_type_direction', default = "liaison_pivot_glissant_3D_type_direction_standard", help = u"Choix du type de direction de la liaison helicoidale 3D")
+        self.OptionParser.add_option('--liaison_helicoidale_3D_type_direction', action = 'store', type = 'str', dest = 'liaison_helicoidale_3D_type_direction', default = "liaison_helicoidale_3D_type_direction_standard", help = u"Choix du type de direction de la liaison helicoidale 3D")
         self.OptionParser.add_option('--liaison_helicoidale_3D_axe', action = 'store', type = 'str', dest = 'liaison_helicoidale_3D_axe', default = 'x', help = u"Orientations standard de l'axe de la pivot glissant 3D")
         self.OptionParser.add_option('--liaison_helicoidale_3D_type_direction_quelconque_x', action = 'store', type = 'float', dest = 'liaison_helicoidale_3D_type_direction_quelconque_x', default = 1, help = u"Coordonnee sur x du vecteur directeur de l'helicoidale 3D")
         self.OptionParser.add_option('--liaison_helicoidale_3D_type_direction_quelconque_y', action = 'store', type = 'float', dest = 'liaison_helicoidale_3D_type_direction_quelconque_y', default = 0, help = u"Coordonnee sur y du vecteur directeur de l'helicoidal 3D")
@@ -212,10 +212,27 @@ class Liaisons(inkex.Effect):
         self.OptionParser.add_option('--liaison_sphere_plan_2D_cote_axe_sphere', action = 'store', type = 'string', dest = 'liaison_sphere_plan_2D_cote_axe_sphere', default = 'normale', help = u"Principales directions de la sphère de la Sphère-plan 2D vue de coté")
         self.OptionParser.add_option('--liaison_sphere_plan_2D_cote_orientation_sphere', action = 'store', type = 'float', dest = 'liaison_sphere_plan_2D_cote_orientation_sphere', default = '0', help = u"Orientation de la sphère de la Sphère-Plan 2D (coté) en degres")
 
-
-
-
-
+        self.OptionParser.add_option('--liaison_sphere_plan_2D_dessus_x', action = 'store', type = 'float', dest = 'liaison_sphere_plan_2D_dessus_x', default = '0', help = u"Position sur X de la liaison Sphère-plan 2D dessus relativement a l'origine")
+	self.OptionParser.add_option('--liaison_sphere_plan_2D_dessus_y', action = 'store', type = 'float', dest = 'liaison_sphere_plan_2D_dessus_y', default = '0', help = u"Position sur Y de la liaison Sphère-plan 2D dessus relativement a l'origine")       
+        self.OptionParser.add_option('--liaison_sphere_plan_2D_dessus_axe_plan', action = 'store', type = 'string', dest = 'liaison_sphere_plan_2D_dessus_axe_plan', default = 'y', help = u"Principales directions de l'axe du plan de la Sphère-plan 2D vue de dessus")
+        self.OptionParser.add_option('--liaison_sphere_plan_2D_dessus_orientation_plan', action = 'store', type = 'float', dest = 'liaison_sphere_plan_2D_dessus_orientation_plan', default = '0', help = u"Directions quelconque de l'axe du plan de la Sphère-plan 2D vue de dessus")
+        self.OptionParser.add_option('--liaison_sphere_plan_2D_dessus_axe_sphere', action = 'store', type = 'string', dest = 'liaison_sphere_plan_2D_dessus_axe_sphere', default = 'y', help = u"Principales directions de l'axe de la sphère de la Sphère-plan 2D vue de dessus")
+        self.OptionParser.add_option('--liaison_sphere_plan_2D_dessus_orientation_sphere', action = 'store', type = 'float', dest = 'liaison_sphere_plan_2D_dessus_orientation_sphere', default = '0', help = u"Directions quelconque de l'axe de la sphère de la Sphère-plan 2D vue de dessus")
+        
+        self.OptionParser.add_option('--liaison_sphere_plan_3D_position_x', action = 'store', type = 'float', dest = 'liaison_sphere_plan_3D_position_x', default = 0, help = u"Coordonnee sur x du centre de la liaison sphère-plan 3D")
+        self.OptionParser.add_option('--liaison_sphere_plan_3D_position_y', action = 'store', type = 'float', dest = 'liaison_sphere_plan_3D_position_y', default = 0, help = u"Coordonnee sur y du centre de la liaison sphère-plan 3D")
+        self.OptionParser.add_option('--liaison_sphere_plan_3D_position_z', action = 'store', type = 'float', dest = 'liaison_sphere_plan_3D_position_z', default = 0, help = u"Coordonnee sur z du centre de la liaison sphère-plan 3D")
+	self.OptionParser.add_option('--liaison_sphere_plan_3D_type_normale', action = 'store', type = 'str', dest = 'liaison_sphere_plan_3D_type_normale', default = "liaison_sphere_plan_3D_type_normale_standard", help = u"Choix du type de normale de la liaison Sphère-plan 3D")
+	self.OptionParser.add_option('--liaison_sphere_plan_3D_axe_normale', action = 'store', type = 'str', dest = 'liaison_sphere_plan_3D_axe_normale', default = 'x', help = u"Orientations standard de l'axe de la sphère-plan 3D")
+	self.OptionParser.add_option('--liaison_sphere_plan_3D_normale_quelconque_x', action = 'store', type = 'float', dest = 'liaison_sphere_plan_3D_normale_quelconque_x', default = 1, help = u"Coordonnee sur x du vecteur directeur de la sphère-plan 3D")
+	self.OptionParser.add_option('--liaison_sphere_plan_3D_normale_quelconque_y', action = 'store', type = 'float', dest = 'liaison_sphere_plan_3D_normale_quelconque_y', default = 0, help = u"Coordonnee sur y du vecteur directeur de la sphère-plan 3D")
+	self.OptionParser.add_option('--liaison_sphere_plan_3D_normale_quelconque_z', action = 'store', type = 'float', dest = 'liaison_sphere_plan_3D_normale_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur directeur de la sphère-plan 3D")
+        self.OptionParser.add_option('--liaison_sphere_plan_3D_rotation_plan', action = 'store', type = 'float', dest = 'liaison_sphere_plan_3D_rotation_plan', default = 0, help = u"Orientation en degres du plan autour de la normale de la sphère-plan 3D")
+	self.OptionParser.add_option('--liaison_sphere_plan_3D_type_direction_sphere', action = 'store', type = 'str', dest = 'liaison_sphere_plan_3D_type_direction_sphere', default = 'liaison_sphere_plan_3D_type_direction_sphere_standard', help = u"Type de direction de l'axe de la sphère de la sphère-plan 3D")
+	self.OptionParser.add_option('--liaison_sphere_plan_3D_axe_sphere', action = 'store', type = 'str', dest = 'liaison_sphere_plan_3D_axe_sphere', default = 'x', help = u"Orientations standard de l'axe de la sphère de la sphère-plan 3D")
+        self.OptionParser.add_option('--liaison_sphere_plan_3D_direction_sphere_quelconque_x', action = 'store', type = 'float', dest = 'liaison_sphere_plan_3D_direction_sphere_quelconque_x', default = 1, help = u"Coordonnee sur x du vecteur directeur de la tige de sphere de la sphère-plan 3D")
+        self.OptionParser.add_option('--liaison_sphere_plan_3D_direction_sphere_quelconque_y', action = 'store', type = 'float', dest = 'liaison_sphere_plan_3D_direction_sphere_quelconque_y', default = 0, help = u"Coordonnee sur y du vecteur directeur de la tige de sphere de la sphère-plan 3D")
+        self.OptionParser.add_option('--liaison_sphere_plan_3D_direction_sphere_quelconque_z', action = 'store', type = 'float', dest = 'liaison_sphere_plan_3D_direction_sphere_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur directeur de la tige de sphere de la sphère-plan 3D")
 
         #OPTIONS GENERALES ******************************************
         self.OptionParser.add_option('--opt_generales', action = 'store', type = 'string', dest = 'opt_generales', default = 'opt_gene_origine', help = u"Onglet des options generales")
@@ -260,7 +277,7 @@ class Liaisons(inkex.Effect):
         #groupe = inkex.etree.SubElement(svg, 'g')
         
 	#Dessin :
-	if(liaison=="\"liaison_pivot\""):
+	if liaison == "\"liaison_pivot\"" :
 		type_liaison=self.options.liaison_pivot_type
 		if(type_liaison=="\"liaison_pivot_2D_cote\""):
 			dessin_Pivot_2D_cote(self.options,svg)
@@ -268,7 +285,7 @@ class Liaisons(inkex.Effect):
 			dessin_Pivot_2D_face(self.options,svg)
 		elif(type_liaison=="\"liaison_pivot_3D\""):
 			dessin_Pivot_3D(self.options,svg)
-	if(liaison=="\"liaison_pivot_glissant\""):
+	if liaison == "\"liaison_pivot_glissant\"" :
 		type_liaison=self.options.liaison_pivot_glissant_type
 		if(type_liaison=="\"liaison_pivot_glissant_2D_cote\""):
 			dessin_Pivot_Glissant_2D_cote(self.options,svg)
@@ -276,7 +293,7 @@ class Liaisons(inkex.Effect):
 			dessin_Pivot_Glissant_2D_face(self.options,svg)
 		elif(type_liaison=="\"liaison_pivot_glissant_3D\""):
 			dessin_Pivot_Glissant_3D(self.options,svg)
-	if(liaison=="\"liaison_glissiere\""):
+	if liaison == "\"liaison_glissiere\"" :
 		type_liaison=self.options.liaison_glissiere_type
 		if(type_liaison=="\"liaison_glissiere_2D_cote\""):
 			dessin_Glissiere_2D_cote(self.options,svg)
@@ -284,7 +301,7 @@ class Liaisons(inkex.Effect):
 			dessin_Glissiere_2D_face(self.options,svg)
 		if(type_liaison=="\"liaison_glissiere_3D\""):
 			dessin_Glissiere_3D(self.options,svg)
-	if(liaison=="\"liaison_plane\""):
+	if liaison == "\"liaison_plane\"" :
 		type_liaison=self.options.liaison_plane_type
 		if(type_liaison=="\"liaison_plane_2D_cote\""):
 			dessin_plane_2D_cote(self.options,svg)
@@ -292,13 +309,13 @@ class Liaisons(inkex.Effect):
 			dessin_plane_2D_dessus(self.options,svg)
 		if(type_liaison=="\"liaison_plane_3D\""):
 			dessin_plane_3D(self.options,svg)
-	if(liaison=="\"liaison_spherique\""):
+	if liaison == "\"liaison_spherique\"" :
 		type_liaison=self.options.liaison_spherique_type
 		if(type_liaison=="\"liaison_spherique_2D\""):
 			dessin_spherique_2D(self.options,svg)
 		if(type_liaison=="\"liaison_spherique_3D\""):
 			dessin_spherique_3D(self.options,svg)
-	if(liaison=="\"liaison_helicoidale\""):
+	if liaison == "\"liaison_helicoidale\"" :
 		type_liaison=self.options.liaison_helicoidale_type
 		if(type_liaison=="\"liaison_helicoidale_2D_cote\""):
 			dessin_helicoidale_2D_cote(self.options,svg)
@@ -306,10 +323,14 @@ class Liaisons(inkex.Effect):
 			dessin_helicoidale_2D_face(self.options,svg)
 		if(type_liaison=="\"liaison_helicoidale_3D\""):
 			dessin_helicoidale_3D(self.options,svg)
-	if(liaison=="\"liaison_sphere_plan\""):
+	if liaison == "\"liaison_sphere_plan\"" :
 		type_liaison=self.options.liaison_sphere_plan_type
 		if(type_liaison=="\"liaison_sphere_plan_2D_cote\""):
 			dessin_sphere_plan_2D_cote(self.options,svg)
+		if(type_liaison=="\"liaison_sphere_plan_2D_dessus\""):
+			dessin_sphere_plan_2D_dessus(self.options,svg)
+		if(type_liaison=="\"liaison_sphere_plan_3D\""):
+			dessin_sphere_plan_3D(self.options,svg)
 		
 		
 	

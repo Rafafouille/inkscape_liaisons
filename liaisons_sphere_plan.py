@@ -1,3 +1,5 @@
+# -- coding: utf-8 --
+
 import math
 import inkex
 from liaisons_parametres import *
@@ -43,6 +45,7 @@ def dessin_sphere_plan_2D_cote(options,contexte):
 	couleur_male=options.opt_gene_piece1_couleur
 	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
 	epaisseur_male=options.opt_gene_lignes_epaisseur_1
+	old_liaisons=options.opt_gene_gene_old
 	
 	#Groupes ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
@@ -75,20 +78,31 @@ def dessin_sphere_plan_2D_cote(options,contexte):
 	
 	# SPHERE ***************************************
 	#plan dessous
-	sphere_sphere=inkex.etree.Element(inkex.addNS('circle','svg'))
-	sphere_sphere.set('cx',str(sp2Dc_diametre_sphere/2.*math.cos(-rotation_normale*math.pi/180)))
-	sphere_sphere.set('cy',str(sp2Dc_diametre_sphere/2.*math.sin(-rotation_normale*math.pi/180)))
-	sphere_sphere.set('r',str(sp2Dc_diametre_sphere/2.*echelle))
-	sphere_sphere.set('d',chemin)
-	sphere_sphere.set('style','fill:white')
-	sphere_sphere.set('stroke',couleur_femelle)
-	sphere_sphere.set('stroke-width',str(epaisseur_femelle))
-	sphere.append(sphere_sphere)
+	if not old_liaisons:
+		sphere_bout=inkex.etree.Element(inkex.addNS('circle','svg'))
+		sphere_bout.set('cx',str(sp2Dc_diametre_sphere/2.*math.cos(-rotation_normale*math.pi/180)))
+		sphere_bout.set('cy',str(sp2Dc_diametre_sphere/2.*math.sin(-rotation_normale*math.pi/180)))
+		sphere_bout.set('r',str(sp2Dc_diametre_sphere/2.*echelle))
+		sphere_bout.set('style','fill:white')
+	else :
+		sphere_bout=inkex.etree.Element(inkex.addNS('path','svg'))
+		chemin=points_to_svgd([	(0	,	0),
+					(sp2DcOLD_largeur_fleche*(math.sqrt(3)/2*Vx2.x+0.5*Vy2.x)	,	sp2DcOLD_largeur_fleche*(math.sqrt(3)/2*Vx2.y+0.5*Vy2.y)),
+					(sp2DcOLD_largeur_fleche*(math.sqrt(3)/2*Vx2.x-0.5*Vy2.x)	,	sp2DcOLD_largeur_fleche*(math.sqrt(3)/2*Vx2.y-0.5*Vy2.y)), 	])
+		sphere_bout.set('d',chemin)
+		sphere_bout.set('style','fill:'+couleur_femelle)
+	sphere_bout.set('stroke',couleur_femelle)
+	sphere_bout.set('stroke-width',str(epaisseur_femelle))
+	sphere.append(sphere_bout)
 	
 	#tige
 	sphere_tige=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(sp2Dc_diametre_sphere/2.*(Vx1.x+Vx2.x)	,	sp2Dc_diametre_sphere/2.*(Vx1.y+Vx2.y)),
-				(sp2Dc_diametre_sphere/2.*(Vx1.x+Vx2.x)+sp2Dc_longueur_tige_sphere*Vx2.x	,	sp2Dc_diametre_sphere/2.*(Vx1.y+Vx2.y)+sp2Dc_longueur_tige_sphere*Vy2.x)	])
+	if not old_liaisons:
+		chemin=points_to_svgd([	(sp2Dc_diametre_sphere/2.*(Vx1.x+Vx2.x)	,	sp2Dc_diametre_sphere/2.*(Vx1.y+Vx2.y)),
+					(sp2Dc_diametre_sphere/2.*(Vx1.x+Vx2.x)+sp2Dc_longueur_tige_sphere*Vx2.x	,	sp2Dc_diametre_sphere/2.*(Vx1.y+Vx2.y)+sp2Dc_longueur_tige_sphere*Vy2.x)	])
+	else:
+		chemin=points_to_svgd([	(sp2DcOLD_largeur_fleche*math.sqrt(3)/2.*Vx2.x	,	sp2DcOLD_largeur_fleche*math.sqrt(3)/2.*Vx2.y),
+					((sp2DcOLD_largeur_fleche+sp2Dc_longueur_tige_sphere)*Vx2.x	,	(sp2DcOLD_largeur_fleche+sp2Dc_longueur_tige_sphere)*Vx2.y)	])
 	sphere_tige.set('d',chemin)
 	sphere_tige.set('stroke',couleur_femelle)
 	sphere_tige.set('stroke-width',str(epaisseur_femelle))
@@ -101,41 +115,40 @@ def dessin_sphere_plan_2D_cote(options,contexte):
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 
-	
 
-def dessin_plane_2D_dessus(options,contexte):
+
+
+
+def dessin_sphere_plan_2D_dessus(options,contexte):
 	#Position *****************************************
 	x0=options.x0
 	y0=options.y0
-	x=options.liaison_plane_2D_dessus_x
-	y=options.liaison_plane_2D_dessus_y
+	x=options.liaison_sphere_plan_2D_dessus_x
+	y=options.liaison_sphere_plan_2D_dessus_y
 	#Orientation **************************************
-	rotationDessous=-options.liaison_plane_2D_orientation_dessous #Angle par defaut (sens trigo)
-	if(options.liaison_plane_2D_axe_dessous=="x"):
-		rotationDessous=0
-	elif(options.liaison_plane_2D_axe_dessous=="y"):
-		rotationDessous=-90
-	elif(options.liaison_plane_2D_axe_dessous=="-x"):
-		rotationDessous=180
-	elif(options.liaison_plane_2D_axe_dessous=="-y"):
-		rotationDessous=90
-	rotationDessus=-options.liaison_plane_2D_orientation_dessus #Angle par defaut (sens trigo)
-	if(options.liaison_plane_2D_axe_dessus=="x"):
-		rotationDessus=0
-	elif(options.liaison_plane_2D_axe_dessus=="y"):
-		rotationDessus=-90
-	elif(options.liaison_plane_2D_axe_dessus=="-x"):
-		rotationDessus=180
-	elif(options.liaison_plane_2D_axe_dessus=="-y"):
-		rotationDessus=90
+	rotationPlan=-options.liaison_sphere_plan_2D_dessus_orientation_plan #Angle par defaut (sens trigo)
+	if(options.liaison_sphere_plan_2D_dessus_axe_plan=="x"):
+		rotationPlan=0
+	elif(options.liaison_sphere_plan_2D_dessus_axe_plan=="y"):
+		rotationPlan=-90
+	elif(options.liaison_sphere_plan_2D_dessus_axe_plan=="-x"):
+		rotationPlan=180
+	elif(options.liaison_sphere_plan_2D_dessus_axe_plan=="-y"):
+		rotationPlan=90
+	rotationSphere=-options.liaison_sphere_plan_2D_dessus_orientation_sphere #Angle par defaut (sens trigo)
+	if(options.liaison_sphere_plan_2D_dessus_axe_sphere=="x"):
+		rotationSphere=0
+	elif(options.liaison_sphere_plan_2D_dessus_axe_sphere=="y"):
+		rotationSphere=-90
+	elif(options.liaison_sphere_plan_2D_dessus_axe_sphere=="-x"):
+		rotationSphere=180
+	elif(options.liaison_sphere_plan_2D_dessus_axe_sphere=="-y"):
+		rotationSphere=90
 	#Base *********************
 	echelle=options.echelle
 	Vx1,Vy1=getBase2D(echelle)
 	base2D=(Vx1,Vy1)
 	#Parametres ****************************
-	coteDessous=30.
-	coteDessus=20.
-	longueurTrait=10.
 	couleur_femelle=options.opt_gene_piece2_couleur
 	couleur_male=options.opt_gene_piece1_couleur
 	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
@@ -143,53 +156,54 @@ def dessin_plane_2D_dessus(options,contexte):
 	
 	#Groupes ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
-	dessous=inkex.etree.SubElement(liaison,'g')
-	dessus=inkex.etree.SubElement(liaison,'g')
+	groupe_plan=inkex.etree.SubElement(liaison,'g')
+	groupe_sphere=inkex.etree.SubElement(liaison,'g')
 
 	
-	# Dessous ***************************************	
-	# rectangle dessous
-	rectangleDessous=inkex.etree.Element(inkex.addNS('rect','svg'))
-	rectangleDessous.set('x',str(-coteDessous*echelle/2) )
-	rectangleDessous.set('y',str(-coteDessous*echelle/2) )
-	rectangleDessous.set('width',str(coteDessous*echelle))
-	rectangleDessous.set('height',str(coteDessous*echelle))
-	rectangleDessous.set('style','fill:white')
-	rectangleDessous.set('stroke',couleur_femelle)
-	rectangleDessous.set('stroke-width',str(epaisseur_femelle))
-	dessous.append(rectangleDessous)
-
-	traitDessous=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(coteDessous/2.	,	0),
-				(coteDessous/2.+longueurTrait	,	0)	])
-	traitDessous.set('d',chemin)
-	traitDessous.set('stroke',couleur_femelle)
-	traitDessous.set('stroke-width',str(epaisseur_femelle))
-	dessous.append(traitDessous)
+	# Plan ***************************************	
+	# rectangle 
+	plan=inkex.etree.Element(inkex.addNS('rect','svg'))
+	plan.set('x',str(-sp2Dd_largeur*echelle/2) )
+	plan.set('y',str(-sp2Dd_largeur*echelle/2) )
+	plan.set('width',str(sp2Dd_largeur*echelle))
+	plan.set('height',str(sp2Dd_largeur*echelle))
+	plan.set('style','fill:white')
+	plan.set('stroke',couleur_femelle)
+	plan.set('stroke-width',str(epaisseur_femelle))
+	groupe_plan.append(plan)
+	#trait
+	traitPlan=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin=points_to_svgd([	(sp2Dd_largeur/2.*echelle	,	0),
+				((sp2Dd_largeur/2.+sp2Dd_longueur_tige_plan)*echelle	,	0)	])
+	traitPlan.set('d',chemin)
+	traitPlan.set('stroke',couleur_femelle)
+	traitPlan.set('stroke-width',str(epaisseur_femelle))
+	groupe_plan.append(traitPlan)
 	
-	# Dessus ***************************************
-	# rectangle dessus
-	rectangleDessus=inkex.etree.Element(inkex.addNS('rect','svg'))
-	rectangleDessus.set('x',str(-coteDessus*echelle/2) )
-	rectangleDessus.set('y',str(-coteDessus*echelle/2) )
-	rectangleDessus.set('width',str(coteDessus*echelle))
-	rectangleDessus.set('height',str(coteDessus*echelle))
-	rectangleDessus.set('style','fill:white')
-	rectangleDessus.set('stroke',couleur_male)
-	rectangleDessus.set('stroke-width',str(epaisseur_male))
-	dessus.append(rectangleDessus)
+	# sphere ***************************************
+	# sphere
+	sphere=inkex.etree.Element(inkex.addNS('circle','svg'))
+	sphere.set('cx','0')
+	sphere.set('cy','0')
+	sphere.set('r',str(sp2Dc_diametre_sphere/2.*echelle))
+	sphere.set('style','fill:white')
+	sphere.set('stroke',couleur_male)
+	sphere.set('stroke-width',str(epaisseur_male))
+	groupe_sphere.append(sphere)
 
-	traitDessus=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(coteDessus/2.	,	0),
-				(coteDessous/2.+longueurTrait	,	0)	])
-	traitDessus.set('d',chemin)
-	traitDessus.set('stroke',couleur_male)
-	traitDessus.set('stroke-width',str(epaisseur_male))
-	dessus.append(traitDessus)
+	
+	#trait
+	traitSphere=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin=points_to_svgd([	(sp2Dc_diametre_sphere/2.*echelle	,0),
+				((sp2Dc_diametre_sphere/2.+sp2Dd_longueur_tige_sphere)*echelle	,0)	])
+	traitSphere.set('d',chemin)
+	traitSphere.set('stroke',couleur_male)
+	traitSphere.set('stroke-width',str(epaisseur_male))
+	groupe_sphere.append(traitSphere)
 	
 	# Transformations ***************************************
-	dessous.set("transform","rotate("+str(rotationDessous)+")")
-	dessus.set("transform","rotate("+str(rotationDessus)+")")
+	groupe_plan.set("transform","rotate("+str(rotationPlan)+")")
+	groupe_sphere.set("transform","rotate("+str(rotationSphere)+")")
 	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
@@ -201,7 +215,7 @@ def dessin_plane_2D_dessus(options,contexte):
 
 
 #===============================================================
-def dessin_plane_3D(options,contexte):
+def dessin_sphere_plan_3D(options,contexte):
 	#Origine 2D
 	x0=options.x0
 	y0=options.y0
@@ -210,94 +224,113 @@ def dessin_plane_3D(options,contexte):
 	Vx,Vy,Vz=getVecteursAxonometriques(echelle)
 	base=(Vx,Vy,Vz)
 	#Centre de la liaison dans le repere 3D
-	x=options.liaison_plane_3D_position_x
-	y=options.liaison_plane_3D_position_y
-	z=options.liaison_plane_3D_position_z
+	x=options.liaison_sphere_plan_3D_position_x
+	y=options.liaison_sphere_plan_3D_position_y
+	z=options.liaison_sphere_plan_3D_position_z
 	vPosition=v3D(x,y,z,base)#Vecteur position exprime dans la base axono
 	#Parametres de la liaison
-	largeur=30.
-	rayonTige=25.
-	ecart=2.5
-	couleur_dessus=options.opt_gene_piece1_couleur
-	couleur_dessous=options.opt_gene_piece2_couleur
-	epaisseur_dessus=options.opt_gene_lignes_epaisseur_1
-	epaisseur_dessous=options.opt_gene_lignes_epaisseur_2
-	angle_dessus=-float(options.liaison_plane_3D_orientation1)/180.*math.pi
-	angle_dessous=-float(options.liaison_plane_3D_orientation2)/180.*math.pi
+	couleur_plan=options.opt_gene_piece1_couleur
+	couleur_sphere=options.opt_gene_piece2_couleur
+	epaisseur_plan=options.opt_gene_lignes_epaisseur_1
+	epaisseur_sphere=options.opt_gene_lignes_epaisseur_2
+	angle_plan=-float(options.liaison_sphere_plan_3D_rotation_plan)/180.*math.pi
 	#Repere local de la liaison
-	if(options.liaison_plane_3D_type_normale=="\"liaison_plane_3D_type_normale_quelconque\""):
-		V=v3D(options.liaison_plane_3D_type_direction_quelconque_x,options.liaison_plane_3D_type_direction_quelconque_y,options.liaison_plane_3D_type_direction_quelconque_z,base)
-		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle,angle_dessus)#Repere male
-		Vx2,Vy2,Vz2=getBaseFromVecteur(V,echelle,angle_dessous)#Repere Femelle
+	#Plan
+	if(options.liaison_sphere_plan_3D_type_normale=="\"liaison_sphere_plan_3D_type_normale_quelconque\""):
+		V=v3D(options.liaison_sphere_plan_3D_normale_quelconque_x,options.liaison_sphere_plan_3D_normale_quelconque_y,options.liaison_sphere_plan_3D_normale_quelconque_z,base)
+		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle,angle_plan)#Repere plan
 	else:	#Si vecteur standard
-		if(options.liaison_plane_3D_axe=="x"):
-			Vx1,Vy1,Vz1=getBaseFromVecteur(Vx,echelle,angle_dessus)#Repere dessus
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vx,echelle,angle_dessous)#Repere dessous
-		elif(options.liaison_plane_3D_axe=="y"):
-			Vx1,Vy1,Vz1=getBaseFromVecteur(Vy,echelle,angle_dessus)#Repere dessus
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vy,echelle,angle_dessous)#Repere dessous
+		if options.liaison_plane_3D_axe == "x" :
+			Vx1,Vy1,Vz1 = getBaseFromVecteur(Vx, echelle, angle_plan)
+		elif options.liaison_plane_3D_axe == "-x" :
+			Vx1,Vy1,Vz1 = getBaseFromVecteur(-Vx, echelle, angle_plan)
+		elif options.liaison_plane_3D_axe == "y" :
+			Vx1,Vy1,Vz1 = getBaseFromVecteur(Vy, echelle, angle_plan)
+		elif options.liaison_plane_3D_axe == "-y" :
+			Vx1,Vy1,Vz1 = getBaseFromVecteur(-Vy, echelle, angle_plan)
+		elif options.liaison_plane_3D_axe == "z" :
+			Vx1,Vy1,Vz1 = getBaseFromVecteur(Vz, echelle, angle_plan)
 		else:#z
-			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz,echelle,angle_dessus)#Repere dessus
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vz,echelle,angle_dessous)#Repere dessous
+			Vx1,Vy1,Vz1 = getBaseFromVecteur(-Vz, echelle, angle_plan)
 	baseLocale1=(Vx1,Vy1,Vz1)
+	#Sphère
+	if(options.liaison_sphere_plan_3D_type_direction_sphere=="\"liaison_sphere_plan_3D_type_direction_sphere_quelconque\""):
+		V=v3D(options.liaison_sphere_plan_3D_direction_sphere_quelconque_x,options.liaison_sphere_plan_3D_direction_sphere_quelconque_y,options.liaison_sphere_plan_3D_direction_sphere_quelconque_z,base)
+		Vx2,Vy2,Vz2=getBaseFromVecteur(V,echelle,angle_plan)#Repere plan
+	else:	#Si vecteur standard
+		if options.liaison_sphere_plan_3D_axe_sphere == "normale" :
+			Vx2,Vy2,Vz2 = Vx1,Vy1,Vz1
+		elif options.liaison_sphere_plan_3D_axe_sphere == "x" :
+			Vx2,Vy2,Vz2 = getBaseFromVecteur(Vx, echelle)
+		elif options.liaison_sphere_plan_3D_axe_sphere == "-x" :
+			Vx2,Vy2,Vz2 = getBaseFromVecteur(-Vx, echelle)
+		elif options.liaison_sphere_plan_3D_axe_sphere == "y" :
+			Vx2,Vy2,Vz2 = getBaseFromVecteur(Vy, echelle)
+		elif options.liaison_sphere_plan_3D_axe_sphere == "-y":
+			Vx2,Vy2,Vz2 = getBaseFromVecteur(-Vy, echelle)
+		elif options.liaison_sphere_plan_3D_axe_sphere == "z" :
+			Vx2,Vy2,Vz2 = getBaseFromVecteur(Vz, echelle)
+		else :
+			Vx2,Vy2,Vz2 = getBaseFromVecteur(-Vz, echelle)
 	baseLocale2=(Vx2,Vy2,Vz2)
 
-	# Dessus ***************************************
-	planDessus=inkex.etree.Element(inkex.addNS('path','svg'))
+	# Plan ***************************************
+	plan=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
-					(ecart,	-largeur/2.,	-largeur/2.	),
-					(ecart,	-largeur/2.,	largeur/2.	),
-					(ecart,	largeur/2.,	largeur/2.	),
-					(ecart,	largeur/2.,	-largeur/2.	)
+					(0,	-sp3D_largeur/2.,	-sp3D_largeur/2.	),
+					(0,	-sp3D_largeur/2.,	sp3D_largeur/2.	),
+					(0,	sp3D_largeur/2.,	sp3D_largeur/2.	),
+					(0,	sp3D_largeur/2.,	-sp3D_largeur/2.	)
 				],True,baseLocale1)
-	planDessus.set('d',chemin)
-	planDessus.set('stroke',couleur_dessus)
-	planDessus.set('stroke-width',str(epaisseur_dessus))
-	planDessus.set('style','fill:white')
-	planDessus.set('profondeur',str(profondeur))
+	plan.set('d',chemin)
+	plan.set('stroke',couleur_plan)
+	plan.set('stroke-width',str(epaisseur_plan))
+	plan.set('style','fill:white')
+	plan.set('profondeur',str(profondeur))
 	
 
-	tigeDessus=inkex.etree.Element(inkex.addNS('path','svg'))
+	tigePlan=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
-					(ecart,	0.,	0.	),
-					(rayonTige,	0.,	0.	)
+						(0,				0.,	0.	),
+						(-sp3D_longueur_tige_plan,	0.,	0.	)
 				],False,baseLocale1)
-	tigeDessus.set('d',chemin)
-	tigeDessus.set('stroke',couleur_dessus)
-	tigeDessus.set('stroke-width',str(epaisseur_dessus))
-	tigeDessus.set('style','stroke-linecap:round')
-	tigeDessus.set('profondeur',str(profondeur))
+	tigePlan.set('d',chemin)
+	tigePlan.set('stroke',couleur_plan)
+	tigePlan.set('stroke-width',str(epaisseur_plan))
+	tigePlan.set('style','stroke-linecap:round')
+	tigePlan.set('profondeur',str(profondeur))
 	
-	# Dessous ***************************************
-	planDessous=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin,profondeur=points3D_to_svgd([
-					(-ecart,	-largeur/2.,	-largeur/2.	),
-					(-ecart,	-largeur/2.,	largeur/2.	),
-					(-ecart,	largeur/2.,	largeur/2.	),
-					(-ecart,	largeur/2.,	-largeur/2.	)
-				],True,baseLocale2)
-	planDessous.set('d',chemin)
-	planDessous.set('stroke',couleur_dessous)
-	planDessous.set('stroke-width',str(epaisseur_dessous))
-	planDessous.set('style','fill:white')
-	planDessous.set('profondeur',str(profondeur))
+	# Sphère ***************************************
+	Vcentre = Vx1 * sp3D_diametre_sphere / 2.
+	
+	sphere=inkex.etree.Element(inkex.addNS('circle','svg'))
+	sphere.set('cx', str(Vx1.x*sp3D_diametre_sphere/2.))
+	sphere.set('cy', str(Vx1.y*sp3D_diametre_sphere/2.))
+	sphere.set('r',str(sp3D_diametre_sphere/2.*echelle))
+	sphere.set('style','fill:white')
+	sphere.set('stroke',couleur_sphere)
+	sphere.set('stroke-width',str(epaisseur_sphere))
+	sphere.set('profondeur',str(Vx1.z))
 
-	tigeDessous=inkex.etree.Element(inkex.addNS('path','svg'))
+
+	tigeSphere=inkex.etree.Element(inkex.addNS('path','svg'))
+	P1=(Vx1+Vx2) * sp3D_diametre_sphere/2.
+	P2=(Vx1+Vx2) * sp3D_diametre_sphere/2. + Vx2*sp3D_longueur_tige_sphere
 	chemin,profondeur=points3D_to_svgd([
-					(-ecart,	0.,	0.	),
-					(-rayonTige,	0.,	0.	)
-				],False,baseLocale2)
-	tigeDessous.set('d',chemin)
-	tigeDessous.set('stroke',couleur_dessous)
-	tigeDessous.set('stroke-width',str(epaisseur_dessous))
-	tigeDessous.set('style','stroke-linecap:round')
-	tigeDessous.set('profondeur',str(profondeur))
+					(P1.x,	P1.y,	P1.z	),
+					(P2.x,	P2.y,	P2.z	)
+				],False)
+	tigeSphere.set('d',chemin)
+	tigeSphere.set('stroke',couleur_sphere)
+	tigeSphere.set('stroke-width',str(epaisseur_sphere))
+	tigeSphere.set('style','stroke-linecap:round')
+	tigeSphere.set('profondeur',str(profondeur))
 	
 
 
 	# Ajout au Groupe ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
-        listeObjets=[planDessous,tigeDessous,planDessus,tigeDessus]
+        listeObjets=[sphere,tigeSphere,plan,tigePlan]
         ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
         
         

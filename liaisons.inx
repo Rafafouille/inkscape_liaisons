@@ -435,21 +435,28 @@
 						</param>
 						<param name="liaison_sphere_plan_2D_cote_orientation_sphere" type="float"  min="-360" max="360" precision="1" gui-text="Orientation (deg) :">0</param>
 				</page>
-				<!--
 				<page name="liaison_sphere_plan_2D_dessus" gui-text="2D (Dessus)">
 	  				<param name="titre_position_sphere_plan_2D_dessus" type="description" appearance="header">Position</param>
 	  					<param name="liaison_sphere_plan_2D_dessus_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
 	  					<param name="liaison_sphere_plan_2D_dessus_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
 	  				<param name="titre_orientation_sphere_plan_2D_dessus" type="description" appearance="header">Orientation</param>
-						<param name="liaison_sphere_plan_2D_dessus_axe_sphere" type="enum" gui-text="Sphère">
+						<param name="liaison_sphere_plan_2D_dessus_axe_plan" type="enum" gui-text="Plan">
+							<item value="-y">-Y</item>
+							<item value="-x">-X</item>
+							<item value="y">Y</item>
 							<item value="x">X</item>
 							<item value="autre">Via l'angle ci-dessous</item>
+						</param>
+						<param name="liaison_sphere_plan_2D_dessus_orientation_plan" type="float"  min="-360" max="360" precision="1" gui-text="Orientation Plan (deg) : ">90</param>
+						<param name="liaison_sphere_plan_2D_dessus_axe_sphere" type="enum" gui-text="Sphère">
+							<item value="x">X</item>
 							<item value="y">Y</item>
 							<item value="-x">-X</item>
 							<item value="-y">-Y</item>
+							<item value="autre">Via l'angle ci-dessous</item>
 						</param>
 						<param name="liaison_sphere_plan_2D_dessus_orientation_sphere" type="float"  min="-360" max="360" precision="1" gui-text="Orientation Sphère (deg) : ">0</param>
-						<param name="liaison_sphere_plan_2D_dessus_orientation_plan" type="float"  min="-360" max="360" precision="1" gui-text="Orientation Plan (deg) : ">90</param>
+
 				</page>
 				<page name="liaison_sphere_plan_3D" gui-text="3D">
 					<param name="titre_position_sphere_plan_3D" type="description" appearance="header">Position</param>
@@ -492,7 +499,7 @@
 		  					<param name="liaison_sphere_plan_3D_direction_sphere_quelconque_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >0</param>
 						</page>
 					</param>
-				</page>-->
+				</page>
 			</param>
 		</page>
 	  </param>
