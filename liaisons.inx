@@ -13,6 +13,7 @@
   <dependency type="executable" location="extensions">liaisons_plane.py</dependency>
   <dependency type="executable" location="extensions">liaisons_helicoidale.py</dependency>
   <dependency type="executable" location="extensions">liaisons_sphere_plan.py</dependency>
+  <dependency type="executable" location="extensions">liaisons_rectiligne.py</dependency>
   <dependency type="executable" location="extensions">inkex.py</dependency>
   
   <!-- ====================================================  -->
@@ -499,6 +500,49 @@
 		  					<param name="liaison_sphere_plan_3D_direction_sphere_quelconque_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >0</param>
 						</page>
 					</param>
+				</page>
+			</param>
+		</page>
+		<!-- RECTILIGNE -->
+		<page name="liaison_rectiligne" gui-text="Rectiligne">
+			<param name="liaison_rectiligne_type" type="notebook">
+				<page name="liaison_rectiligne_2D_cote" gui-text="2D (coté)">
+					<param name="titre_position_rectiligne_2D_cote" type="description" appearance="header">Position</param>
+	  					<param name="liaison_rectiligne_2D_cote_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_rectiligne_2D_cote_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+	  				<param name="titre_orientation_rectiligne_2D_cote" type="description" appearance="header">Orientation</param>
+						<param name="liaison_rectiligne_cote_axe_normale" type="enum" gui-text="Normale :">
+							<item value="y">Y</item>
+							<item value="autre">Via l'angle ci-dessous</item>
+							<item value="x">X</item>
+							<item value="-x">-X</item>
+							<item value="-y">-Y</item>
+						</param>
+						<param name="liaison_rectiligne_2D_cote_orientation_normale" type="float"  min="-360" max="360" precision="1" gui-text="Orientation (deg) :">0</param>
+				</page>
+				<page name="liaison_rectiligne_2D_bout" gui-text="2D (bout)">
+					<param name="titre_position_rectiligne_2D_bout" type="description" appearance="header">Position</param>
+	  					<param name="liaison_rectiligne_2D_bout_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_rectiligne_2D_bout_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+	  				<param name="titre_orientation_rectiligne_2D_bout" type="description" appearance="header">Orientation de la normale</param>
+						<param name="liaison_rectiligne_bout_axe_normale" type="enum" gui-text="Normale :">
+							<item value="y">Y</item>
+							<item value="autre">Via l'angle ci-dessous</item>
+							<item value="x">X</item>
+							<item value="-x">-X</item>
+							<item value="-y">-Y</item>
+						</param>
+						<param name="liaison_rectiligne_2D_bout_orientation_normale" type="float"  min="-360" max="360" precision="1" gui-text="Orientation (deg) :">0</param>
+	  				<param name="titre_orientation_prisme_rectiligne_2D_bout" type="description" appearance="header">Orientation du prisme</param>
+						<param name="liaison_rectiligne_bout_axe_prisme" type="enum" gui-text="Axe prisme :">
+							<item value="normale">Identique à la normale</item>
+							<item value="autre">Via l'angle ci-dessous</item>
+							<item value="x">X</item>
+							<item value="y">Y</item>
+							<item value="-x">-X</item>
+							<item value="-y">-Y</item>
+						</param>
+						<param name="liaison_rectiligne_2D_bout_orientation_prisme" type="float"  min="-360" max="360" precision="1" gui-text="Orientation (deg) :">0</param>
 				</page>
 			</param>
 		</page>

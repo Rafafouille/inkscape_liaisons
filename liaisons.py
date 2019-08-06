@@ -22,6 +22,7 @@ from liaisons_plane import *
 from liaisons_spherique import *
 from liaisons_helicoidale import *
 from liaisons_sphere_plan import *
+from liaisons_rectiligne import *
 
 
 
@@ -234,6 +235,21 @@ class Liaisons(inkex.Effect):
         self.OptionParser.add_option('--liaison_sphere_plan_3D_direction_sphere_quelconque_y', action = 'store', type = 'float', dest = 'liaison_sphere_plan_3D_direction_sphere_quelconque_y', default = 0, help = u"Coordonnee sur y du vecteur directeur de la tige de sphere de la sphère-plan 3D")
         self.OptionParser.add_option('--liaison_sphere_plan_3D_direction_sphere_quelconque_z', action = 'store', type = 'float', dest = 'liaison_sphere_plan_3D_direction_sphere_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur directeur de la tige de sphere de la sphère-plan 3D")
 
+	#LIAISON RECTILIGNE **********************************************
+        self.OptionParser.add_option('--liaison_rectiligne_type', action = 'store', type = 'string', dest = 'liaison_rectiligne_type', default = 'liaison_rectiligne_2D_cote', help = u"Type de representation de la liaison rectiligne")
+        
+        self.OptionParser.add_option('--liaison_rectiligne_2D_cote_x', action = 'store', type = 'float', dest = 'liaison_rectiligne_2D_cote_x', default = '0', help = u"Position sur X de la liaison rectiligne 2D coté relativement a l'origine")
+	self.OptionParser.add_option('--liaison_rectiligne_2D_cote_y', action = 'store', type = 'float', dest = 'liaison_rectiligne_2D_cote_y', default = '0', help = u"Position sur Y de la liaison rectiligne 2D coté relativement a l'origine")       
+        self.OptionParser.add_option('--liaison_rectiligne_cote_axe_normale', action = 'store', type = 'string', dest = 'liaison_rectiligne_cote_axe_normale', default = 'y', help = u"Principales directions de la normale de la liaison rectiligne 2D vue de coté")
+        self.OptionParser.add_option('--liaison_rectiligne_2D_cote_orientation_normale', action = 'store', type = 'float', dest = 'liaison_rectiligne_2D_cote_orientation_normale', default = '0', help = u"Orientation de la normale de la liaison rectiligne 2D (coté) en degres")
+       
+        self.OptionParser.add_option('--liaison_rectiligne_2D_bout_x', action = 'store', type = 'float', dest = 'liaison_rectiligne_2D_bout_x', default = '0', help = u"Position sur X de la liaison rectiligne 2D vue du bout relativement a l'origine")
+	self.OptionParser.add_option('--liaison_rectiligne_2D_bout_y', action = 'store', type = 'float', dest = 'liaison_rectiligne_2D_bout_y', default = '0', help = u"Position sur Y de la liaison rectiligne 2D vue du bout relativement a l'origine")
+        self.OptionParser.add_option('--liaison_rectiligne_bout_axe_normale', action = 'store', type = 'string', dest = 'liaison_rectiligne_bout_axe_normale', default = 'y', help = u"Principales directions de la normale de la liaison rectiligne 2D vue du bout")
+        self.OptionParser.add_option('--liaison_rectiligne_2D_bout_orientation_normale', action = 'store', type = 'float', dest = 'liaison_rectiligne_2D_bout_orientation_normale', default = '0', help = u"Orientation de la normale de la liaison rectiligne 2D (bout) en degres")
+        self.OptionParser.add_option('--liaison_rectiligne_bout_axe_prisme', action = 'store', type = 'string', dest = 'liaison_rectiligne_bout_axe_prisme', default = 'y', help = u"Principales directions du prisme de la liaison rectiligne 2D vue du bout")
+        self.OptionParser.add_option('--liaison_rectiligne_2D_bout_orientation_prisme', action = 'store', type = 'float', dest = 'liaison_rectiligne_2D_bout_orientation_prisme', default = '0', help = u"Orientation du prisme de la liaison rectiligne 2D (bout) en degres")
+        
         #OPTIONS GENERALES ******************************************
         self.OptionParser.add_option('--opt_generales', action = 'store', type = 'string', dest = 'opt_generales', default = 'opt_gene_origine', help = u"Onglet des options generales")
         
@@ -331,6 +347,12 @@ class Liaisons(inkex.Effect):
 			dessin_sphere_plan_2D_dessus(self.options,svg)
 		if(type_liaison=="\"liaison_sphere_plan_3D\""):
 			dessin_sphere_plan_3D(self.options,svg)
+	if liaison == "\"liaison_rectiligne\"" :
+		type_liaison=self.options.liaison_rectiligne_type
+		if(type_liaison=="\"liaison_rectiligne_2D_cote\""):
+			dessin_rectiligne_plan_2D_cote(self.options,svg)
+		if(type_liaison=="\"liaison_rectiligne_2D_bout\""):
+			dessin_rectiligne_2D_bout(self.options,svg)
 		
 		
 	
