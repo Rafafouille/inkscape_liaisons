@@ -120,7 +120,10 @@ class v3D:
 		return self
 		
 	def __mul__(self,l):
-		return v3D(self.x*l,self.y*l,self.z*l)
+		if l.__class__.__name__=="v3D": #Si c'est pour un produit scalaire
+			return self.x*l.x + self.y*l.y + self.z*l.z
+		else :#Si c'est pour un produit scalaire
+			return v3D(self.x*l,self.y*l,self.z*l)
 	def __rmul__(self,l):
 		return self*l
 	def __imul__(self,l):
@@ -136,6 +139,9 @@ class v3D:
 		self.y/=float(l)
 		self.z/=float(l)
 		return self
+	
+	def __xor__(self,v):
+		return v3D(self.y*v.z - self.z*v.y, self.z*v.x - self.x*v.z, self.x*v.y - self.y*v.x)
 		
 	def __neg__(self):
 		return v3D(-self.x,-self.y,-self.z)

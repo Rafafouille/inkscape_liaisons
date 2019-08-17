@@ -250,6 +250,21 @@ class Liaisons(inkex.Effect):
         self.OptionParser.add_option('--liaison_rectiligne_bout_axe_prisme', action = 'store', type = 'string', dest = 'liaison_rectiligne_bout_axe_prisme', default = 'y', help = u"Principales directions du prisme de la liaison rectiligne 2D vue du bout")
         self.OptionParser.add_option('--liaison_rectiligne_2D_bout_orientation_prisme', action = 'store', type = 'float', dest = 'liaison_rectiligne_2D_bout_orientation_prisme', default = '0', help = u"Orientation du prisme de la liaison rectiligne 2D (bout) en degres")
         
+        self.OptionParser.add_option('--liaison_rectiligne_3D_position_x', action = 'store', type = 'float', dest = 'liaison_rectiligne_3D_position_x', default = 0, help = u"Coordonnee sur x du centre de la liaison rectiligne 3D")
+        self.OptionParser.add_option('--liaison_rectiligne_3D_position_y', action = 'store', type = 'float', dest = 'liaison_rectiligne_3D_position_y', default = 0, help = u"Coordonnee sur y du centre de la liaison rectiligne 3D")
+        self.OptionParser.add_option('--liaison_rectiligne_3D_position_z', action = 'store', type = 'float', dest = 'liaison_rectiligne_3D_position_z', default = 0, help = u"Coordonnee sur z du centre de la liaison rectiligne 3D")
+	self.OptionParser.add_option('--liaison_rectiligne_3D_type_normale', action = 'store', type = 'str', dest = 'liaison_rectiligne_3D_type_normale', default = 'liaison_rectiligne_3D_type_normale_standard', help = u"Choix du type de normale de la liaison rectiligne 3D")
+	self.OptionParser.add_option('--liaison_rectiligne_3D_axe_normale', action = 'store', type = 'str', dest = 'liaison_rectiligne_3D_axe_normale', default = 'z', help = u"Orientations standard de l'axe de la rectiligne 3D")
+	self.OptionParser.add_option('--liaison_rectiligne_3D_normale_quelconque_x', action = 'store', type = 'float', dest = 'liaison_rectiligne_3D_normale_quelconque_x', default = 0, help = u"Coordonnee sur x du vecteur directeur de la normale rectiligne 3D")
+	self.OptionParser.add_option('--liaison_rectiligne_3D_normale_quelconque_y', action = 'store', type = 'float', dest = 'liaison_rectiligne_3D_normale_quelconque_y', default = 0, help = u"Coordonnee sur y du vecteur directeur de la normale rectiligne 3D")
+	self.OptionParser.add_option('--liaison_rectiligne_3D_normale_quelconque_z', action = 'store', type = 'float', dest = 'liaison_rectiligne_3D_normale_quelconque_z', default = 1, help = u"Coordonnee sur z du vecteur directeur de la normale rectiligne 3D")
+	self.OptionParser.add_option('--liaison_rectiligne_3D_type_direction', action = 'store', type = 'str', dest = 'liaison_rectiligne_3D_type_direction', default = 'liaison_rectiligne_3D_type_direction_standard', help = u"Choix du type de direction de la liaison rectiligne 3D")
+	self.OptionParser.add_option('--liaison_rectiligne_3D_axe_direction', action = 'store', type = 'str', dest = 'liaison_rectiligne_3D_axe_direction', default = 'x', help = u"Orientations standard de la direction de la rectiligne 3D")
+        self.OptionParser.add_option('--liaison_rectiligne_3D_direction_quelconque_x', action = 'store', type = 'float', dest = 'liaison_rectiligne_3D_direction_quelconque_x', default = 1, help = u"Coordonnee sur x du vecteur directeur de la direction rectiligne 3D")
+        self.OptionParser.add_option('--liaison_rectiligne_3D_direction_quelconque_y', action = 'store', type = 'float', dest = 'liaison_rectiligne_3D_direction_quelconque_y', default = 0, help = u"Coordonnee sur y du vecteur directeur de la direction rectiligne 3D")
+        self.OptionParser.add_option('--liaison_rectiligne_3D_direction_quelconque_z', action = 'store', type = 'float', dest = 'liaison_rectiligne_3D_direction_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur directeur de la direction rectiligne 3D")
+        self.OptionParser.add_option('--liaison_rectiligne_3D_inclinaison_prisme', action = 'store', type = 'float', dest = 'liaison_rectiligne_3D_inclinaison_prisme', default = '0', help = u"Orientation du prisme en degres")
+
         #OPTIONS GENERALES ******************************************
         self.OptionParser.add_option('--opt_generales', action = 'store', type = 'string', dest = 'opt_generales', default = 'opt_gene_origine', help = u"Onglet des options generales")
         
@@ -353,6 +368,8 @@ class Liaisons(inkex.Effect):
 			dessin_rectiligne_plan_2D_cote(self.options,svg)
 		if(type_liaison=="\"liaison_rectiligne_2D_bout\""):
 			dessin_rectiligne_2D_bout(self.options,svg)
+		if(type_liaison=="\"liaison_rectiligne_3D\""):
+			dessin_rectiligne_3D(self.options,svg)
 		
 		
 	

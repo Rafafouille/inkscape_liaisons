@@ -544,6 +544,47 @@
 						</param>
 						<param name="liaison_rectiligne_2D_bout_orientation_prisme" type="float"  min="-360" max="360" precision="1" gui-text="Orientation (deg) :">0</param>
 				</page>
+				<page name="liaison_rectiligne_3D" gui-text="3D">
+					<param name="titre_position_rectiligne_plan_3D" type="description" appearance="header">Position</param>
+	  					<param name="liaison_rectiligne_3D_position_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_rectiligne_3D_position_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_rectiligne_3D_position_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >0</param>
+					<param name="liaison_rectiligne_3D_type_normale" type="notebook">
+						<page name="liaison_rectiligne_3D_type_normale_standard" gui-text="Normales standard">
+								<param name="liaison_rectiligne_3D_axe_normale" type="enum" gui-text="Direction de la normale :">
+									<item value="z">Z</item>
+									<item value="x">X</item>
+									<item value="y">Y</item>
+									<item value="-x">-X</item>
+									<item value="-y">-Y</item>
+									<item value="-z">-Z</item>
+								</param>
+						</page>
+						<page name="liaison_rectiligne_3D_type_normale_quelconque" gui-text="Vecteur Directeur">
+		  					<param name="liaison_rectiligne_3D_normale_quelconque_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >1</param>
+		  					<param name="liaison_rectiligne_3D_normale_quelconque_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+		  					<param name="liaison_rectiligne_3D_normale_quelconque_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >0</param>
+						</page>
+					</param>
+					<param name="liaison_rectiligne_3D_type_direction" type="notebook">
+						<page name="liaison_rectiligne_3D_type_direction_standard" gui-text="Direction standard">
+								<param name="liaison_rectiligne_3D_axe_direction" type="enum" gui-text="Direction du contact :">
+									<item value="x">X</item>
+									<item value="y">Y</item>
+									<item value="z">Z</item>
+									<item value="-x">-X</item>
+									<item value="-y">-Y</item>
+									<item value="-z">-Z</item>
+								</param>
+						</page>
+						<page name="liaison_rectiligne_3D_type_direction_quelconque" gui-text="Vecteur Directeur">
+		  					<param name="liaison_rectiligne_3D_direction_quelconque_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >1</param>
+		  					<param name="liaison_rectiligne_3D_direction_quelconque_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+		  					<param name="liaison_rectiligne_3D_direction_quelconque_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >0</param>
+						</page>
+					</param>
+					<param name="liaison_rectiligne_3D_inclinaison_prisme" type="float"  min="-360" max="360" precision="1" gui-text="Inclinaison (deg) :">0</param>
+				</page>
 			</param>
 		</page>
 	  </param>

@@ -185,7 +185,7 @@ def dessin_rectiligne_2D_bout(options,contexte):
 
 
 #===============================================================
-def dessin_plane_3D(options,contexte):
+def dessin_rectiligne_3D(options,contexte):
 	#Origine 2D
 	x0=options.x0
 	y0=options.y0
@@ -199,89 +199,171 @@ def dessin_plane_3D(options,contexte):
 	z=options.liaison_plane_3D_position_z
 	vPosition=v3D(x,y,z,base)#Vecteur position exprime dans la base axono
 	#Parametres de la liaison
-	largeur=30.
-	rayonTige=25.
-	ecart=2.5
-	couleur_dessus=options.opt_gene_piece1_couleur
-	couleur_dessous=options.opt_gene_piece2_couleur
-	epaisseur_dessus=options.opt_gene_lignes_epaisseur_1
-	epaisseur_dessous=options.opt_gene_lignes_epaisseur_2
-	angle_dessus=-float(options.liaison_plane_3D_orientation1)/180.*math.pi
-	angle_dessous=-float(options.liaison_plane_3D_orientation2)/180.*math.pi
+	inclinaison = options.liaison_rectiligne_3D_inclinaison_prisme
+	couleur_plan = options.opt_gene_piece1_couleur
+	couleur_dessous = options.opt_gene_piece2_couleur
+	epaisseur_plan = options.opt_gene_lignes_epaisseur_1
+	epaisseur_dessous = options.opt_gene_lignes_epaisseur_2
+	angle_inclinaison_prisme = -float(options.liaison_rectiligne_3D_inclinaison_prisme)/180.*math.pi
 	#Repere local de la liaison
-	if(options.liaison_plane_3D_type_normale=="\"liaison_plane_3D_type_normale_quelconque\""):
-		V=v3D(options.liaison_plane_3D_type_direction_quelconque_x,options.liaison_plane_3D_type_direction_quelconque_y,options.liaison_plane_3D_type_direction_quelconque_z,base)
-		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle,angle_dessus)#Repere male
-		Vx2,Vy2,Vz2=getBaseFromVecteur(V,echelle,angle_dessous)#Repere Femelle
+	if(options.liaison_rectiligne_3D_type_normale!="\"liaison_rectiligne_3D_type_normale_standard\""):
+		Vn = v3D(options.liaison_rectiligne_3D_normale_quelconque_x, options.liaison_rectiligne_3D_normale_quelconque_y, options.liaison_rectiligne_3D_normale_quelconque_z,base)
 	else:	#Si vecteur standard
-		if(options.liaison_plane_3D_axe=="x"):
-			Vx1,Vy1,Vz1=getBaseFromVecteur(Vx,echelle,angle_dessus)#Repere dessus
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vx,echelle,angle_dessous)#Repere dessous
-		elif(options.liaison_plane_3D_axe=="y"):
-			Vx1,Vy1,Vz1=getBaseFromVecteur(Vy,echelle,angle_dessus)#Repere dessus
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vy,echelle,angle_dessous)#Repere dessous
-		else:#z
-			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz,echelle,angle_dessus)#Repere dessus
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vz,echelle,angle_dessous)#Repere dessous
+		if(options.liaison_rectiligne_3D_axe_normale=="x"):
+			Vn = v3D(1, 0, 0, base)
+		elif(options.liaison_rectiligne_3D_axe_normale=="y"):
+			Vn = v3D(0, 1, 0, base)
+		elif(options.liaison_rectiligne_3D_axe_normale=="z"):
+			Vn = v3D(0, 0, 1, base)
+		elif(options.liaison_rectiligne_3D_axe_normale=="-x"):
+			Vn = v3D(-1, 0, 0, base)
+		elif(options.liaison_rectiligne_3D_axe_normale=="-y"):
+			Vn = v3D(0, -1, 0, base)
+		elif(options.liaison_rectiligne_3D_axe_normale=="-z"):
+			Vn = v3D(0, 0, -1, base)
+	if(options.liaison_rectiligne_3D_type_direction!="\"liaison_rectiligne_3D_type_direction_standard\""):
+		Vd = v3D(options.liaison_rectiligne_3D_direction_quelconque_x, options.liaison_rectiligne_3D_direction_quelconque_y, options.liaison_rectiligne_3D_direction_quelconque_z,base)
+	else:
+		if(options.liaison_rectiligne_3D_axe_direction=="x"):
+			Vd = v3D(1, 0, 0, base)
+		elif(options.liaison_rectiligne_3D_axe_direction=="y"):
+			Vd = v3D(0, 1, 0, base)
+		elif(options.liaison_rectiligne_3D_axe_direction=="z"):
+			Vd = v3D(0, 0, 1, base)
+		elif(options.liaison_rectiligne_3D_axe_direction=="-x"):
+			Vd = v3D(-1, 0, 0, base)
+		elif(options.liaison_rectiligne_3D_axe_direction=="-y"):
+			Vd = v3D(0, -1, 0, base)
+		elif(options.liaison_rectiligne_3D_axe_direction=="-z"):
+			Vd = v3D(0, 0, -1, base)
+	#============================================
+	Vn.normalise()
+	Vx1 = Vn
+	Vy1 = Vd - (Vd * Vn) * Vn
+	Vy1.normalise()
+	Vz1 = Vx1 ^Vy1
+	
+	Vx2 = Vx1*math.cos(inclinaison) - Vz1*math.sin(inclinaison)
+	Vy2 = Vy1
+	Vz2 = Vz1*math.sin(inclinaison) + Vz1*math.cos(inclinaison)
+	
 	baseLocale1=(Vx1,Vy1,Vz1)
 	baseLocale2=(Vx2,Vy2,Vz2)
 
-	# Dessus ***************************************
-	planDessus=inkex.etree.Element(inkex.addNS('path','svg'))
+	# plan ***************************************
+	plan=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
-					(ecart,	-largeur/2.,	-largeur/2.	),
-					(ecart,	-largeur/2.,	largeur/2.	),
-					(ecart,	largeur/2.,	largeur/2.	),
-					(ecart,	largeur/2.,	-largeur/2.	)
+					(0,	-r3D_longueur_plan/2.,	-r3D_largeur_plan/2.	),
+					(0,	-r3D_longueur_plan/2.,	r3D_largeur_plan/2.	),
+					(0,	r3D_longueur_plan/2.,	r3D_largeur_plan/2.	),
+					(0,	r3D_longueur_plan/2.,	-r3D_largeur_plan/2.	)
 				],True,baseLocale1)
-	planDessus.set('d',chemin)
-	planDessus.set('stroke',couleur_dessus)
-	planDessus.set('stroke-width',str(epaisseur_dessus))
-	planDessus.set('style','fill:white')
-	planDessus.set('profondeur',str(profondeur))
+	plan.set('d',chemin)
+	plan.set('stroke',couleur_plan)
+	plan.set('stroke-width',str(epaisseur_plan))
+	plan.set('profondeur',str(profondeur))
+	plan.set('style','fill:white;stroke-linejoin:round')
 	
 
-	tigeDessus=inkex.etree.Element(inkex.addNS('path','svg'))
+	tige_plan=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
-					(ecart,	0.,	0.	),
-					(rayonTige,	0.,	0.	)
+					(0,				0.,	0.	),
+					(-r3D_longueur_tige_plan,	0.,	0.	)
 				],False,baseLocale1)
-	tigeDessus.set('d',chemin)
-	tigeDessus.set('stroke',couleur_dessus)
-	tigeDessus.set('stroke-width',str(epaisseur_dessus))
-	tigeDessus.set('style','stroke-linecap:round')
-	tigeDessus.set('profondeur',str(profondeur))
+	tige_plan.set('d',chemin)
+	tige_plan.set('stroke',couleur_plan)
+	tige_plan.set('stroke-width',str(epaisseur_plan))
+	tige_plan.set('style','stroke-linecap:round')
+	tige_plan.set('profondeur',str(profondeur))
 	
-	# Dessous ***************************************
-	planDessous=inkex.etree.Element(inkex.addNS('path','svg'))
+	# Prisme ***************************************
+	base_prisme=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
-					(-ecart,	-largeur/2.,	-largeur/2.	),
-					(-ecart,	-largeur/2.,	largeur/2.	),
-					(-ecart,	largeur/2.,	largeur/2.	),
-					(-ecart,	largeur/2.,	-largeur/2.	)
+					(r3D_hauteur_prisme,	-r3D_longueur_base_prisme/2.,	-r3D_largeur_base_prisme/2.	),
+					(r3D_hauteur_prisme,	-r3D_longueur_base_prisme/2.,	r3D_largeur_base_prisme/2.	),
+					(r3D_hauteur_prisme,	r3D_longueur_base_prisme/2.,	r3D_largeur_base_prisme/2.	),
+					(r3D_hauteur_prisme,	r3D_longueur_base_prisme/2.,	-r3D_largeur_base_prisme/2.	)
 				],True,baseLocale2)
-	planDessous.set('d',chemin)
-	planDessous.set('stroke',couleur_dessous)
-	planDessous.set('stroke-width',str(epaisseur_dessous))
-	planDessous.set('style','fill:white')
-	planDessous.set('profondeur',str(profondeur))
-
-	tigeDessous=inkex.etree.Element(inkex.addNS('path','svg'))
+	base_prisme.set('d',chemin)
+	base_prisme.set('stroke',couleur_dessous)
+	base_prisme.set('stroke-width',str(epaisseur_dessous))
+	base_prisme.set('style','fill:white;stroke-linejoin:round')
+	base_prisme.set('profondeur',str(profondeur))
+	profondeur_base = profondeur
+	
+	
+	flanc1_prisme=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
-					(-ecart,	0.,	0.	),
-					(-rayonTige,	0.,	0.	)
+					(0,	-r3D_longueur_contact/2.,	0	),
+					(0,	r3D_longueur_contact/2.,	0	),
+					(r3D_hauteur_prisme,	r3D_longueur_base_prisme/2.,	-r3D_largeur_base_prisme/2.	),
+					(r3D_hauteur_prisme,	-r3D_longueur_base_prisme/2.,	-r3D_largeur_base_prisme/2.	)
+				],True,baseLocale2)
+	flanc1_prisme.set('d',chemin)
+	flanc1_prisme.set('stroke',couleur_dessous)
+	flanc1_prisme.set('stroke-width',str(epaisseur_dessous))
+	flanc1_prisme.set('style','fill:white;stroke-linejoin:round')
+	flanc1_prisme.set('profondeur',str(profondeur_base*0.999+profondeur*0.001))
+	
+	
+	flanc2_prisme=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin,profondeur=points3D_to_svgd([
+					(0,	-r3D_longueur_contact/2.,	0	),
+					(0,	r3D_longueur_contact/2.,	0	),
+					(r3D_hauteur_prisme,	r3D_longueur_base_prisme/2.,	r3D_largeur_base_prisme/2.	),
+					(r3D_hauteur_prisme,	-r3D_longueur_base_prisme/2.,	r3D_largeur_base_prisme/2.	)
+				],True,baseLocale2)
+	flanc2_prisme.set('d',chemin)
+	flanc2_prisme.set('stroke',couleur_dessous)
+	flanc2_prisme.set('stroke-width',str(epaisseur_dessous))
+	flanc2_prisme.set('style','fill:white;stroke-linejoin:round')
+	flanc2_prisme.set('profondeur',str(profondeur_base*0.999+profondeur*0.001))
+	
+	
+	bout1_prisme=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin,profondeur=points3D_to_svgd([
+					(0,	r3D_longueur_contact/2.,	0	),
+					(r3D_hauteur_prisme,	r3D_longueur_base_prisme/2.,	r3D_largeur_base_prisme/2.	),
+					(r3D_hauteur_prisme,	r3D_longueur_base_prisme/2.,	-r3D_largeur_base_prisme/2.	)
+				],True,baseLocale2)
+	bout1_prisme.set('d',chemin)
+	bout1_prisme.set('stroke',couleur_dessous)
+	bout1_prisme.set('stroke-width',str(epaisseur_dessous))
+	bout1_prisme.set('style','fill:white;stroke-linejoin:round')
+	bout1_prisme.set('profondeur',str(profondeur_base*0.999+profondeur*0.001))
+	
+	
+	bout2_prisme=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin,profondeur=points3D_to_svgd([
+					(0,	-r3D_longueur_contact/2.,	0	),
+					(r3D_hauteur_prisme,	-r3D_longueur_base_prisme/2.,	r3D_largeur_base_prisme/2.	),
+					(r3D_hauteur_prisme,	-r3D_longueur_base_prisme/2.,	-r3D_largeur_base_prisme/2.	)
+				],True,baseLocale2)
+	bout2_prisme.set('d',chemin)
+	bout2_prisme.set('stroke',couleur_dessous)
+	bout2_prisme.set('stroke-width',str(epaisseur_dessous))
+	bout2_prisme.set('style','fill:white;stroke-linejoin:round')
+	bout2_prisme.set('profondeur',str(profondeur_base*0.999+profondeur*0.001))
+	
+
+
+
+	tige_prisme=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin,profondeur=points3D_to_svgd([
+					(r3D_hauteur_prisme,	0.,	0.	),
+					(r3D_hauteur_prisme+r3D_longueur_tige_prisme,	0.,	0.	)
 				],False,baseLocale2)
-	tigeDessous.set('d',chemin)
-	tigeDessous.set('stroke',couleur_dessous)
-	tigeDessous.set('stroke-width',str(epaisseur_dessous))
-	tigeDessous.set('style','stroke-linecap:round')
-	tigeDessous.set('profondeur',str(profondeur))
+	tige_prisme.set('d',chemin)
+	tige_prisme.set('stroke',couleur_dessous)
+	tige_prisme.set('stroke-width',str(epaisseur_dessous))
+	tige_prisme.set('style','stroke-linecap:round')
+	tige_prisme.set('profondeur',str(profondeur))
 	
 
 
 	# Ajout au Groupe ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
-        listeObjets=[planDessous,tigeDessous,planDessus,tigeDessus]
+        listeObjets=[plan,tige_plan,base_prisme,tige_prisme,flanc1_prisme,flanc2_prisme,bout1_prisme,bout2_prisme]
         ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
         
         
