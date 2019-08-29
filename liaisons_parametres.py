@@ -83,6 +83,37 @@ r3D_largeur_base_prisme = RECTILIGNE_largeur_base_prisme		# Largeur du rectangle
 r3D_hauteur_prisme = RECTILIGNE_hauteur_prisme			# Hauteur du prisme
 r3D_largeur_plan = RECTILIGNE_largeur_plan			# Largeur du plan
 r3D_longueur_plan = RECTILIGNE_longueur_plan			# Longueur du plan
-r3D_longueur_tige_prisme = 20					# Longueur de la tige au dessus du prisme
-r3D_longueur_tige_plan = 20					# Longueur de la tige sous le plan
+r3D_longueur_tige_prisme = 20.					# Longueur de la tige au dessus du prisme
+r3D_longueur_tige_plan = 20.					# Longueur de la tige sous le plan
+
+# ============== LIAISON SPHÈRE-CYLINDRE ========================
+
+# Parametres généraux
+SPHERE_CYLINDRE_longeur = 40.		# Longueur du cylindre
+SPHERE_CYLINDRE_diametre = 20. 		# Diamètre du cylindre + sphère
+
+# Sphère-Cylindre 2D vue de coté
+SC2Dc_longueur = SPHERE_CYLINDRE_longeur			# Longueur du cylindre
+SC2Dc_hauteur = 8						# Hauteur de la portion de cylindre projetée
+SC2Dc_diametre = SPHERE_CYLINDRE_diametre			# Diamètre du cylindre + sphère
+SC2Dc_longueur_tige_cylindre = SPHERE_CYLINDRE_diametre*0.75	# Longueur de tige sous le cylindre
+SC2Dc_longueur_tige_sphere = SPHERE_CYLINDRE_diametre*0.75	# Longueur de tige sur la sphère
+
+# Sphère-Cylindre 2D vue du bout
+SC2Db_largeur_plan = 1.5 * SPHERE_CYLINDRE_diametre		# Largeur du plan
+SC2Db_angle_ouverture = 140.					# Angle d'ouverture du cylindre (en degres)
+SC2Db_diametre = SPHERE_CYLINDRE_diametre			# Diamètre du cylindre + sphère
+SC2Db_intervalle_spheres = 0.2*SPHERE_CYLINDRE_diametre		# Intervalle
+SC2Db_longueur_tige_cylindre = SPHERE_CYLINDRE_diametre*0.75	# Longueur de tige sous le cylindre
+SC2Db_longueur_tige_sphere = SPHERE_CYLINDRE_diametre*0.75	# Longueur de tige sur la sphère
+
+# Sphère-Cylindre 3D
+SC3D_longueur = SPHERE_CYLINDRE_longeur				# Longueur du cylindre
+SC3D_diametre = SPHERE_CYLINDRE_diametre			# Diamètre du cylindre + sphère
+SC3D_longueur_tige_cylindre = SPHERE_CYLINDRE_diametre*0.75	# Longueur de tige sous le cylindre
+SC3D_longueur_tige_sphere = SPHERE_CYLINDRE_diametre*0.75	# Longueur de tige sur la sphère
+SC3D_angle_ouverture = 140.					# Angle d'ouverture du cylindre (en degres)
+
+
+
 

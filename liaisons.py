@@ -23,6 +23,7 @@ from liaisons_spherique import *
 from liaisons_helicoidale import *
 from liaisons_sphere_plan import *
 from liaisons_rectiligne import *
+from liaisons_sphere_cylindre import *
 
 
 
@@ -265,6 +266,41 @@ class Liaisons(inkex.Effect):
         self.OptionParser.add_option('--liaison_rectiligne_3D_direction_quelconque_z', action = 'store', type = 'float', dest = 'liaison_rectiligne_3D_direction_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur directeur de la direction rectiligne 3D")
         self.OptionParser.add_option('--liaison_rectiligne_3D_inclinaison_prisme', action = 'store', type = 'float', dest = 'liaison_rectiligne_3D_inclinaison_prisme', default = '0', help = u"Orientation du prisme en degres")
 
+	#LIAISON SPHERE-CYLINDRE *****************************************
+        self.OptionParser.add_option('--liaison_sphere_cylindre_type', action = 'store', type = 'string', dest = 'liaison_sphere_cylindre_type', default = 'liaison_sphere_cylindre_2D_cote', help = u"Type de representation de la liaison sphère-cylindre")
+        
+        self.OptionParser.add_option('--liaison_sphere_cylindre_2D_cote_x', action = 'store', type = 'float', dest = 'liaison_sphere_cylindre_2D_cote_x', default = '0', help = u"Position sur X de la liaison sphère-cylindre 2D coté relativement a l'origine")
+	self.OptionParser.add_option('--liaison_sphere_cylindre_2D_cote_y', action = 'store', type = 'float', dest = 'liaison_sphere_cylindre_2D_cote_y', default = '0', help = u"Position sur Y de la liaison sphère-cylindre 2D coté relativement a l'origine")       
+        self.OptionParser.add_option('--liaison_sphere_cylindre_2D_cote_axe', action = 'store', type = 'string', dest = 'liaison_sphere_cylindre_2D_cote_axe', default = 'x', help = u"Principales directions de la direction de la liaison sphère-cylindre 2D vue de coté")
+        self.OptionParser.add_option('--liaison_sphere_cylindre_2D_cote_orientation_axe', action = 'store', type = 'float', dest = 'liaison_sphere_cylindre_2D_cote_orientation_axe', default = '0', help = u"Orientation de la direction de la liaison sphère-cylindre 2D (coté) en degres")
+        self.OptionParser.add_option('--liaison_sphere_cylindre_2D_cote_axe_sphere', action = 'store', type = 'string', dest = 'liaison_sphere_cylindre_2D_cote_axe_sphere', default = 'normal', help = u"Principales directions de la sphère pour la liaison sphère-cylindre 2D vue de coté")
+        self.OptionParser.add_option('--liaison_sphere_cylindre_2D_cote_orientation_axe_sphere', action = 'store', type = 'float', dest = 'liaison_sphere_cylindre_2D_cote_orientation_axe_sphere', default = '0', help = u"Orientation de la sphère de la liaison sphère-cylindre 2D (coté) en degres")
+        
+        self.OptionParser.add_option('--liaison_sphere_cylindre_2D_bout_x', action = 'store', type = 'float', dest = 'liaison_sphere_cylindre_2D_bout_x', default = '0', help = u"Position sur X de la liaison sphère-cylindre 2D vue du bout relativement a l'origine")
+	self.OptionParser.add_option('--liaison_sphere_cylindre_2D_bout_y', action = 'store', type = 'float', dest = 'liaison_sphere_cylindre_2D_bout_y', default = '0', help = u"Position sur Y de la liaison sphère-cylindre 2D vue du bout relativement a l'origine")       
+        self.OptionParser.add_option('--liaison_sphere_cylindre_2D_bout_axe_base', action = 'store', type = 'string', dest = 'liaison_sphere_cylindre_2D_bout_axe_base', default = 'y', help = u"Principales directions de la direction de la liaison sphère-cylindre 2D vue du bout")
+        self.OptionParser.add_option('--liaison_sphere_cylindre_2D_bout_orientation_axe_base', action = 'store', type = 'float', dest = 'liaison_sphere_cylindre_2D_bout_orientation_axe_base', default = '0', help = u"Orientation de la direction de la base de la liaison sphère-cylindre 2D (bout) en degres")
+        self.OptionParser.add_option('--liaison_sphere_cylindre_2D_bout_axe_sphere', action = 'store', type = 'string', dest = 'liaison_sphere_cylindre_2D_bout_axe_sphere', default = 'normal', help = u"Principales directions de la sphère pour la liaison sphère-cylindre 2D vue du bout")
+        self.OptionParser.add_option('--liaison_sphere_cylindre_2D_bout_orientation_axe_sphere', action = 'store', type = 'float', dest = 'liaison_sphere_cylindre_2D_bout_orientation_axe_sphere', default = '0', help = u"Orientation de la sphère de la liaison sphère-cylindre 2D (bout) en degres")
+        
+        self.OptionParser.add_option('--liaison_sphere_cylindre_3D_position_x', action = 'store', type = 'float', dest = 'liaison_sphere_cylindre_3D_position_x', default = 0, help = u"Coordonnee sur x du centre de la liaison Sphère-Cylindre 3D")
+        self.OptionParser.add_option('--liaison_sphere_cylindre_3D_position_y', action = 'store', type = 'float', dest = 'liaison_sphere_cylindre_3D_position_y', default = 0, help = u"Coordonnee sur y du centre de la liaison Sphère-Cylindre 3D")
+        self.OptionParser.add_option('--liaison_sphere_cylindre_3D_position_z', action = 'store', type = 'float', dest = 'liaison_sphere_cylindre_3D_position_z', default = 0, help = u"Coordonnee sur z du centre de la liaison Sphère-Cylindre 3D")
+	self.OptionParser.add_option('--liaison_sphere_cylindre_3D_type_axe', action = 'store', type = 'str', dest = 'liaison_sphere_cylindre_3D_type_axe', default = 'liaison_sphere_cylindre_3D_type_standard', help = u"Choix du type d'axe de la liaison Sphère-Cylindre 3D")
+	self.OptionParser.add_option('--liaison_sphere_cylindre_3D_axe', action = 'store', type = 'str', dest = 'liaison_sphere_cylindre_3D_axe', default = 'x', help = u"Orientations standard de l'axe de la Sphère-Cylindre 3D")
+	self.OptionParser.add_option('--liaison_sphere_cylindre_3D_axe_quelconque_x', action = 'store', type = 'float', dest = 'liaison_sphere_cylindre_3D_axe_quelconque_x', default = 1, help = u"Coordonnee sur x du vecteur directeur de l'axe de Sphère-Cylindre 3D")
+	self.OptionParser.add_option('--liaison_sphere_cylindre_3D_axe_quelconque_y', action = 'store', type = 'float', dest = 'liaison_sphere_cylindre_3D_axe_quelconque_y', default = 0, help = u"Coordonnee sur y du vecteur directeur de l'axe de Sphère-Cylindre 3D")
+	self.OptionParser.add_option('--liaison_sphere_cylindre_3D_axe_quelconque_z', action = 'store', type = 'float', dest = 'liaison_sphere_cylindre_3D_axe_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur directeur de l'axe de Sphère-Cylindre 3D")
+        self.OptionParser.add_option('--liaison_sphere_cylindre_3D_rotation_cylindre', action = 'store', type = 'float', dest = 'liaison_sphere_cylindre_3D_rotation_cylindre', default = '0', help = u"Rotation (en degrés) du cylindre autour de son axe")
+	self.OptionParser.add_option('--liaison_sphere_cylindre_3D_type_direction_sphere', action = 'store', type = 'str', dest = 'liaison_sphere_cylindre_3D_type_direction_sphere', default = 'liaison_sphere_cylindre_3D_type_standard', help = u"Choix du type d'axe pour la sphère de la liaison Sphère-Cylindre 3D")
+	self.OptionParser.add_option('--liaison_sphere_cylindre_3D_axe_sphere', action = 'store', type = 'str', dest = 'liaison_sphere_cylindre_3D_axe_sphere', default = 'x', help = u"Orientations standard de l'axe de la sphère de la Sphère-Cylindre 3D")
+        self.OptionParser.add_option('--liaison_sphere_cylindre_3D_direction_sphere_quelconque_x', action = 'store', type = 'float', dest = 'liaison_sphere_cylindre_3D_direction_sphere_quelconque_x', default = 0, help = u"Coordonnee sur x du vecteur directeur de l'axe de la sphère de la Sphère-Cylindre 3D")
+        self.OptionParser.add_option('--liaison_sphere_cylindre_3D_direction_sphere_quelconque_y', action = 'store', type = 'float', dest = 'liaison_sphere_cylindre_3D_direction_sphere_quelconque_y', default = 0, help = u"Coordonnee sur y du vecteur directeur de l'axe de la sphère de la Sphère-Cylindre 3D")
+        self.OptionParser.add_option('--liaison_sphere_cylindre_3D_direction_sphere_quelconque_z', action = 'store', type = 'float', dest = 'liaison_sphere_cylindre_3D_direction_sphere_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur directeur de l'axe de la sphère de la Sphère-Cylindre 3D")
+	
+	
+	
+	
         #OPTIONS GENERALES ******************************************
         self.OptionParser.add_option('--opt_generales', action = 'store', type = 'string', dest = 'opt_generales', default = 'opt_gene_origine', help = u"Onglet des options generales")
         
@@ -370,6 +406,17 @@ class Liaisons(inkex.Effect):
 			dessin_rectiligne_2D_bout(self.options,svg)
 		if(type_liaison=="\"liaison_rectiligne_3D\""):
 			dessin_rectiligne_3D(self.options,svg)
+	if liaison == "\"liaison_sphere_cylindre\"" :
+		type_liaison=self.options.liaison_sphere_cylindre_type
+		if(type_liaison=="\"liaison_sphere_cylindre_2D_cote\""):
+			dessin_Sphere_Cylindre_2D_cote(self.options,svg)
+		if(type_liaison=="\"liaison_sphere_cylindre_2D_bout\""):
+			dessin_Sphere_Cylindre_2D_bout(self.options,svg)
+		if(type_liaison=="\"liaison_sphere_cylindre_3D\""):
+			dessin_Sphere_Cylindre_3D(self.options,svg)
+			
+		
+		
 		
 		
 	

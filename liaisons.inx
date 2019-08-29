@@ -14,6 +14,7 @@
   <dependency type="executable" location="extensions">liaisons_helicoidale.py</dependency>
   <dependency type="executable" location="extensions">liaisons_sphere_plan.py</dependency>
   <dependency type="executable" location="extensions">liaisons_rectiligne.py</dependency>
+  <dependency type="executable" location="extensions">liaisons_sphere_cylindre.py</dependency>
   <dependency type="executable" location="extensions">inkex.py</dependency>
   
   <!-- ====================================================  -->
@@ -413,6 +414,7 @@
 		<!-- SPHERE-PLAN -->
 		<page name="liaison_sphere_plan" gui-text="Sphère-Plan">
 			<param name="liaison_sphere_plan_type" type="notebook">
+				<!-- 2D coté -->
 				<page name="liaison_sphere_plan_2D_cote" gui-text="2D (coté)">
 					<param name="titre_position_sphere_plan_2D_cote" type="description" appearance="header">Position</param>
 	  					<param name="liaison_sphere_plan_2D_cote_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
@@ -436,6 +438,7 @@
 						</param>
 						<param name="liaison_sphere_plan_2D_cote_orientation_sphere" type="float"  min="-360" max="360" precision="1" gui-text="Orientation (deg) :">0</param>
 				</page>
+				<!-- 2D bout -->
 				<page name="liaison_sphere_plan_2D_dessus" gui-text="2D (Dessus)">
 	  				<param name="titre_position_sphere_plan_2D_dessus" type="description" appearance="header">Position</param>
 	  					<param name="liaison_sphere_plan_2D_dessus_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
@@ -457,8 +460,8 @@
 							<item value="autre">Via l'angle ci-dessous</item>
 						</param>
 						<param name="liaison_sphere_plan_2D_dessus_orientation_sphere" type="float"  min="-360" max="360" precision="1" gui-text="Orientation Sphère (deg) : ">0</param>
-
 				</page>
+				<!-- 3D -->
 				<page name="liaison_sphere_plan_3D" gui-text="3D">
 					<param name="titre_position_sphere_plan_3D" type="description" appearance="header">Position</param>
 	  					<param name="liaison_sphere_plan_3D_position_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
@@ -506,6 +509,7 @@
 		<!-- RECTILIGNE -->
 		<page name="liaison_rectiligne" gui-text="Rectiligne">
 			<param name="liaison_rectiligne_type" type="notebook">
+				<!-- 2D coté -->
 				<page name="liaison_rectiligne_2D_cote" gui-text="2D (coté)">
 					<param name="titre_position_rectiligne_2D_cote" type="description" appearance="header">Position</param>
 	  					<param name="liaison_rectiligne_2D_cote_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
@@ -520,6 +524,7 @@
 						</param>
 						<param name="liaison_rectiligne_2D_cote_orientation_normale" type="float"  min="-360" max="360" precision="1" gui-text="Orientation (deg) :">0</param>
 				</page>
+				<!-- 2D bout -->
 				<page name="liaison_rectiligne_2D_bout" gui-text="2D (bout)">
 					<param name="titre_position_rectiligne_2D_bout" type="description" appearance="header">Position</param>
 	  					<param name="liaison_rectiligne_2D_bout_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
@@ -544,6 +549,7 @@
 						</param>
 						<param name="liaison_rectiligne_2D_bout_orientation_prisme" type="float"  min="-360" max="360" precision="1" gui-text="Orientation (deg) :">0</param>
 				</page>
+				<!-- 3D -->
 				<page name="liaison_rectiligne_3D" gui-text="3D">
 					<param name="titre_position_rectiligne_plan_3D" type="description" appearance="header">Position</param>
 	  					<param name="liaison_rectiligne_3D_position_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
@@ -587,6 +593,101 @@
 				</page>
 			</param>
 		</page>
+		<!-- SPHERE-CYLINDRE -->
+		<page name="liaison_sphere_cylindre" gui-text="Sphère-Cylindre">
+			<param name="liaison_sphere_cylindre_type" type="notebook">
+				<!-- 2D coté -->
+				<page name="liaison_sphere_cylindre_2D_cote" gui-text="2D (coté)">
+					<param name="titre_position_sphere_cylindre_2D_cote" type="description" appearance="header">Position</param>
+	  					<param name="liaison_sphere_cylindre_2D_cote_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_sphere_cylindre_2D_cote_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+	  				<param name="titre_orientation_sphere_cylindre_2D_cote" type="description" appearance="header">Orientation</param>
+						<param name="liaison_sphere_cylindre_2D_cote_axe" type="enum" gui-text="Direction de l'axe :">
+							<item value="x">X</item>
+							<item value="autre">Via l'angle ci-dessous</item>
+							<item value="y">Y</item>
+							<item value="-x">-X</item>
+							<item value="-y">-Y</item>
+						</param>
+						<param name="liaison_sphere_cylindre_2D_cote_orientation_axe" type="float"  min="-360" max="360" precision="1" gui-text="Orientation (deg) :">0</param>
+					<param name="titre_orientation_sphere_cylindre_2D_cote_sphere" type="description" appearance="header">Orientation de la sphère</param>
+						<param name="liaison_sphere_cylindre_2D_cote_axe_sphere" type="enum" gui-text="Direction de l'axe :">
+							<item value="normal">Normal à la direction de la liaison</item>
+							<item value="autre">Via l'angle ci-dessous</item>
+							<item value="x">X</item>
+							<item value="y">Y</item>
+							<item value="-x">-X</item>
+							<item value="-y">-Y</item>
+						</param>
+						<param name="liaison_sphere_cylindre_2D_cote_orientation_axe_sphere" type="float"  min="-360" max="360" precision="1" gui-text="Orientation (deg) :">0</param>
+				</page>
+				<!-- 2D bout -->
+				<page name="liaison_sphere_cylindre_2D_bout" gui-text="2D (bout)">
+					<param name="titre_position_sphere_cylindre_2D_bout" type="description" appearance="header">Position</param>
+	  					<param name="liaison_sphere_cylindre_2D_bout_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_sphere_cylindre_2D_bout_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+	  				<param name="titre_orientation_sphere_cylindre_2D_bout" type="description" appearance="header">Orientation de la base femelle</param>
+						<param name="liaison_sphere_cylindre_2D_bout_axe_base" type="enum" gui-text="Direction de la partie femelle :">
+							<item value="y">Y</item>
+							<item value="autre">Via l'angle ci-dessous</item>
+							<item value="x">X</item>
+							<item value="-x">-X</item>
+							<item value="-y">-Y</item>
+						</param>
+						<param name="liaison_sphere_cylindre_2D_bout_orientation_axe_base" type="float"  min="-360" max="360" precision="1" gui-text="Orientation (deg) :">0</param>
+					<param name="titre_orientation_sphere_cylindre_2D_bout_sphere" type="description" appearance="header">Orientation de la sphère</param>
+						<param name="liaison_sphere_cylindre_2D_bout_axe_sphere" type="enum" gui-text="Direction de l'axe :">
+							<item value="normal">Même direction que la partie femelle</item>
+							<item value="autre">Via l'angle ci-dessous</item>
+							<item value="x">X</item>
+							<item value="y">Y</item>
+							<item value="-x">-X</item>
+							<item value="-y">-Y</item>
+						</param>
+						<param name="liaison_sphere_cylindre_2D_bout_orientation_axe_sphere" type="float"  min="-360" max="360" precision="1" gui-text="Orientation (deg) :">0</param>
+				</page>
+				<!-- 3D -->
+				<page name="liaison_sphere_cylindre_3D" gui-text="3D">
+					<param name="titre_position_sphere_cylindre_3D" type="description" appearance="header">Position</param>
+	  					<param name="liaison_sphere_cylindre_3D_position_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_sphere_cylindre_3D_position_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+	  					<param name="liaison_sphere_cylindre_3D_position_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >0</param>
+					<param name="liaison_sphere_cylindre_3D_type_axe" type="notebook">
+						<page name="liaison_sphere_cylindre_3D_type_standard" gui-text="Direction standard">
+								<param name="liaison_sphere_cylindre_3D_axe" type="enum" gui-text="Direction de l'axe :">
+									<item value="z">Z</item>
+									<item value="x">X</item>
+									<item value="y">Y</item>
+								</param>
+						</page>
+						<page name="liaison_sphere_cylindre_3D_type_axe_quelconque" gui-text="Vecteur Directeur">
+		  					<param name="liaison_sphere_cylindre_3D_axe_quelconque_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >1</param>
+		  					<param name="liaison_sphere_cylindre_3D_axe_quelconque_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+		  					<param name="liaison_sphere_cylindre_3D_axe_quelconque_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >0</param>
+						</page>
+					</param>
+					<param name="liaison_sphere_cylindre_3D_rotation_cylindre" type="float" _gui-text="Rotation du cylindre (deg) :" min="-360" max="360" >0</param>
+					<param name="liaison_sphere_cylindre_3D_type_direction_sphere" type="notebook">
+						<page name="liaison_sphere_cylindre_3D_type_direction_sphere_standard" gui-text="Direction Sphère standard">
+								<param name="liaison_sphere_cylindre_3D_axe_sphere" type="enum" gui-text="Direction de la sphère :">
+									<item value="normale">Même direction que la tige femelle</item>
+									<item value="z">Z</item>
+									<item value="x">X</item>
+									<item value="y">Y</item>
+									<item value="-x">-X</item>
+									<item value="-y">-Y</item>
+									<item value="-z">-Z</item>
+								</param>
+						</page>
+						<page name="liaison_sphere_plan_3D_type_direction_sphere_quelconque" gui-text="Vecteur Directeur">
+		  					<param name="liaison_sphere_cylindre_3D_direction_sphere_quelconque_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >1</param>
+		  					<param name="liaison_sphere_cylindre_3D_direction_sphere_quelconque_y" type="float" _gui-text="Y :" min="-1000000" max="1000000" >0</param>
+		  					<param name="liaison_sphere_cylindre_3D_direction_sphere_quelconque_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >0</param>
+						</page>
+					</param>
+				</page>
+			</param>
+		</page>
 	  </param>
       </page>
       
@@ -600,6 +701,7 @@
 	  <!-- PARAMETRES GENERAUX ================================  -->
 	  <param name="opt_generales" type="notebook">
 		<page name="opt_gene_gene" gui-text="Général">
+			<!-- <param name="opt_gene_gene_ombres" type="boolean" gui-text="Ombre sur les représentations 3D">False</param>-->
 			<param name="opt_gene_gene_old" type="boolean" gui-text="Utiliser les anciennes représentations">False</param>
 		</page>
 		<page name="opt_gene_origine" gui-text="Origine">
@@ -620,7 +722,12 @@
 			<param name="opt_gene_piece2_couleur" type="color">4278190080</param>
 		</page>
 		<page name="opt_gene_A_Propos" gui-text="A Propos">
-			<param name="" type="description" appearance="header">Auteur :</param>
+			<param name="" type="description" appearance="header">Crédit :</param>
+				<param name="" type="description">Extension "Liaison", Version du 29/08/19.</param>
+				<param name="" type="description"></param>
+				<param name="" type="description">Créé dans le cadre d'Éduscol STI (https://eduscol.education.fr/sti/)</param>
+				<param name="" type="description">pour l'Éducation Nationale.</param>
+			<param name="" type="description" appearance="header">Auteur(s) :</param>
 				<param name="" type="description">Raphaël ALLAIS (allais.raphael@free.fr)</param>
 			<param name="" type="description" appearance="header">Dernière version :</param>
 				<param name="" type="description">https://github.com/Rafafouille/inkscape_liaisons</param>
