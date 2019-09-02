@@ -205,7 +205,8 @@ def points2D_to_svgd(p2D,close=True,base2D=None):
     
 
 #Idem que points_ti_svgd, mais pour de la 3D projetee *******************************************
-def points3D_to_svgd(p3D,close=True,base3D=None):
+#Si hauteur_ombre>0, alors renvoie aussi le chemin de l'ombre
+def points3D_to_svgd(p3D,close=True,base3D=None,hauteur_ombre=0):
     """ convert list of points (x,y) pairs
         into a closed SVG path list
         base 3D est un triplet de vecteurs projetes dans le plan. Si absent, on prend la base brute de la feuille
@@ -213,11 +214,14 @@ def points3D_to_svgd(p3D,close=True,base3D=None):
     if(base3D!=None):
 	    (Vx,Vy,Vz)=base3D
     p=[]
+    p_ombre=[]
     for point in p3D:
     	if(base3D==None):
     		p.append((point[0],point[1]))
     	else:
 	    	p.append( (point[0]*Vx.x+point[1]*Vy.x+point[2]*Vz.x	,	point[0]*Vx.y+point[1]*Vy.y+point[2]*Vz.y) )
+	    	if hauteur_ombre>0 :
+		    	p_ombre.append(	(point[0]*Vx.x+point[1]*Vy.x-hauteur_ombre*Vz.x	,	point[0]*Vx.y+point[1]*Vy.y-hauteur_ombre*Vz.y	) )
 
     profondeur=0
     longueur=0
@@ -243,6 +247,8 @@ def points3D_to_svgd(p3D,close=True,base3D=None):
     	longueur+=l
     	
     profondeur/=longueur
+    if hauteur_ombre>0 :
+    	return points_to_svgd(p,close),profondeur,points_to_svgd(p_ombre,close),
     return points_to_svgd(p,close),profondeur
   
 

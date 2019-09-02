@@ -1,5 +1,35 @@
 # -- coding: utf-8 --
 
+# ============== LIAISON PIVOT ========================
+
+# Parametres généraux
+diametre_pivot = 15
+longueur_pivot = 30
+longueur_arrets_pivot = diametre_pivot
+ecart_arrets_pivot = 0.5 * diametre_pivot
+longueur_male_pivot = longueur_pivot + 4*ecart_arrets_pivot
+
+# Pivot 2D coté
+p2Dc_diametre = diametre_pivot			# Diamètre de la pièce femelle
+p2Dc_longueur = longueur_pivot			# Longueur de la pièce femelle
+p2Dc_longueur_arrets = longueur_arrets_pivot	# Longueur des arrêts de la pivot
+p2Dc_ecarts_arrets = ecart_arrets_pivot		# Ecart entre la pièce femelle et les arrêts
+p2Dc_longueur_male = longueur_male_pivot	# Longueur de la tige male
+p2Dc_longueur_tige_femelle = p2Dc_diametre	# Longueur de la tige femelle
+
+# Pivot 2D face
+p2Df_diametre = diametre_pivot		# Diamètre de la pièce femelle
+p2Df_longueur_tige = p2Dc_diametre/2.	# Longueur de la tige (male ou femelle)
+
+#Pivot 3D
+p3D_diametre = diametre_pivot			# Diamètre de la pièce femelle
+p3D_longueur = longueur_pivot			# Longueur de la pièce femelle
+p3D_longueur_arrets = longueur_arrets_pivot	# Longueur des arrêts de la pivot
+p3D_ecarts_arrets = ecart_arrets_pivot		# Ecart entre la pièce femelle et les arrêts
+p3D_longueur_male = longueur_male_pivot	# Longueur de la tige male
+p3D_longueur_tige_femelle = p2Dc_diametre	# Longueur de la tige femelle
+
+
 # ============== LIAISON HÉLICOIDALE ========================
 
 # Parametres généraux
