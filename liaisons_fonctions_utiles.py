@@ -467,4 +467,11 @@ def encadreLimite(a,b,cut):
 	if a<cut and cut<=b:
 		return True
 	return False
+	
+#Fonction qui converti longueur (float) supposée etre dans les unité de l'option, en longueur propre a Inkscape
+def convertLongueur2Inkscape(options,longueur):	
+	unite = options.unite_base
+	norme = options.longueur_base
+	return options.effect.unittouu(str(longueur*norme)+unite)
+	
 		

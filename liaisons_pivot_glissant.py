@@ -1,23 +1,26 @@
 import math
 import inkex
 from liaisons_fonctions_utiles import *
+from liaisons_parametres import *
 
 
 def dessin_Pivot_Glissant_2D_cote(options,contexte):
 	#https://doczz.fr/doc/4506137/comment-installer-et-programmer-des-scripts-python-dans-i...
-	#Variables *****************************************
-	x0=options.x0
-	y0=options.y0
-	x=options.liaison_pivot_glissant_2D_cote_x
-	y=options.liaison_pivot_glissant_2D_cote_y
-	old_liaisons=options.opt_gene_gene_old
-	echelle=options.echelle
-	largeur=30.
-	hauteur=15.
+	#Position *****************************************
+	x0 = options.x0
+	y0 = options.y0
+	x = options.liaison_pivot_glissant_2D_cote_x
+	y = options.liaison_pivot_glissant_2D_cote_y
+	#Parametres ****************************
+	old_liaisons = options.opt_gene_gene_old
+	largeur = pg2Dc_longueur
+	hauteur = pg2Dc_diametre
 	couleur_femelle=options.opt_gene_piece2_couleur
 	couleur_male=options.opt_gene_piece1_couleur
 	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
 	epaisseur_male=options.opt_gene_lignes_epaisseur_1
+	longueur_tige = pg2Dc_longueur_tige_femelle
+	#Orientation **************************************
 	rotation=-options.liaison_pivot_glissant_2D_cote_orientation #Angle par defaut (sens trigo)
 	if(options.liaison_pivot_glissant_2D_cote_axe=="x"):
 		rotation=0
@@ -27,81 +30,93 @@ def dessin_Pivot_Glissant_2D_cote(options,contexte):
 		rotation=180
 	elif(options.liaison_pivot_glissant_2D_cote_axe=="-y"):
 		rotation=90
-	
 	#Groupes ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
-        #groupe_rotation = inkex.etree.SubElement(liaison, 'g')
+        fond_femelle = inkex.etree.SubElement(liaison,'g')
 	male=inkex.etree.SubElement(liaison,'g')
 	femelle=inkex.etree.SubElement(liaison,'g')
-	
-	#Base
-	vx=v2D(echelle,0)
-	vy=v2D(0,echelle)
-	vx.rotation(rotation)
-	vy.rotation(rotation)
-	
+	#Base **************************
+	echelle_liaison=options.echelle
+	Vx1,Vy1=getBase2D(echelle_liaison)
+	base2D=(Vx1,Vy1)
 	# Male ***************************************
 	#Ligne male
 	ligneM=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(-largeur/2-epaisseur_femelle-10*epaisseur_male	,	0),
-				(largeur/2+epaisseur_femelle+10*epaisseur_male	,	0)	])
+	chemin=points2D_to_svgd([	(-pg2Dc_longueur_male/2.,	0),
+				(pg2Dc_longueur_male/2.	,	0)	],
+				True,base2D)
 	ligneM.set('d',chemin)
 	ligneM.set('stroke',couleur_male)
-	ligneM.set('stroke-width',str(epaisseur_male))
+	ligneM.set('stroke-width',str(epaisseur_male*echelle_liaison))
 	male.append(ligneM)
 	
 	# Femelle ***************************************
 	if(old_liaisons):
 		barreF1=inkex.etree.Element(inkex.addNS('path','svg'))
-		chemin=points_to_svgd([	(-largeur/2	,	-hauteur/2),
-					(largeur/2	,	-hauteur/2)	])
+		chemin=points2D_to_svgd([(-largeur/2	,	-hauteur/2),
+					(largeur/2	,	-hauteur/2)	],
+					False,base2D)
 		barreF1.set('d',chemin)
 		barreF1.set('stroke',couleur_femelle)
-		barreF1.set('stroke-width',str(epaisseur_femelle))
+		barreF1.set('stroke-width',str(epaisseur_femelle*echelle_liaison))
 		male.append(barreF1)
 		
 		barreF2=inkex.etree.Element(inkex.addNS('path','svg'))
-		chemin=points_to_svgd([	(-largeur/2	,	hauteur/2),
-					(largeur/2	,	hauteur/2)	])
+		chemin=points2D_to_svgd([(-largeur/2	,	hauteur/2),
+					(largeur/2	,	hauteur/2)	],
+					False,base2D)
 		barreF2.set('d',chemin)
 		barreF2.set('stroke',couleur_femelle)
-		barreF2.set('stroke-width',str(epaisseur_femelle))
+		barreF2.set('stroke-width',str(epaisseur_femelle*echelle_liaison))
 		male.append(barreF2)
 	else:
 		#Rectangle
 		rectangle=inkex.etree.Element(inkex.addNS('rect','svg'))
-		rectangle.set('x',str(-largeur*echelle/2) )
-		rectangle.set('y',str(-hauteur*echelle/2) )
-		rectangle.set('width',str(largeur*echelle))
-		rectangle.set('height',str(hauteur*echelle))
+		rectangle.set('x',str(-largeur*echelle_liaison/2) )
+		rectangle.set('y',str(-hauteur*echelle_liaison/2) )
+		rectangle.set('width',str(largeur*echelle_liaison))
+		rectangle.set('height',str(hauteur*echelle_liaison))
 		rectangle.set('style','fill:none')
 		rectangle.set('stroke',couleur_femelle)
-		rectangle.set('stroke-width',str(epaisseur_femelle))
+		rectangle.set('stroke-width',str(epaisseur_femelle*echelle_liaison))
 		femelle.append(rectangle)
+		# Fond de femelle opaque ****************************
+		#Rectangle - fond
+		rectangle=inkex.etree.Element(inkex.addNS('rect','svg'))
+		rectangle.set('x',str(-largeur*echelle_liaison/2) )
+		rectangle.set('y',str(-hauteur*echelle_liaison/2) )
+		rectangle.set('width',str(largeur*echelle_liaison))
+		rectangle.set('height',str(hauteur*echelle_liaison))
+		rectangle.set('style','fill:white')
+		fond_femelle.append(rectangle)
 	
 	#Ligne femelle
 	ligneF=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(0	,	hauteur/2),
-				(0	,	hauteur)	])
+	chemin=points2D_to_svgd([	(0	,	-hauteur/2),
+				(0	,	-hauteur/2 - longueur_tige)	],
+				False,base2D)
 	ligneF.set('d',chemin)
 	ligneF.set('stroke',couleur_femelle)
-	ligneF.set('stroke-width',str(epaisseur_femelle*echelle))
+	ligneF.set('stroke-width',str(epaisseur_femelle*echelle_liaison))
 	femelle.append(ligneF)
 	
 	# Transformations ***************************************
 	male.set("transform","rotate("+str(rotation)+")")
 	femelle.set("transform","rotate("+str(rotation)+")")
-	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	fond_femelle.set("transform","rotate("+str(rotation)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 
 	
 
 def dessin_Pivot_Glissant_2D_face(options,contexte):
-	x0=options.x0
-	y0=options.y0
-	x=options.liaison_pivot_glissant_2D_face_x
-	y=options.liaison_pivot_glissant_2D_face_y
+	#Position *****************************************
+	x0 = options.x0
+	y0 = options.y0
+	x = options.liaison_pivot_glissant_2D_face_x
+	y = options.liaison_pivot_glissant_2D_face_y
+	#Parametres ****************************
 	rayon=15./2
 	couleur_femelle=options.opt_gene_piece2_couleur
 	couleur_male=options.opt_gene_piece1_couleur
@@ -125,10 +140,12 @@ def dessin_Pivot_Glissant_2D_face(options,contexte):
 		rotation2=180
 	elif(options.liaison_pivot_glissant_2D_face_axe2=="-y"):
 		rotation2=90
-	
+	#Base **************************
+	echelle_liaison=options.echelle
+	Vx1,Vy1=getBase2D(echelle_liaison)
+	base2D=(Vx1,Vy1)
 	#Groupes ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
-        #groupe_rotation = inkex.etree.SubElement(liaison, 'g')
 	femelle=inkex.etree.SubElement(liaison,'g')
 	male=inkex.etree.SubElement(liaison,'g')
 
@@ -136,44 +153,45 @@ def dessin_Pivot_Glissant_2D_face(options,contexte):
 	# Femelle ***************************************	
 	#axe
 	axe2=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(0	,	0),
-				(2*rayon,	0)	])
+	chemin=points2D_to_svgd([	(0	,	0),
+					(2*rayon,	0)	],
+					False,base2D)
 	axe2.set('d',chemin)
 	axe2.set('stroke',couleur_femelle)
-	axe2.set('stroke-width',str(epaisseur_femelle))
+	axe2.set('stroke-width',str(epaisseur_femelle*echelle_liaison))
 	femelle.append(axe2)
 	#cercle
 	cercle=inkex.etree.Element(inkex.addNS('circle','svg'))
 	cercle.set('cx',"0")
 	cercle.set('cy',"0")
-	cercle.set('r',str(rayon))
+	cercle.set('r',str(rayon*echelle_liaison))
 	cercle.set('stroke',str(couleur_femelle))
-	cercle.set('stroke-width',str(epaisseur_femelle))
+	cercle.set('stroke-width',str(epaisseur_femelle*echelle_liaison))
 	cercle.set('style','fill:white')
 	femelle.append(cercle)
 	
 	# Male ***************************************
 	axe1=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(0	,	0),
-				(2*rayon,	0)	])
+	chemin=points2D_to_svgd([	(0	,	0),
+					(2*rayon,	0)	],
+					False,base2D)
 	axe1.set('d',chemin)
 	axe1.set('stroke',couleur_male)
-	axe1.set('stroke-width',str(epaisseur_male))
+	axe1.set('stroke-width',str(epaisseur_male*echelle_liaison))
 	male.append(axe1)
 	#Puce
 	puce=inkex.etree.Element(inkex.addNS('circle','svg'))
 	puce.set('cx',"0")
 	puce.set('cy',"0")
-	puce.set('r',str(2*epaisseur_male))
+	puce.set('r',str(2*epaisseur_male*echelle_liaison))
 	puce.set('stroke','none')
-#	puce.set('stroke-width',str(epaisseur_femelle))
 	puce.set('style','fill:'+couleur_male)
 	male.append(puce)
 		
 	# Transformations ***************************************
 	male.set("transform","rotate("+str(rotation1)+")")
 	femelle.set("transform","rotate("+str(rotation2)+")")
-	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	
@@ -189,8 +207,8 @@ def dessin_Pivot_Glissant_3D(options,contexte):
 	x0=options.x0
 	y0=options.y0
 	#Base Axonometrique
-	echelle=options.echelle
-	Vx,Vy,Vz=getVecteursAxonometriques(echelle)
+	echelle_liaison=options.echelle
+	Vx,Vy,Vz=getVecteursAxonometriques()
 	base=(Vx,Vy,Vz)
 	#Centre de la liaison dans le repere 3D
 	x=options.liaison_pivot_glissant_3D_position_x
@@ -203,25 +221,24 @@ def dessin_Pivot_Glissant_3D(options,contexte):
 	rayonTige=25.
 	couleur_femelle=options.opt_gene_piece2_couleur
 	couleur_male=options.opt_gene_piece1_couleur
-	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
-	epaisseur_male=options.opt_gene_lignes_epaisseur_1
-#	angle_male-=float(options.liaison_pivot_glissant_3D_orientation_male)/180.*math.pi
+	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2 * echelle_liaison
+	epaisseur_male=options.opt_gene_lignes_epaisseur_1 * echelle_liaison
 	angle_femelle=-float(options.liaison_pivot_glissant_3D_orientation_femelle)/180.*math.pi
 	#Repere local de la liaison
 	if(options.liaison_pivot_glissant_3D_type_direction=="\"liaison_pivot_glissant_3D_type_direction_quelconque\""):
 		V=v3D(options.liaison_pivot_glissant_3D_type_direction_quelconque_x,options.liaison_pivot_glissant_3D_type_direction_quelconque_y,options.liaison_pivot_glissant_3D_type_direction_quelconque_z,base)
-#		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle,angle_male)#Repere male
-		Vx2,Vy2,Vz2=getBaseFromVecteur(V,echelle,angle_femelle)#Repere Femelle
+		if V.x == V.y == V.z == 0 : V=v3D(1,0,0,base) #Si vecteur nul : on prend X par defaut
+		Vx2,Vy2,Vz2=getBaseFromVecteur(V,echelle_liaison,angle_femelle)#Repere Femelle
 	else:	#Si vecteur standard
 		if(options.liaison_pivot_glissant_3D_axe=="x"):
-#			Vx1,Vy1,Vz1=getBaseFromVecteur(Vx,echelle,angle_male)#Repere male
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vx,echelle,angle_femelle)#Repere Femelle
+#			Vx1,Vy1,Vz1=getBaseFromVecteur(Vx,echelle_liaison,angle_male)#Repere male
+			Vx2,Vy2,Vz2=getBaseFromVecteur(Vx,echelle_liaison,angle_femelle)#Repere Femelle
 		elif(options.liaison_pivot_glissant_3D_axe=="y"):
-#			Vx1,Vy1,Vz1=getBaseFromVecteur(Vy,echelle,angle_male)#Repere male
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vy,echelle,angle_femelle)#Repere Femelle
+#			Vx1,Vy1,Vz1=getBaseFromVecteur(Vy,echelle_liaison,angle_male)#Repere male
+			Vx2,Vy2,Vz2=getBaseFromVecteur(Vy,echelle_liaison,angle_femelle)#Repere Femelle
 		else:#z
-#			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz,echelle,angle_male)#Repere male
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vz,echelle,angle_femelle)#Repere Femelle
+#			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz,echelle_liaison,angle_male)#Repere male
+			Vx2,Vy2,Vz2=getBaseFromVecteur(Vz,ecechelle_liaisonelle,angle_femelle)#Repere Femelle
 #	baseLocale1=(Vx1,Vy1,Vz1)
 	baseLocale=(Vx2,Vy2,Vz2)
 
@@ -300,7 +317,7 @@ def dessin_Pivot_Glissant_3D(options,contexte):
         
         
 	# Transformations ***************************************
-	liaison.set("transform","translate("+str(x0+x*Vx.x+y*Vy.x+z*Vz.x)+","+str(y0+x*Vx.y+y*Vy.y+z*Vz.y)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	

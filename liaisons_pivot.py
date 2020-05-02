@@ -22,8 +22,8 @@ def dessin_Pivot_2D_cote(options,contexte):
 	elif(options.liaison_pivot2D_cote_axe=="-y"):
 		rotation=-90.
 	#Base *********************
-	echelle=options.echelle
-	Vx1,Vy1=getBase2D(echelle)
+	echelle_liaison=options.echelle
+	Vx1,Vy1=getBase2D(echelle_liaison)
 	base2D=(Vx1,Vy1)
 	#Parametres ****************************
 	old_liaisons=options.opt_gene_gene_old
@@ -44,17 +44,6 @@ def dessin_Pivot_2D_cote(options,contexte):
 	male = inkex.etree.SubElement(liaison,'g')
 	femelle = inkex.etree.SubElement(liaison,'g')
 	
-	
-	# Fond de femelle ****************************
-	if not old_liaisons :
-		#Rectangle - fond
-		rectangle=inkex.etree.Element(inkex.addNS('rect','svg'))
-		rectangle.set('x',str(-largeur*echelle/2) )
-		rectangle.set('y',str(-hauteur*echelle/2) )
-		rectangle.set('width',str(largeur*echelle))
-		rectangle.set('height',str(hauteur*echelle))
-		rectangle.set('style','fill:white')
-		fond_femelle.append(rectangle)
 	
 	# Male ***************************************
 	#Ligne male
@@ -109,16 +98,26 @@ def dessin_Pivot_2D_cote(options,contexte):
 	else:
 		#Rectangle
 		rectangle=inkex.etree.Element(inkex.addNS('rect','svg'))
-		rectangle.set('x',str(-largeur*echelle/2) )
-		rectangle.set('y',str(-hauteur*echelle/2) )
-		rectangle.set('width',str(largeur*echelle))
-		rectangle.set('height',str(hauteur*echelle))
+		rectangle.set('x',str(-largeur*echelle_liaison/2) )
+		rectangle.set('y',str(-hauteur*echelle_liaison/2) )
+		rectangle.set('width',str(largeur*echelle_liaison))
+		rectangle.set('height',str(hauteur*echelle_liaison))
 		rectangle.set('style','fill:none')
 		rectangle.set('stroke',couleur_femelle)
 		rectangle.set('stroke-width',str(epaisseur_femelle))
 		femelle.append(rectangle)
 	
-	#Ligne femelle
+		# Fond de femelle opaque ****************************
+		#Rectangle - fond
+		rectangle=inkex.etree.Element(inkex.addNS('rect','svg'))
+		rectangle.set('x',str(-largeur*echelle_liaison/2) )
+		rectangle.set('y',str(-hauteur*echelle_liaison/2) )
+		rectangle.set('width',str(largeur*echelle_liaison))
+		rectangle.set('height',str(hauteur*echelle_liaison))
+		rectangle.set('style','fill:white')
+		fond_femelle.append(rectangle)
+	
+	#Tige femelle
 	ligneF=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(0	,	-hauteur/2.),
 					(0	,	-hauteur/2.-longueur_tige)	]
@@ -132,7 +131,7 @@ def dessin_Pivot_2D_cote(options,contexte):
 	fond_femelle.set("transform","rotate("+str(-rotation)+")")
 	male.set("transform","rotate("+str(-rotation)+")")
 	femelle.set("transform","rotate("+str(-rotation)+")")
-	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 
@@ -164,8 +163,8 @@ def dessin_Pivot_2D_face(options,contexte):
 	elif(options.liaison_pivot2D_face_axe2=="-y"):
 		rotation2=90
 	#Base *********************
-	echelle=options.echelle
-	Vx1,Vy1=getBase2D(echelle)
+	echelle_liaison=options.echelle
+	Vx1,Vy1=getBase2D(echelle_liaison)
 	base2D=(Vx1,Vy1)
 	#Parametres ****************************
 	rayon = p2Df_diametre/2
@@ -205,7 +204,7 @@ def dessin_Pivot_2D_face(options,contexte):
 	cercle=inkex.etree.Element(inkex.addNS('circle','svg'))
 	cercle.set('cx',"0")
 	cercle.set('cy',"0")
-	cercle.set('r',str(rayon*echelle))
+	cercle.set('r',str(rayon*echelle_liaison))
 	cercle.set('stroke',str(couleur_femelle))
 	cercle.set('stroke-width',str(epaisseur_femelle))
 	cercle.set('style','fill:white')
@@ -214,7 +213,7 @@ def dessin_Pivot_2D_face(options,contexte):
 	# Transformations ***************************************
 	male.set("transform","rotate("+str(rotation1)+")")
 	femelle.set("transform","rotate("+str(rotation2)+")")
-	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	
@@ -230,8 +229,8 @@ def dessin_Pivot_3D(options,contexte):
 	x0=options.x0
 	y0=options.y0
 	#Base Axonometrique
-	echelle=options.echelle
-	Vx,Vy,Vz=getVecteursAxonometriques(echelle)
+	echelle_liaison=options.echelle
+	Vx,Vy,Vz=getVecteursAxonometriques()
 	base=(Vx,Vy,Vz)
 	#Centre de la liaison dans le repere 3D
 	x=options.liaison_pivot_3D_position_x
@@ -252,18 +251,19 @@ def dessin_Pivot_3D(options,contexte):
 	#Repere local de la liaison
 	if(options.liaison_pivot_3D_type_direction=="\"liaison_pivot_3D_type_direction_quelconque\""):
 		V=v3D(options.liaison_pivot_3D_type_direction_quelconque_x,options.liaison_pivot_3D_type_direction_quelconque_y,options.liaison_pivot_3D_type_direction_quelconque_z,base)
-		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle,angle_male)#Repere male
-		Vx2,Vy2,Vz2=getBaseFromVecteur(V,echelle,angle_femelle)#Repere Femelle
+		if V.x == V.y == V.z == 0 : V=v3D(1,0,0,base) #Si vecteur nul : on prend X par defaut
+		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle_liaison,angle_male)#Repere male
+		Vx2,Vy2,Vz2=getBaseFromVecteur(V,echelle_liaison,angle_femelle)#Repere Femelle
 	else:	#Si vecteur standard
 		if(options.liaison_pivot_3D_axe=="x"):
-			Vx1,Vy1,Vz1=getBaseFromVecteur(Vx,echelle,angle_male)#Repere male
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vx,echelle,angle_femelle)#Repere Femelle
+			Vx1,Vy1,Vz1=getBaseFromVecteur(Vx,echelle_liaison,angle_male)#Repere male
+			Vx2,Vy2,Vz2=getBaseFromVecteur(Vx,echelle_liaison,angle_femelle)#Repere Femelle
 		elif(options.liaison_pivot_3D_axe=="y"):
-			Vx1,Vy1,Vz1=getBaseFromVecteur(Vy,echelle,angle_male)#Repere male
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vy,echelle,angle_femelle)#Repere Femelle
+			Vx1,Vy1,Vz1=getBaseFromVecteur(Vy,echelle_liaison,angle_male)#Repere male
+			Vx2,Vy2,Vz2=getBaseFromVecteur(Vy,echelle_liaison,angle_femelle)#Repere Femelle
 		else:#z
-			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz,echelle,angle_male)#Repere male
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vz,echelle,angle_femelle)#Repere Femelle
+			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz,echelle_liaison,angle_male)#Repere male
+			Vx2,Vy2,Vz2=getBaseFromVecteur(Vz,echelle_liaison,angle_femelle)#Repere Femelle
 	baseLocale1=(Vx1,Vy1,Vz1)
 	baseLocale2=(Vx2,Vy2,Vz2)
 
@@ -381,7 +381,7 @@ def dessin_Pivot_3D(options,contexte):
         ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
 
 	# Transformations ***************************************
-	liaison.set("transform","translate("+str(x0+x*Vx.x+y*Vy.x+z*Vz.x)+","+str(y0+x*Vx.y+y*Vy.y+z*Vz.y)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	

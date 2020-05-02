@@ -1,7 +1,7 @@
 import math
 import inkex
 from liaisons_fonctions_utiles import *
-
+from liaisons_parametres import *
 
 def dessin_plane_2D_cote(options,contexte):
 	#https://doczz.fr/doc/4506137/comment-installer-et-programmer-des-scripts-python-dans-i...
@@ -11,7 +11,7 @@ def dessin_plane_2D_cote(options,contexte):
 	x=options.liaison_plane_2D_cote_x
 	y=options.liaison_plane_2D_cote_y
 	#Orientation **************************************
-	rotation=-options.liaison_plane_2D_cote_orientation #Angle par defaut (sens trigo)
+	rotation=90-options.liaison_plane_2D_cote_orientation #Angle par defaut (sens trigo)
 	if(options.liaison_plane_2D_cote_axe=="y"):
 		rotation=0
 	elif(options.liaison_plane_2D_cote_axe=="x"):
@@ -21,13 +21,13 @@ def dessin_plane_2D_cote(options,contexte):
 	elif(options.liaison_plane_2D_cote_axe=="-y"):
 		rotation=180
 	#Base *********************
-	echelle=options.echelle
-	Vx1,Vy1=getBase2D(echelle)
+	echelle_liaison=options.echelle
+	Vx1,Vy1=getBase2D(echelle_liaison)
 	base2D=(Vx1,Vy1)
 	#Parametres ****************************
-	largeur=30.
-	ecart=5.
-	longueurTige=10.
+	largeur = pl2Dc_largeur
+	ecart = pl2Dc_ecartement
+	longueurTige = pl2Dc_tiges
 	couleur_femelle=options.opt_gene_piece2_couleur
 	couleur_male=options.opt_gene_piece1_couleur
 	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
@@ -42,8 +42,9 @@ def dessin_plane_2D_cote(options,contexte):
 	# DESSUS ***************************************
 	#plan dessus
 	planDessus=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(-largeur/2	,	ecart/2.),
-				(largeur/2	,	ecart/2.)	])
+	chemin=points2D_to_svgd([	(-largeur/2	,	(ecart+epaisseur_male)/2.),
+					(largeur/2	,	(ecart+epaisseur_male)/2.)	]
+					,False,base2D)
 	planDessus.set('d',chemin)
 	planDessus.set('stroke',couleur_male)
 	planDessus.set('stroke-width',str(epaisseur_male))
@@ -51,8 +52,9 @@ def dessin_plane_2D_cote(options,contexte):
 	
 	#tige dessus
 	tigeDessus=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(0	,	ecart/2.),
-				(0	,	ecart/2.+longueurTige)	])
+	chemin=points2D_to_svgd([	(0	,	(ecart+epaisseur_male)/2.),
+					(0	,	ecart/2.+longueurTige)	]
+				,False,base2D)
 	tigeDessus.set('d',chemin)
 	tigeDessus.set('stroke',couleur_male)
 	tigeDessus.set('stroke-width',str(epaisseur_male))
@@ -61,8 +63,9 @@ def dessin_plane_2D_cote(options,contexte):
 	# DESSOUS ***************************************
 	#plan dessous
 	planDessous=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(-largeur/2	,	-ecart/2.),
-				(largeur/2	,	-ecart/2.)	])
+	chemin=points2D_to_svgd([	(-largeur/2	,	-(ecart+epaisseur_femelle)/2.),
+					(largeur/2	,	-(ecart+epaisseur_femelle)/2.)	]
+				,False,base2D)
 	planDessous.set('d',chemin)
 	planDessous.set('stroke',couleur_femelle)
 	planDessous.set('stroke-width',str(epaisseur_femelle))
@@ -70,8 +73,9 @@ def dessin_plane_2D_cote(options,contexte):
 	
 	#tige dessous
 	tigeDessous=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(0	,	-ecart/2.),
-				(0	,	-ecart/2.-longueurTige)	])
+	chemin=points2D_to_svgd([	(0	,	-(ecart+epaisseur_femelle)/2.),
+					(0	,	-ecart/2.-longueurTige)	]
+				,False,base2D)
 	tigeDessous.set('d',chemin)
 	tigeDessous.set('stroke',couleur_femelle)
 	tigeDessous.set('stroke-width',str(epaisseur_femelle))
@@ -80,7 +84,7 @@ def dessin_plane_2D_cote(options,contexte):
 	# Transformations ***************************************
 	dessus.set("transform","rotate("+str(rotation)+")")
 	dessous.set("transform","rotate("+str(rotation)+")")
-	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 
@@ -104,26 +108,34 @@ def dessin_plane_2D_dessus(options,contexte):
 		rotationDessous=90
 	rotationDessus=-options.liaison_plane_2D_orientation_dessus #Angle par defaut (sens trigo)
 	if(options.liaison_plane_2D_axe_dessus=="x"):
-		rotationDessus=0
+		rotationDessus = 0
 	elif(options.liaison_plane_2D_axe_dessus=="y"):
-		rotationDessus=-90
+		rotationDessus = -90
 	elif(options.liaison_plane_2D_axe_dessus=="-x"):
-		rotationDessus=180
+		rotationDessus = 180
 	elif(options.liaison_plane_2D_axe_dessus=="-y"):
-		rotationDessus=90
+		rotationDessus = 90
+	elif(options.liaison_plane_2D_axe_dessus=="180"):
+		rotationDessus = rotationDessous + 180
+	elif(options.liaison_plane_2D_axe_dessus=="90"):
+		rotationDessus = rotationDessous - 90
+	elif(options.liaison_plane_2D_axe_dessus=="-90"):
+		rotationDessus = rotationDessous + 90
+	elif(options.liaison_plane_2D_axe_dessus=="0"):
+		rotationDessus = rotationDessous
 	#Base *********************
-	echelle=options.echelle
-	Vx1,Vy1=getBase2D(echelle)
+	echelle_liaison=options.echelle
+	Vx1,Vy1=getBase2D(echelle_liaison)
 	base2D=(Vx1,Vy1)
 	#Parametres ****************************
-	coteDessous=30.
-	coteDessus=20.
-	longueurTrait=10.
-	couleur_femelle=options.opt_gene_piece2_couleur
-	couleur_male=options.opt_gene_piece1_couleur
-	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
-	epaisseur_male=options.opt_gene_lignes_epaisseur_1
-	
+	couleur_dessous = options.opt_gene_piece2_couleur
+	couleur_dessus = options.opt_gene_piece1_couleur
+	epaisseur_dessous = options.opt_gene_lignes_epaisseur_2
+	epaisseur_dessus = options.opt_gene_lignes_epaisseur_1
+	coteMoyen = pl2Dd_largeur
+	coteDessous = pl2Dd_largeur + pl2Dd_ecartement + epaisseur_dessous
+	coteDessus = pl2Dd_largeur - pl2Dd_ecartement - epaisseur_dessus
+	longueurTrait = pl2Dd_tiges
 	#Groupes ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
 	dessous=inkex.etree.SubElement(liaison,'g')
@@ -133,47 +145,47 @@ def dessin_plane_2D_dessus(options,contexte):
 	# Dessous ***************************************	
 	# rectangle dessous
 	rectangleDessous=inkex.etree.Element(inkex.addNS('rect','svg'))
-	rectangleDessous.set('x',str(-coteDessous*echelle/2) )
-	rectangleDessous.set('y',str(-coteDessous*echelle/2) )
-	rectangleDessous.set('width',str(coteDessous*echelle))
-	rectangleDessous.set('height',str(coteDessous*echelle))
+	rectangleDessous.set('x',str(-coteDessous*echelle_liaison/2) )
+	rectangleDessous.set('y',str(-coteDessous*echelle_liaison/2) )
+	rectangleDessous.set('width',str(coteDessous*echelle_liaison))
+	rectangleDessous.set('height',str(coteDessous*echelle_liaison))
 	rectangleDessous.set('style','fill:white')
-	rectangleDessous.set('stroke',couleur_femelle)
-	rectangleDessous.set('stroke-width',str(epaisseur_femelle))
+	rectangleDessous.set('stroke',couleur_dessous)
+	rectangleDessous.set('stroke-width',str(epaisseur_dessous))
 	dessous.append(rectangleDessous)
 
 	traitDessous=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(coteDessous/2.	,	0),
-				(coteDessous/2.+longueurTrait	,	0)	])
+				(coteMoyen/2.+longueurTrait	,	0)	])
 	traitDessous.set('d',chemin)
-	traitDessous.set('stroke',couleur_femelle)
-	traitDessous.set('stroke-width',str(epaisseur_femelle))
+	traitDessous.set('stroke',couleur_dessous)
+	traitDessous.set('stroke-width',str(epaisseur_dessous))
 	dessous.append(traitDessous)
 	
 	# Dessus ***************************************
 	# rectangle dessus
 	rectangleDessus=inkex.etree.Element(inkex.addNS('rect','svg'))
-	rectangleDessus.set('x',str(-coteDessus*echelle/2) )
-	rectangleDessus.set('y',str(-coteDessus*echelle/2) )
-	rectangleDessus.set('width',str(coteDessus*echelle))
-	rectangleDessus.set('height',str(coteDessus*echelle))
+	rectangleDessus.set('x',str(-coteDessus*echelle_liaison/2) )
+	rectangleDessus.set('y',str(-coteDessus*echelle_liaison/2) )
+	rectangleDessus.set('width',str(coteDessus*echelle_liaison))
+	rectangleDessus.set('height',str(coteDessus*echelle_liaison))
 	rectangleDessus.set('style','fill:white')
-	rectangleDessus.set('stroke',couleur_male)
-	rectangleDessus.set('stroke-width',str(epaisseur_male))
+	rectangleDessus.set('stroke',couleur_dessus)
+	rectangleDessus.set('stroke-width',str(epaisseur_dessus))
 	dessus.append(rectangleDessus)
 
 	traitDessus=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(coteDessus/2.	,	0),
-				(coteDessous/2.+longueurTrait	,	0)	])
+	chemin=points_to_svgd([	(coteDessus/2.			,	0),
+				(coteMoyen/2.+longueurTrait	,	0)	])
 	traitDessus.set('d',chemin)
-	traitDessus.set('stroke',couleur_male)
-	traitDessus.set('stroke-width',str(epaisseur_male))
+	traitDessus.set('stroke',couleur_dessus)
+	traitDessus.set('stroke-width',str(epaisseur_dessus))
 	dessus.append(traitDessus)
 	
 	# Transformations ***************************************
 	dessous.set("transform","rotate("+str(rotationDessous)+")")
 	dessus.set("transform","rotate("+str(rotationDessus)+")")
-	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	
@@ -189,8 +201,8 @@ def dessin_plane_3D(options,contexte):
 	x0=options.x0
 	y0=options.y0
 	#Base Axonometrique
-	echelle=options.echelle
-	Vx,Vy,Vz=getVecteursAxonometriques(echelle)
+	echelle_liaison=options.echelle
+	Vx,Vy,Vz=getVecteursAxonometriques(echelle_liaison)
 	base=(Vx,Vy,Vz)
 	#Centre de la liaison dans le repere 3D
 	x=options.liaison_plane_3D_position_x
@@ -198,9 +210,9 @@ def dessin_plane_3D(options,contexte):
 	z=options.liaison_plane_3D_position_z
 	vPosition=v3D(x,y,z,base)#Vecteur position exprime dans la base axono
 	#Parametres de la liaison
-	largeur=30.
-	rayonTige=25.
-	ecart=2.5
+	largeur=pl3D_largeur
+	longueurTige=pl3D_tiges
+	ecart=pl3D_ecartement
 	couleur_dessus=options.opt_gene_piece1_couleur
 	couleur_dessous=options.opt_gene_piece2_couleur
 	epaisseur_dessus=options.opt_gene_lignes_epaisseur_1
@@ -210,28 +222,29 @@ def dessin_plane_3D(options,contexte):
 	#Repere local de la liaison
 	if(options.liaison_plane_3D_type_normale=="\"liaison_plane_3D_type_normale_quelconque\""):
 		V=v3D(options.liaison_plane_3D_type_direction_quelconque_x,options.liaison_plane_3D_type_direction_quelconque_y,options.liaison_plane_3D_type_direction_quelconque_z,base)
-		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle,angle_dessus)#Repere male
-		Vx2,Vy2,Vz2=getBaseFromVecteur(V,echelle,angle_dessous)#Repere Femelle
+		if V.x == V.y == V.z == 0 : V=v3D(1,0,0,base) #Si vecteur nul : on prend X par defaut
+		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle_liaison,angle_dessus)#Repere male
+		Vx2,Vy2,Vz2=getBaseFromVecteur(V,echelle_liaison,angle_dessous)#Repere Femelle
 	else:	#Si vecteur standard
 		if(options.liaison_plane_3D_axe=="x"):
-			Vx1,Vy1,Vz1=getBaseFromVecteur(Vx,echelle,angle_dessus)#Repere dessus
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vx,echelle,angle_dessous)#Repere dessous
+			Vx1,Vy1,Vz1=getBaseFromVecteur(Vx,echelle_liaison,angle_dessus)#Repere dessus
+			Vx2,Vy2,Vz2=getBaseFromVecteur(Vx,echelle_liaison,angle_dessous)#Repere dessous
 		elif(options.liaison_plane_3D_axe=="y"):
-			Vx1,Vy1,Vz1=getBaseFromVecteur(Vy,echelle,angle_dessus)#Repere dessus
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vy,echelle,angle_dessous)#Repere dessous
+			Vx1,Vy1,Vz1=getBaseFromVecteur(Vy,echelle_liaison,angle_dessus)#Repere dessus
+			Vx2,Vy2,Vz2=getBaseFromVecteur(Vy,echelle_liaison,angle_dessous)#Repere dessous
 		else:#z
-			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz,echelle,angle_dessus)#Repere dessus
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vz,echelle,angle_dessous)#Repere dessous
+			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz,echelle_liaison,angle_dessus)#Repere dessus
+			Vx2,Vy2,Vz2=getBaseFromVecteur(Vz,echelle_liaison,angle_dessous)#Repere dessous
 	baseLocale1=(Vx1,Vy1,Vz1)
 	baseLocale2=(Vx2,Vy2,Vz2)
 
 	# Dessus ***************************************
 	planDessus=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
-					(ecart,	-largeur/2.,	-largeur/2.	),
-					(ecart,	-largeur/2.,	largeur/2.	),
-					(ecart,	largeur/2.,	largeur/2.	),
-					(ecart,	largeur/2.,	-largeur/2.	)
+					( (ecart+epaisseur_dessus)/2.,	-largeur/2.,	-largeur/2.	),
+					( (ecart+epaisseur_dessus)/2.,	-largeur/2.,	largeur/2.	),
+					( (ecart+epaisseur_dessus)/2.,	largeur/2.,	largeur/2.	),
+					( (ecart+epaisseur_dessus)/2.,	largeur/2.,	-largeur/2.	)
 				],True,baseLocale1)
 	planDessus.set('d',chemin)
 	planDessus.set('stroke',couleur_dessus)
@@ -242,8 +255,8 @@ def dessin_plane_3D(options,contexte):
 
 	tigeDessus=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
-					(ecart,	0.,	0.	),
-					(rayonTige,	0.,	0.	)
+					( (ecart+epaisseur_dessus)/2.,	0.,	0.	),
+					( ecart/2.+longueurTige,	0.,	0.	)
 				],False,baseLocale1)
 	tigeDessus.set('d',chemin)
 	tigeDessus.set('stroke',couleur_dessus)
@@ -254,10 +267,10 @@ def dessin_plane_3D(options,contexte):
 	# Dessous ***************************************
 	planDessous=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
-					(-ecart,	-largeur/2.,	-largeur/2.	),
-					(-ecart,	-largeur/2.,	largeur/2.	),
-					(-ecart,	largeur/2.,	largeur/2.	),
-					(-ecart,	largeur/2.,	-largeur/2.	)
+					(-(ecart+epaisseur_dessous)/2.,	-largeur/2.,	-largeur/2.	),
+					(-(ecart+epaisseur_dessous)/2.,	-largeur/2.,	largeur/2.	),
+					(-(ecart+epaisseur_dessous)/2.,	largeur/2.,	largeur/2.	),
+					(-(ecart+epaisseur_dessous)/2.,	largeur/2.,	-largeur/2.	)
 				],True,baseLocale2)
 	planDessous.set('d',chemin)
 	planDessous.set('stroke',couleur_dessous)
@@ -267,8 +280,8 @@ def dessin_plane_3D(options,contexte):
 
 	tigeDessous=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
-					(-ecart,	0.,	0.	),
-					(-rayonTige,	0.,	0.	)
+						(-(ecart+epaisseur_dessous)/2.,	0.,	0.	),
+						(-ecart/2.-longueurTige,	0.,	0.	)
 				],False,baseLocale2)
 	tigeDessous.set('d',chemin)
 	tigeDessous.set('stroke',couleur_dessous)
@@ -285,7 +298,7 @@ def dessin_plane_3D(options,contexte):
         
         
 	# Transformations ***************************************
-	liaison.set("transform","translate("+str(x0+x*Vx.x+y*Vy.x+z*Vz.x)+","+str(y0+x*Vx.y+y*Vy.y+z*Vz.y)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	

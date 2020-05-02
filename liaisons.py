@@ -4,7 +4,7 @@
 # These two lines are only needed if you don't put the script directly into
 # the installation directory
 import sys
-sys.path.append('/usr/share/inkscape/extensions')
+#sys.path.append('/usr/share/inkscape/extensions')
 
 # We will use the inkex module with the predefined Effect base class.
 import inkex
@@ -40,6 +40,7 @@ class Liaisons(inkex.Effect):
         """
         # Call the base class constructor.
         inkex.Effect.__init__(self)
+        
 
         # Define string option "--what" with "-w" shortcut and default value "World".
         #PRINCIPAL
@@ -106,13 +107,15 @@ class Liaisons(inkex.Effect):
 
         self.OptionParser.add_option('--liaison_glissiere_2D_cote_x', action = 'store', type = 'float', dest = 'liaison_glissiere_2D_cote_x', default = '0', help = u"Position sur X de la liaison glissiere 2D face relativement a l'origine")
         self.OptionParser.add_option('--liaison_glissiere_2D_cote_y', action = 'store', type = 'float', dest = 'liaison_glissiere_2D_cote_y', default = '0', help = u"Position sur Y de la liaison glissiere 2D face relativement a l'origine")
-        self.OptionParser.add_option('--liaison_glissiere_2D_cote_axe', action = 'store', type = 'string', dest = 'liaison_glissiere_2D_cote_axe', default = 'x', help = u"Principales directions de l'axe d'une glissiere 2D vue de cote")
-        self.OptionParser.add_option('--liaison_glissiere_2D_cote_orientation', action = 'store', type = 'float', dest = 'liaison_glissiere_2D_cote_orientation', default = '0', help = u"Orientation glissiere 2D en degres")
+        self.OptionParser.add_option('--liaison_glissiere_2D_cote_direction_standard', action = 'store', type = 'string', dest = 'liaison_glissiere_2D_cote_direction_standard', default = 'x', help = u"Principales directions de l'axe d'une glissiere 2D vue de cote")
+        self.OptionParser.add_option('--liaison_glissiere_2D_cote_direction_quelconque', action = 'store', type = 'float', dest = 'liaison_glissiere_2D_cote_direction_quelconque', default = '0', help = u"Orientation glissiere 2D en degres")
         
         self.OptionParser.add_option('--liaison_glissiere_2D_face_x', action = 'store', type = 'float', dest = 'liaison_glissiere_2D_face_x', default = '0', help = u"Position sur X de la glissiere 2D face relativement a l'origine")
         self.OptionParser.add_option('--liaison_glissiere_2D_face_y', action = 'store', type = 'float', dest = 'liaison_glissiere_2D_face_y', default = '0', help = u"Position sur Y de la glissiere 2D face relativement a l'origine")
-        self.OptionParser.add_option('--liaison_glissiere_2D_face_axe', action = 'store', type = 'string', dest = 'liaison_glissiere_2D_face_axe', default = 'x', help = u"Principales directions du bras de la piece femelle d'une glissiere vue de face")
-        self.OptionParser.add_option('--liaison_glissiere_2D_face_orientation', action = 'store', type = 'float', dest = 'liaison_glissiere_2D_face_orientation', default = '0', help = u"Orientation du bras de la piece femelle d'une glissier vue de face en degres")
+        self.OptionParser.add_option('--liaison_glissiere_2D_face_orientation_standard_femelle', action = 'store', type = 'string', dest = 'liaison_glissiere_2D_face_orientation_standard_femelle', default = 'x', help = u"Principales directions du bras de la piece femelle d'une glissiere vue de face")
+        self.OptionParser.add_option('--liaison_glissiere_2D_face_orientation_quelconque_femelle', action = 'store', type = 'float', dest = 'liaison_glissiere_2D_face_orientation_quelconque_femelle', default = '0', help = u"Orientation du bras de la piece femelle d'une glissiere vue de face en degres")
+        self.OptionParser.add_option('--liaison_glissiere_2D_face_orientation_standard_male', action = 'store', type = 'string', dest = 'liaison_glissiere_2D_face_orientation_standard_male', default = 'x', help = u"Principales directions du bras de la piece male d'une glissiere vue de face")
+        self.OptionParser.add_option('--liaison_glissiere_2D_face_orientation_quelconque_male', action = 'store', type = 'float', dest = 'liaison_glissiere_2D_face_orientation_quelconque_male', default = '0', help = u"Orientation du bras de la piece male d'une glissiere vue de face en degres")
 
         self.OptionParser.add_option('--liaison_glissiere_3D_position_x', action = 'store', type = 'float', dest = 'liaison_glissiere_3D_position_x', default = 0, help = u"Coordonnee sur x du centre de la liaison glissiere 3D")
         self.OptionParser.add_option('--liaison_glissiere_3D_position_y', action = 'store', type = 'float', dest = 'liaison_glissiere_3D_position_y', default = 0, help = u"Coordonnee sur y du centre de la liaison glissiere 3D")
@@ -308,13 +311,18 @@ class Liaisons(inkex.Effect):
 
         self.OptionParser.add_option('--x0', action = 'store', type = 'float', dest = 'x0', default = 0, help = u"Origine (2D) du repere (sur x)")
         self.OptionParser.add_option('--y0', action = 'store', type = 'float', dest = 'y0', default = 0, help = u"Origine (2D) du repere (sur y)")
-        self.OptionParser.add_option('--echelle', action = 'store', type = 'float', dest = 'echelle', default = 1, help = u"Coefficient d'echelle")
+        self.OptionParser.add_option('--longueur_base', action = 'store', type = 'float', dest = 'longueur_base', default = 1, help = u"Longueur des vecteur unitaire de la base")
+        self.OptionParser.add_option('--unite_base', action = 'store', type = 'string', dest = 'unite_base', default = "cm", help = u"Unité dans laquelle est exprimé la longueur de la base.")
+        self.OptionParser.add_option('--echelle', action = 'store', type = 'float', dest = 'echelle', default = 1, help = u"Coefficient d'echelle pour les liaisons")
 
         self.OptionParser.add_option('--opt_gene_lignes_epaisseur_1', action = 'store', type = 'float', dest = 'opt_gene_lignes_epaisseur_1', default = 1, help = u"Epaisseur des traits de la piece 1")
         self.OptionParser.add_option('--opt_gene_lignes_epaisseur_2', action = 'store', type = 'float', dest = 'opt_gene_lignes_epaisseur_2', default = 1, help = u"Epaisseur des traits de la piece 2")
         
         self.OptionParser.add_option('--opt_gene_piece1_couleur', action = 'store', type = 'int', dest = 'opt_gene_piece1_couleur', default = 16711680, help = u"Couleur de la piece 1")
         self.OptionParser.add_option('--opt_gene_piece2_couleur', action = 'store', type = 'int', dest = 'opt_gene_piece2_couleur', default = 65280, help = u"Couleur de la piece 2")
+
+
+
 
 
 
@@ -325,12 +333,20 @@ class Liaisons(inkex.Effect):
         """
         # Get script's "--what" option value.
         liaison=self.options.liaison
-        self.options.credits=u"Auteur : Raphaël ALLAIS (Lycee G.Eiffel de DIJON)"
+        self.options.credits=u"Auteur : Raphaël ALLAIS (Lycee G.Eiffel de DIJON) - Éduscol"
+        self.options.effect=self	#On passe la référence de l'objet effect dans les options pour y avoir acces dans les fonctions qui ne sont pas membre
 
         # Get access to main SVG document element and get its dimensions.
         svg = self.document.getroot()
+        
+        # Quelle est l'unité courante        
+        #infos_de_base = self.getElementById('base')
+        #UNITE_COURANTE = self.getDocumentUnit();
+        #assert 0,infos_de_base.attrib["inkscape:document-units"]#elf.document.xpath('//sodipodi:namedview/@inkscape:document-units')
+        
+        
         # or alternatively
-        # svg = self.document.xpath('//svg:svg',namespaces=inkex.NSS)[0]
+        # svg = self.document.xpath('//svg:inkex getrootsvg',namespaces=inkex.NSS)[0]
 
         # Again, there are two ways to get the attibutes:
         width  = self.unittouu(svg.get('width'))

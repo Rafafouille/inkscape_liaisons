@@ -2,7 +2,7 @@
 import math
 import inkex
 from liaisons_fonctions_utiles import *
-
+from liaisons_parametres import *
 
 def dessin_spherique_2D(options,contexte):
 	#https://doczz.fr/doc/4506137/comment-installer-et-programmer-des-scripts-python-dans-i...
@@ -31,47 +31,42 @@ def dessin_spherique_2D(options,contexte):
 	elif(options.liaison_spherique_2D_axe_femelle=="-y"):
 		rotation_femelle=-90.
 	#Base *********************
-	echelle=options.echelle
-	Vx1,Vy1=getBase2D(echelle)
+	echelle_liaison=options.echelle
+	Vx1,Vy1=getBase2D(echelle_liaison)
 	base2D=(Vx1,Vy1)
 	#Parametres ****************************
-	old_liaisons=options.opt_gene_gene_old
-	rayon_male=25./2
-	rayon_femelle=rayon_male+5.
-	longueur_tige=30.
-	thetaOuverture=90
-	couleur_femelle=options.opt_gene_piece2_couleur
-	couleur_male=options.opt_gene_piece1_couleur
-	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
-	epaisseur_male=options.opt_gene_lignes_epaisseur_1
-
+	couleur_femelle = options.opt_gene_piece2_couleur
+	couleur_male = options.opt_gene_piece1_couleur
+	epaisseur_femelle = options.opt_gene_lignes_epaisseur_2
+	epaisseur_male = options.opt_gene_lignes_epaisseur_1
+	old_liaisons = options.opt_gene_gene_old
+	rayon_male = s2D_diametre / 2.
+	rayon_femelle = rayon_male + s2D_ecart + (epaisseur_femelle+epaisseur_male)/2.
+	rayon_tige = s2D_rayon_tiges
+	thetaOuverture = s2D_angle_ouverture
 	#Groupes ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
 	male=inkex.etree.SubElement(liaison,'g')
 	femelle=inkex.etree.SubElement(liaison,'g')
-	
-	
 	# Male ***************************************
 	#cercle male
 	cercle=inkex.etree.Element(inkex.addNS('circle','svg'))
 	cercle.set('cx',"0")
 	cercle.set('cy',"0")
-	cercle.set('r',str(rayon_male*echelle))
+	cercle.set('r',str(rayon_male*echelle_liaison))
 	cercle.set('stroke',str(couleur_male))
 	cercle.set('stroke-width',str(epaisseur_male))
 	cercle.set('style','fill:white')
 	male.append(cercle)
-	
 	#Tige male
 	tige_male=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(rayon_male	,	0.),
-					(longueur_tige	,	0.)	]
+					(rayon_tige	,	0.)	]
 				,False,base2D)
 	tige_male.set('d',chemin)
 	tige_male.set('stroke',couleur_male)
 	tige_male.set('stroke-width',str(epaisseur_male))
 	male.append(tige_male)
-	
 	# Femelle ***************************************
 	#cercle fmelle
 	arc=inkex.etree.Element(inkex.addNS('path','svg'))
@@ -105,7 +100,7 @@ def dessin_spherique_2D(options,contexte):
 	#Tige femelle
 	tige_femelle=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(rayon_femelle	,	0.),
-					(longueur_tige	,	0.)	]
+					(rayon_tige	,	0.)	]
 				,True,base2D)
 	tige_femelle.set('d',chemin)
 	tige_femelle.set('stroke',couleur_femelle)
@@ -116,7 +111,7 @@ def dessin_spherique_2D(options,contexte):
 	# Transformations ***************************************
 	male.set("transform","rotate("+str(-rotation_male)+")")
 	femelle.set("transform","rotate("+str(-rotation_femelle)+")")
-	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 

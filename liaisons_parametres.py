@@ -3,11 +3,11 @@
 # ============== LIAISON PIVOT ========================
 
 # Parametres généraux
-diametre_pivot = 15
-longueur_pivot = 30
-longueur_arrets_pivot = diametre_pivot
-ecart_arrets_pivot = 0.5 * diametre_pivot
-longueur_male_pivot = longueur_pivot + 4*ecart_arrets_pivot
+diametre_pivot = 15						# Diamètre de la pièce femelle
+longueur_pivot = 30						# Longueur de la pièce femelle
+longueur_arrets_pivot = diametre_pivot				# Longueur des arrêts (barres) de la pivot
+ecart_arrets_pivot = 0.5 * diametre_pivot			# Ecart entre la pièce femelle et les arrêts
+longueur_male_pivot = longueur_pivot + 4*ecart_arrets_pivot	# Longueur de la tige mâle
 
 # Pivot 2D coté
 p2Dc_diametre = diametre_pivot			# Diamètre de la pièce femelle
@@ -27,7 +27,98 @@ p3D_longueur = longueur_pivot			# Longueur de la pièce femelle
 p3D_longueur_arrets = longueur_arrets_pivot	# Longueur des arrêts de la pivot
 p3D_ecarts_arrets = ecart_arrets_pivot		# Ecart entre la pièce femelle et les arrêts
 p3D_longueur_male = longueur_male_pivot	# Longueur de la tige male
-p3D_longueur_tige_femelle = p2Dc_diametre	# Longueur de la tige femelle
+p3D_longueur_tige_femelle = p3D_diametre	# Longueur de la tige femelle
+
+
+# ============== LIAISON PIVOT-GLISSANT ========================
+
+# Parametres généraux
+diametre_pivot_glissant = diametre_pivot						# Diamètre de la pièce femelle
+longueur_pivot_glissant = longueur_pivot						# Longueur de la pièce femelle
+longueur_male_pivot_glissant = longueur_pivot_glissant + 2 * diametre_pivot_glissant	#  Longueur de la tige mâle
+
+# Pivot-glissant 2D coté
+pg2Dc_diametre = diametre_pivot_glissant		# Diamètre de la pièce femelle
+pg2Dc_longueur = longueur_pivot_glissant		# Longueur de la pièce femelle
+pg2Dc_longueur_male = longueur_male_pivot_glissant	# Longueur de la tige mâle
+pg2Dc_longueur_tige_femelle = diametre_pivot_glissant	# Longueur de la tige femelle
+
+# Pivot-glissant 2D face
+pg2Df_diametre = diametre_pivot_glissant	# Diamètre de la pièce femelle
+pg2Df_longueur_tige = pg2Df_diametre / 2.	# Longueur de la tige (male ou femelle)
+
+#Pivot 3D
+pg3D_diametre = diametre_pivot_glissant			# Diamètre de la pièce femelle
+pg3D_longueur = longueur_pivot_glissant			# Longueur de la pièce femelle
+pg3D_longueur_male = longueur_male_pivot_glissant	# Longueur de la tige mâle
+pg3D_longueur_tige_femelle = pg3D_diametre		# Longueur de la tige femelle
+
+# ============== LIAISON GLISSIÈRE ========================
+# Parametres généraux
+largeur_glissiere = 1.25 * diametre_pivot		# Largeur du rectangle
+hauteur_glissiere = 0.7 * largeur_glissiere		# Hauteur du rectangle
+longueur_glissiere = longueur_pivot			# Longueur de la liaison
+longueur_male_glissiere = 1.5 * longueur_glissiere	# Longueur de la pièce mâle
+longueur_tige_femelle = hauteur_glissiere/2		# Longueur de la tige femelle qui part du rectangle
+
+# Glissiere 2D coté
+g2Dc_hauteur = hauteur_glissiere			# Hauteur du rectangle
+g2Dc_longueur = longueur_glissiere			# Longueur du rectangle
+g2Dc_longueur_male = longueur_male_glissiere		# Longueur de la pièce mâle
+g2Dc_longueur_tige_femelle = longueur_tige_femelle	# Longueur de la tige femelle qui part du rectangle
+
+# Glissière 2D face
+g2Df_hauteur = hauteur_glissiere			# Hauteur du rectangle
+g2Df_largeur = largeur_glissiere			# Largeur du rectangle
+g2Df_longueur_tige_femelle = longueur_tige_femelle	# Longueur de la tige femelle qui part du rectangle
+g2Df_longueur_tige_male = largeur_glissiere		# Longueur de la tige qui par de la pièce mâle
+
+# Glissière 3D
+g3D_longueur = longueur_glissiere			# Longueur du rectangle
+g3D_largeur = largeur_glissiere				# Largeur du rectangle
+g3D_hauteur = hauteur_glissiere				# Hauteur du rectangle
+g3D_longueur_male = longueur_male_glissiere * 4./3.	# Longueur de la pièce mâle
+g3D_longueur_tige_femelle =  longueur_tige_femelle * 2	# Longueur de la tige de la pièce femelle
+
+
+# ============== LIAISON PLANE ========================
+# Parametres généraux
+largeur_plane = 1.5 * diametre_pivot		# Largeur des "plans" de la liaison
+ecartement_plane = largeur_plane / 6.		# Espace entre les "plans" de la liaison
+longueur_tiges_plane = largeur_plane / 2.	# Longueur des tiges qui repartent de chaque plan
+
+# Plane 2D coté
+pl2Dc_largeur = largeur_plane		# Largeur des "plans" de la liaison
+pl2Dc_ecartement = ecartement_plane	# Espace entre les "plans" de la liaison
+pl2Dc_tiges = longueur_tiges_plane	# Longueur des tiges qui repartent de chaque plan
+
+# Plane 2D dessus
+pl2Dd_largeur = largeur_plane			# Dimension moyenne des deux carrés vus du dessus
+pl2Dd_ecartement = 0.5 * ecartement_plane	# Espace qui sépare les deux carrés vus du dessus
+pl2Dd_tiges = longueur_tiges_plane		# Longueur des tiges qui partent des liaison, depuis le carré moyen
+
+# Plane 3D
+pl3D_largeur = largeur_plane		# Largeur des "plans" de la liaison
+pl3D_ecartement = ecartement_plane	# Espace entre les "plans" de la liaison
+pl3D_tiges = 1.5 * longueur_tiges_plane	# Longueur des tiges qui repartent de chaque plan
+
+# ============== LIAISON SPHÉRIQUE ========================
+# Parametres généraux
+diametre_spherique = 1.5 * diametre_pivot			# Diamètre de la boule intérieure
+angle_ouverture_spherique = 90.					# Angle ouverture de la calotte femelle
+ecart_spherique = diametre_spherique / 5.			# Interstice entre la sphère et la calotte femelle. Prend en compte l'épaisseur des traits
+rayon_tiges_spherique = 1.5*diametre_spherique + ecart_spherique	# Distance entre le centre de la sphère et le bout des tiges qui sortent de chaque pièce
+
+# Plane 2D coté
+s2D_diametre = diametre_spherique			# Diamètre de la boule intérieure
+s2D_angle_ouverture = angle_ouverture_spherique		# Angle ouverture de la calotte femelle
+s2D_ecart = ecart_spherique				# Interstice entre la sphère et la calotte femelle. Prend en compte l'épaisseur des traits
+s2D_rayon_tiges = rayon_tiges_spherique			# Distance entre le centre de la sphère et le bout des tiges qui sortent de chaque pièce
+
+# Plane 2D dessus
+
+
+# Plane 3D
 
 
 # ============== LIAISON HÉLICOIDALE ========================
