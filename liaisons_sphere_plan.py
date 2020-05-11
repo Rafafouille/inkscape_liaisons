@@ -41,10 +41,10 @@ def dessin_sphere_plan_2D_cote(options,contexte):
 	base2D_1=(Vx1,Vy1)
 	base2D_2=(Vx2,Vy2)
 	#Parametres ****************************
-	couleur_femelle=options.opt_gene_piece2_couleur
-	couleur_male=options.opt_gene_piece1_couleur
-	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
-	epaisseur_male=options.opt_gene_lignes_epaisseur_1
+	couleur_sphere=options.opt_gene_piece2_couleur
+	couleur_plan=options.opt_gene_piece1_couleur
+	epaisseur_sphere=options.opt_gene_lignes_epaisseur_2
+	epaisseur_plan=options.opt_gene_lignes_epaisseur_1
 	old_liaisons=options.opt_gene_gene_old
 	
 	#Groupes ******************************************
@@ -56,32 +56,32 @@ def dessin_sphere_plan_2D_cote(options,contexte):
 	# PLAN ***************************************
 	#plan dessus
 	plan_plan=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points2D_to_svgd([	(0,	-sp2Dc_largeur_plan/2.),
-					(0,	sp2Dc_largeur_plan/2)	],
+	chemin=points2D_to_svgd([	(-epaisseur_plan/2.,	-sp2Dc_largeur_plan/2.),
+					(-epaisseur_plan/2.,	sp2Dc_largeur_plan/2)	],
 				False,
 				base2D_1)
 	plan_plan.set('d',chemin)
-	plan_plan.set('stroke',couleur_male)
-	plan_plan.set('stroke-width',str(epaisseur_male))
+	plan_plan.set('stroke',couleur_plan)
+	plan_plan.set('stroke-width',str(epaisseur_plan))
 	plan.append(plan_plan)
 	
 	#tige
 	tige_plan=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points2D_to_svgd([	(0			,	0),
-					(-sp2Dc_diametre_sphere	,	0)	],
+	chemin=points2D_to_svgd([	(-epaisseur_plan/2.				,	0),
+					(-epaisseur_plan/2.-sp2Dc_longueur_tige_plan	,	0)	],
 				False,
 				base2D_1)
 	tige_plan.set('d',chemin)
-	tige_plan.set('stroke',couleur_male)
-	tige_plan.set('stroke-width',str(epaisseur_male))
+	tige_plan.set('stroke',couleur_plan)
+	tige_plan.set('stroke-width',str(epaisseur_plan))
 	plan.append(tige_plan)
 	
 	# SPHERE ***************************************
-	#plan dessous
+	#Sphere
 	if not old_liaisons:
 		sphere_bout=inkex.etree.Element(inkex.addNS('circle','svg'))
-		sphere_bout.set('cx',str(sp2Dc_diametre_sphere/2.*math.cos(-rotation_normale*math.pi/180)))
-		sphere_bout.set('cy',str(sp2Dc_diametre_sphere/2.*math.sin(-rotation_normale*math.pi/180)))
+		sphere_bout.set('cx',str((echelle*sp2Dc_diametre_sphere/2.+epaisseur_sphere/2.)*math.cos(-rotation_normale*math.pi/180)))
+		sphere_bout.set('cy',str((echelle*sp2Dc_diametre_sphere/2.+epaisseur_sphere/2.)*math.sin(-rotation_normale*math.pi/180)))
 		sphere_bout.set('r',str(sp2Dc_diametre_sphere/2.*echelle))
 		sphere_bout.set('style','fill:white')
 	else :
@@ -90,28 +90,28 @@ def dessin_sphere_plan_2D_cote(options,contexte):
 					(sp2DcOLD_largeur_fleche*(math.sqrt(3)/2*Vx2.x+0.5*Vy2.x)	,	sp2DcOLD_largeur_fleche*(math.sqrt(3)/2*Vx2.y+0.5*Vy2.y)),
 					(sp2DcOLD_largeur_fleche*(math.sqrt(3)/2*Vx2.x-0.5*Vy2.x)	,	sp2DcOLD_largeur_fleche*(math.sqrt(3)/2*Vx2.y-0.5*Vy2.y)), 	])
 		sphere_bout.set('d',chemin)
-		sphere_bout.set('style','fill:'+couleur_femelle)
-	sphere_bout.set('stroke',couleur_femelle)
-	sphere_bout.set('stroke-width',str(epaisseur_femelle))
+		sphere_bout.set('style','fill:'+couleur_sphere)
+	sphere_bout.set('stroke',couleur_sphere)
+	sphere_bout.set('stroke-width',str(epaisseur_sphere))
 	sphere.append(sphere_bout)
 	
 	#tige
 	sphere_tige=inkex.etree.Element(inkex.addNS('path','svg'))
 	if not old_liaisons:
-		chemin=points_to_svgd([	(sp2Dc_diametre_sphere/2.*(Vx1.x+Vx2.x)	,	sp2Dc_diametre_sphere/2.*(Vx1.y+Vx2.y)),
-					(sp2Dc_diametre_sphere/2.*(Vx1.x+Vx2.x)+sp2Dc_longueur_tige_sphere*Vx2.x	,	sp2Dc_diametre_sphere/2.*(Vx1.y+Vx2.y)+sp2Dc_longueur_tige_sphere*Vy2.x)	])
+		chemin=points_to_svgd([	(sp2Dc_diametre_sphere/2.*(Vx1.x+Vx2.x) + epaisseur_sphere/2.*Vx1.x					,	sp2Dc_diametre_sphere/2.*(Vx1.y+Vx2.y) + epaisseur_sphere/2.*Vx1.y),
+					(sp2Dc_diametre_sphere/2.*(Vx1.x+Vx2.x) + sp2Dc_longueur_tige_sphere*Vx2.x + epaisseur_sphere/2.*Vx1.x	,	sp2Dc_diametre_sphere/2.*(Vx1.y+Vx2.y) + sp2Dc_longueur_tige_sphere*Vy2.x + epaisseur_sphere/2.*Vx1.y)	])
 	else:
 		chemin=points_to_svgd([	(sp2DcOLD_largeur_fleche*math.sqrt(3)/2.*Vx2.x	,	sp2DcOLD_largeur_fleche*math.sqrt(3)/2.*Vx2.y),
 					((sp2DcOLD_largeur_fleche+sp2Dc_longueur_tige_sphere)*Vx2.x	,	(sp2DcOLD_largeur_fleche+sp2Dc_longueur_tige_sphere)*Vx2.y)	])
 	sphere_tige.set('d',chemin)
-	sphere_tige.set('stroke',couleur_femelle)
-	sphere_tige.set('stroke-width',str(epaisseur_femelle))
+	sphere_tige.set('stroke',couleur_sphere)
+	sphere_tige.set('stroke-width',str(epaisseur_sphere))
 	sphere.append(sphere_tige)
 	
 	# Transformations ***************************************
 	#dessus.set("transform","rotate("+str(rotation)+")")
 	#dessous.set("transform","rotate("+str(rotation)+")")
-	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 
@@ -185,7 +185,7 @@ def dessin_sphere_plan_2D_dessus(options,contexte):
 	sphere=inkex.etree.Element(inkex.addNS('circle','svg'))
 	sphere.set('cx','0')
 	sphere.set('cy','0')
-	sphere.set('r',str(sp2Dc_diametre_sphere/2.*echelle))
+	sphere.set('r',str(sp2Dd_diametre_sphere/2.*echelle))
 	sphere.set('style','fill:white')
 	sphere.set('stroke',couleur_male)
 	sphere.set('stroke-width',str(epaisseur_male))
@@ -194,8 +194,8 @@ def dessin_sphere_plan_2D_dessus(options,contexte):
 	
 	#trait
 	traitSphere=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(sp2Dc_diametre_sphere/2.*echelle	,0),
-				((sp2Dc_diametre_sphere/2.+sp2Dd_longueur_tige_sphere)*echelle	,0)	])
+	chemin=points_to_svgd([	(sp2Dd_diametre_sphere/2.*echelle	,0),
+				((sp2Dd_diametre_sphere/2.+sp2Dd_longueur_tige_sphere)*echelle	,0)	])
 	traitSphere.set('d',chemin)
 	traitSphere.set('stroke',couleur_male)
 	traitSphere.set('stroke-width',str(epaisseur_male))
@@ -204,7 +204,7 @@ def dessin_sphere_plan_2D_dessus(options,contexte):
 	# Transformations ***************************************
 	groupe_plan.set("transform","rotate("+str(rotationPlan)+")")
 	groupe_sphere.set("transform","rotate("+str(rotationSphere)+")")
-	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	
@@ -335,7 +335,7 @@ def dessin_sphere_plan_3D(options,contexte):
         
         
 	# Transformations ***************************************
-	liaison.set("transform","translate("+str(x0+x*Vx.x+y*Vy.x+z*Vz.x)+","+str(y0+x*Vx.y+y*Vy.y+z*Vz.y)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	

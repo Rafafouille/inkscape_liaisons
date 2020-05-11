@@ -134,17 +134,18 @@ def dessin_spherique_3D(options,contexte):
 	z=options.liaison_spherique_3D_position_z
 	vPosition=v3D(x,y,z,base)#Vecteur position exprime dans la base axono
 	#Parametres de la liaison
-	rayon_male=25./2
-	rayon_femelle=rayon_male+2.
-	thetaOuverture=60.#90 interdit !!!
-	rayonTige=25.
 	couleur_femelle=options.opt_gene_piece2_couleur
 	couleur_male=options.opt_gene_piece1_couleur
 	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
 	epaisseur_male=options.opt_gene_lignes_epaisseur_1
+	rayon_male = s3D_diametre / 2.
+	rayon_femelle = rayon_male + s3D_ecart + (epaisseur_femelle+epaisseur_male)/2.
+	thetaOuverture = s3D_angle_ouverture / 2. #Demi angle d'ouverture #90 interdit !!!
+	rayonTige = s3D_rayon_tiges 
 	#Repere local de la liaison, partie male
 	if(options.liaison_spherique_3D_type_orientation_male=="\"liaison_spherique_3D_type_orientation_male_quelconque\""):
 		V=v3D(options.liaison_spherique_3D_type_direction_male_quelconque_x,options.liaison_spherique_3D_type_direction_male_quelconque_y,options.liaison_spherique_3D_type_direction_male_quelconque_z,base)
+		if V.x == V.y == V.z == 0 : V=v3D(1,0,0,base) #Si vecteur nul : on prend X par defaut
 		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle)#Repere male
 	else:	#Si vecteur standard
 		if(options.liaison_spherique_3D_axe_male=="x"):
@@ -163,24 +164,33 @@ def dessin_spherique_3D(options,contexte):
 	#Repere local de la liaison, partie femelle
 	if(options.liaison_spherique_3D_type_orientation_femelle=="\"liaison_spherique_3D_type_orientation_femelle_quelconque\""):
 		V=v3D(options.liaison_spherique_3D_type_direction_femelle_quelconque_x,options.liaison_spherique_3D_type_direction_femelle_quelconque_y,options.liaison_spherique_3D_type_direction_femelle_quelconque_z,base)
+		if V.x == V.y == V.z == 0 : V=v3D(1,0,0,base) #Si vecteur nul : on prend X par defaut
 		Vx2,Vy2,Vz2=getBaseFromVecteur(V,echelle)#Repere male
 	else:	#Si vecteur standard
 		if(options.liaison_spherique_3D_axe_femelle=="x"):
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vx,echelle)#Repere femelle
+			Vx2,Vy2,Vz2 = getBaseFromVecteur(Vx,echelle)#Repere femelle
 		elif(options.liaison_spherique_3D_axe_femelle=="y"):
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vy,echelle)#Repere femelle
+			Vx2,Vy2,Vz2 = getBaseFromVecteur(Vy,echelle)#Repere femelle
 		elif(options.liaison_spherique_3D_axe_femelle=="z"):
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vz,echelle)#Repere femelle
+			Vx2,Vy2,Vz2 = getBaseFromVecteur(Vz,echelle)#Repere femelle
 		elif(options.liaison_spherique_3D_axe_femelle=="-x"):
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vx*(-1),echelle)#Repere femelle
+			Vx2,Vy2,Vz2 = getBaseFromVecteur(Vx*(-1),echelle)#Repere femelle
 		elif(options.liaison_spherique_3D_axe_femelle=="-y"):
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vy*(-1),echelle)#Repere femelle
-		else:#z
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vz*(-1),echelle)#Repere femelle
+			Vx2,Vy2,Vz2 = getBaseFromVecteur(Vy*(-1),echelle)#Repere femelle
+		elif(options.liaison_spherique_3D_axe_femelle=="-z"):
+			Vx2,Vy2,Vz2 = getBaseFromVecteur(Vz*(-1),echelle)#Repere femelle
+		else : #opposé à la piece male
+			Vx2,Vy2,Vz2 = -Vx1,-Vy1,-Vz1 #Repere femelle
 	#A SUPPRIMER	
 	#Vx2,Vy2,Vz2=getBaseFromVecteur(Vx,echelle)#Repere femelle
-	baseLocale2=(Vx2,Vy2,Vz2)
+	baseLocaleTige=(Vx2,Vy2,Vz2)
 	
+	#Repere pièce femelle, juste pour la calotte
+	if options.liaison_spherique_3D_calotte_adaptative:
+		Vx3, Vy3, Vz3 = -Vx1, -Vy1, -Vz1
+	else :
+		Vx3, Vy3, Vz3 = Vx2, Vy2, Vz2
+	baseLocaleCalotte=(Vx3,Vy3,Vz3)
 	# Male ***************************************
 	#Tige
 	tigeMale=inkex.etree.Element(inkex.addNS('path','svg'))
@@ -206,11 +216,11 @@ def dessin_spherique_3D(options,contexte):
 
 	
 	# Femelle ***************************************
-	thetaCoupure1,thetaCoupure2=getAnglesCoupure(baseLocale2)
+	thetaCoupure1,thetaCoupure2=getAnglesCoupure(baseLocaleCalotte)
 
-	centre=v3D(-rayon_femelle*math.cos(thetaOuverture/180*math.pi),0,0,baseLocale2) #Vecteur OC1, O=centre liaison
+	centre=v3D(-rayon_femelle*math.cos(thetaOuverture/180*math.pi),0,0,baseLocaleCalotte) #Vecteur OC1, O=centre liaison
 	rayon=rayon_femelle*math.sin(thetaOuverture/180*math.pi)#Rayon de l'ouverture de la calotte
-	listeArcsOuverture=getListePoints2DCercle(baseLocale2,centre,rayon,0,math.pi*2,thetaCoupure1,thetaCoupure2,100)
+	listeArcsOuverture=getListePoints2DCercle(baseLocaleCalotte,centre,rayon,0,math.pi*2,thetaCoupure1,thetaCoupure2,100)
 	listeOuverture=listeArcsOuverture[0][:-1]+listeArcsOuverture[1][:-1]#On rassemble les deux arcs en une seule liste
 	
 	
@@ -303,7 +313,7 @@ def dessin_spherique_3D(options,contexte):
 	chemin,profondeur=points3D_to_svgd([
 					(rayon_femelle,	0,	0	),
 					(rayonTige,	0,	0	)
-				],False,baseLocale2)
+				],False,baseLocaleTige)
 	tigeFemelle.set('d',chemin)
 	tigeFemelle.set('stroke',couleur_femelle)
 	tigeFemelle.set('stroke-width',str(epaisseur_femelle))
@@ -318,7 +328,7 @@ def dessin_spherique_3D(options,contexte):
         ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
 
 	# Transformations ***************************************
-	liaison.set("transform","translate("+str(x0+x*Vx.x+y*Vy.x+z*Vz.x)+","+str(y0+x*Vx.y+y*Vy.y+z*Vz.y)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	

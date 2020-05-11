@@ -339,7 +339,7 @@
 	  					<param name="liaison_spherique_3D_position_x" type="float" _gui-text="X : " min="-1000000" max="1000000" >0</param>
 	  					<param name="liaison_spherique_3D_position_y" type="float" _gui-text="Y : " min="-1000000" max="1000000" >0</param>
 	  					<param name="liaison_spherique_3D_position_z" type="float" _gui-text="Z : " min="-1000000" max="1000000" >0</param>
-	  				<param name="titre_orientation_spherique_3D" type="description" appearance="header">Orientations</param>
+	  				<param name="titre_orientation_male_spherique_3D" type="description" appearance="header">Orientations pièce mâle</param>
 					<param name="liaison_spherique_3D_type_orientation_male" type="notebook">
 						<page name="liaison_spherique_3D_type_orientation_male_standard" gui-text="Orientation standard mâle">
 								<param name="liaison_spherique_3D_axe_male" type="enum" gui-text="Direction de la tige : ">
@@ -357,15 +357,17 @@
 		  					<param name="liaison_spherique_3D_type_direction_male_quelconque_z" type="float" _gui-text="Z : " min="-1000000" max="1000000" >1</param>
 						</page>
 					</param>
+	  				<param name="titre_orientation_femelle_spherique_3D" type="description" appearance="header">Orientations pièce femelle</param>
 					<param name="liaison_spherique_3D_type_orientation_femelle" type="notebook">
 						<page name="liaison_spherique_3D_type_orientation_femelle_standard" gui-text="Orientation standard femelle">
 								<param name="liaison_spherique_3D_axe_femelle" type="enum" gui-text="Direction de la tige : ">
-									<item value="-z">-Z</item>
+									<item value="oppose">Opposé à la tige mâle</item>
 									<item value="x">X</item>
 									<item value="y">Y</item>
 									<item value="z">Z</item>
 									<item value="-x">-X</item>
 									<item value="-y">-Y</item>
+									<item value="-z">-Z</item>
 								</param>
 						</page>
 						<page name="liaison_spherique_3D_type_orientation_femelle_quelconque" gui-text="Vecteur directeur quelconque femelle">
@@ -374,6 +376,7 @@
 		  					<param name="liaison_spherique_3D_type_direction_femelle_quelconque_z" type="float" _gui-text="Z :" min="-1000000" max="1000000" >-1</param>
 						</page>
 					</param>
+					<param name="liaison_spherique_3D_calotte_adaptative" type="boolean" gui-text="Adapter automatiquement l'orientation de la calotte femelle">true</param>
 				</page>
 			</param>
 		</page>

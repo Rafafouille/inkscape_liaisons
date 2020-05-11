@@ -178,6 +178,7 @@ class Liaisons(inkex.Effect):
         self.OptionParser.add_option('--liaison_spherique_3D_type_direction_femelle_quelconque_x', action = 'store', type = 'float', dest = 'liaison_spherique_3D_type_direction_femelle_quelconque_x', default = 0, help = u"Coordonnee sur x du vecteur direceur de la liaison sphérique 3D femelle")
         self.OptionParser.add_option('--liaison_spherique_3D_type_direction_femelle_quelconque_y', action = 'store', type = 'float', dest = 'liaison_spherique_3D_type_direction_femelle_quelconque_y', default = 1, help = u"Coordonnee sur y du vecteur direceur de la liaison sphérique 3D femelle")
         self.OptionParser.add_option('--liaison_spherique_3D_type_direction_femelle_quelconque_z', action = 'store', type = 'float', dest = 'liaison_spherique_3D_type_direction_femelle_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur direceur de la liaison sphérique 3D femelle")
+        self.OptionParser.add_option('--liaison_spherique_3D_calotte_adaptative', action = 'store', type = 'inkbool', dest = 'liaison_spherique_3D_calotte_adaptative', default = 'True', help = u"Permet d'orienter automatiquement la calotte de la pièce femelle")
 
 
 	#LIAISON HELICOIDALE **********************************************
