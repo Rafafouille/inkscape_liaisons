@@ -7,10 +7,10 @@ from liaisons_parametres import *
 def dessin_rectiligne_plan_2D_cote(options,contexte):
 	#https://doczz.fr/doc/4506137/comment-installer-et-programmer-des-scripts-python-dans-i...
 	#Position *****************************************
-	x0=options.x0
-	y0=options.y0
-	x=options.liaison_plane_2D_cote_x
-	y=options.liaison_plane_2D_cote_y
+	x0 = options.x0
+	y0 = options.y0
+	x = options.liaison_rectiligne_2D_cote_x
+	y = -options.liaison_rectiligne_2D_cote_y
 	#Orientation **************************************
 	rotation=-options.liaison_rectiligne_2D_cote_orientation_normale #Angle par defaut (sens trigo)
 	if(options.liaison_rectiligne_cote_axe_normale=="y"):
@@ -28,8 +28,8 @@ def dessin_rectiligne_plan_2D_cote(options,contexte):
 	#Parametres ****************************
 	couleur_femelle=options.opt_gene_piece2_couleur
 	couleur_male=options.opt_gene_piece1_couleur
-	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
-	epaisseur_male=options.opt_gene_lignes_epaisseur_1
+	epaisseur_plan=options.opt_gene_lignes_epaisseur_2
+	epaisseur_prisme=options.opt_gene_lignes_epaisseur_1
 	
 	#Groupes ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
@@ -40,49 +40,49 @@ def dessin_rectiligne_plan_2D_cote(options,contexte):
 	# DESSUS ***************************************
 	# Prisme
 	prisme=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(epaisseur_male/2.			,	-r2Dc_longueur_contact/2.),
-				(epaisseur_male/2.			,	r2Dc_longueur_contact/2.),
-				(r2Dc_hauteur_prisme + epaisseur_male/2.,	r2Dc_longueur_base_prisme/2.),
-				(r2Dc_hauteur_prisme + epaisseur_male/2.,	-r2Dc_longueur_base_prisme/2.)	],
+	chemin=points_to_svgd([	(epaisseur_prisme/2.			,	-r2Dc_longueur_contact/2.),
+				(epaisseur_prisme/2.			,	r2Dc_longueur_contact/2.),
+				(r2Dc_hauteur_prisme + epaisseur_prisme/2.,	r2Dc_longueur_base_prisme/2.),
+				(r2Dc_hauteur_prisme + epaisseur_prisme/2.,	-r2Dc_longueur_base_prisme/2.)	],
 				True)
 	prisme.set('d',chemin)
 	prisme.set('stroke',couleur_male)
 	prisme.set('style','fill:white')
-	prisme.set('stroke-width',str(epaisseur_male))
+	prisme.set('stroke-width',str(epaisseur_prisme))
 	dessus.append(prisme)
 	
 	#tige dessus
 	tigeDessus=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(r2Dc_hauteur_prisme+epaisseur_male/2.					,	0.),
-				(r2Dc_hauteur_prisme + r2Dc_longueur_tige_prisme + epaisseur_male/2.	,	0.)	])
+	chemin=points_to_svgd([	(r2Dc_hauteur_prisme+epaisseur_prisme/2.					,	0.),
+				(r2Dc_hauteur_prisme + r2Dc_longueur_tige_prisme + epaisseur_prisme/2.	,	0.)	])
 	tigeDessus.set('d',chemin)
 	tigeDessus.set('stroke',couleur_male)
-	tigeDessus.set('stroke-width',str(epaisseur_male))
+	tigeDessus.set('stroke-width',str(epaisseur_prisme))
 	dessus.append(tigeDessus)
 	
 	# DESSOUS ***************************************
 	#plan dessous
 	plan=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(-epaisseur_femelle/2.	,	-r2Dc_longueur_plan/2.),
-				(-epaisseur_femelle/2.	,	r2Dc_longueur_plan/2.)	])
+	chemin=points_to_svgd([	(-epaisseur_plan/2.	,	-r2Dc_longueur_plan/2.),
+				(-epaisseur_plan/2.	,	r2Dc_longueur_plan/2.)	])
 	plan.set('d',chemin)
 	plan.set('stroke',couleur_femelle)
-	plan.set('stroke-width',str(epaisseur_femelle))
+	plan.set('stroke-width',str(epaisseur_plan))
 	dessous.append(plan)
 	
 	#tige dessous
 	tigePlan=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(-epaisseur_femelle/2.,					0.),
-				(-r2Dc_longueur_tige_plan--epaisseur_femelle/2.,	0.)	])
+	chemin=points_to_svgd([	(-epaisseur_plan/2.,					0.),
+				(-r2Dc_longueur_tige_plan-epaisseur_plan/2.,	0.)	])
 	tigePlan.set('d',chemin)
 	tigePlan.set('stroke',couleur_femelle)
-	tigePlan.set('stroke-width',str(epaisseur_femelle))
+	tigePlan.set('stroke-width',str(epaisseur_plan))
 	dessous.append(tigePlan)
 	
 	# Transformations ***************************************
 	dessus.set("transform","rotate("+str(rotation)+")")
 	dessous.set("transform","rotate("+str(rotation)+")")
-	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 
@@ -90,10 +90,10 @@ def dessin_rectiligne_plan_2D_cote(options,contexte):
 
 def dessin_rectiligne_2D_bout(options,contexte):
 	#Position *****************************************
-	x0=options.x0
-	y0=options.y0
-	x=options.liaison_rectiligne_2D_bout_x
-	y=options.liaison_rectiligne_2D_bout_y
+	x0 = options.x0
+	y0 = options.y0
+	x = options.liaison_rectiligne_2D_bout_x
+	y = -options.liaison_rectiligne_2D_bout_y
 	#Orientation **************************************
 	rotationNormale=-options.liaison_rectiligne_2D_bout_orientation_normale #Angle par defaut (sens trigo)
 	if(options.liaison_rectiligne_bout_axe_normale=="x"):
@@ -116,19 +116,19 @@ def dessin_rectiligne_2D_bout(options,contexte):
 	elif(options.liaison_rectiligne_bout_axe_prisme=="-y"):
 		rotationPrisme = 90
 	#Base *********************
-	echelle=options.echelle
-	Vx1,Vy1=getBase2D(echelle)
-	base2D=(Vx1,Vy1)
+	echelle = options.echelle
+	Vx1,Vy1 = getBase2D(echelle)
+	base2D = (Vx1,Vy1)
 	#Parametres ****************************
-	couleur_plan=options.opt_gene_piece2_couleur
-	couleur_prisme=options.opt_gene_piece1_couleur
-	epaisseur_plan=options.opt_gene_lignes_epaisseur_2
-	epaisseur_prisme=options.opt_gene_lignes_epaisseur_1
+	couleur_plan = options.opt_gene_piece2_couleur
+	couleur_prisme = options.opt_gene_piece1_couleur
+	epaisseur_plan = options.opt_gene_lignes_epaisseur_2
+	epaisseur_prisme = options.opt_gene_lignes_epaisseur_1
 	
 	#Groupes ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
-	prisme=inkex.etree.SubElement(liaison,'g')
-	plan=inkex.etree.SubElement(liaison,'g')
+	prisme = inkex.etree.SubElement(liaison,'g')
+	plan = inkex.etree.SubElement(liaison,'g')
 
 	
 	# Plan ***************************************	
@@ -174,7 +174,7 @@ def dessin_rectiligne_2D_bout(options,contexte):
 	# Transformations ***************************************
 	plan.set("transform","rotate("+str(rotationNormale)+")")
 	prisme.set("transform","rotate("+str(rotationPrisme)+")")
-	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	
@@ -368,7 +368,7 @@ def dessin_rectiligne_3D(options,contexte):
         
         
 	# Transformations ***************************************
-	liaison.set("transform","translate("+str(x0+x*Vx.x+y*Vy.x+z*Vz.x)+","+str(y0+x*Vx.y+y*Vy.y+z*Vz.y)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	

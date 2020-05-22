@@ -8,10 +8,10 @@ def dessin_Glissiere_2D_cote(options,contexte):
 
 	#https://doczz.fr/doc/4506137/comment-installer-et-programmer-des-scripts-python-dans-i...
 	#Position *****************************************
-	x0=options.x0
-	y0=options.y0
-	x=options.liaison_glissiere_2D_cote_x
-	y=options.liaison_glissiere_2D_cote_y
+	x0 = options.x0
+	y0 = options.y0
+	x = options.liaison_glissiere_2D_cote_x
+	y = -options.liaison_glissiere_2D_cote_y
 	#Orientation **************************************
 	rotation=options.liaison_glissiere_2D_cote_direction_quelconque #Angle par defaut (sens trigo)
 	if(options.liaison_glissiere_2D_cote_direction_standard=="x"):
@@ -87,10 +87,10 @@ def dessin_Glissiere_2D_cote(options,contexte):
 
 def dessin_Glissiere_2D_face(options,contexte):
 	#Position *****************************************
-	x0=options.x0
-	y0=options.y0
-	x=options.liaison_glissiere_2D_face_x
-	y=options.liaison_glissiere_2D_face_y
+	x0 = options.x0
+	y0 = options.y0
+	x = options.liaison_glissiere_2D_face_x
+	y = -options.liaison_glissiere_2D_face_y
 	#Orientation **************************************
 	rotation=options.liaison_glissiere_2D_face_orientation_quelconque_femelle-90 #Angle par defaut (sens trigo)
 	if(options.liaison_glissiere_2D_face_orientation_standard_femelle == "x"):

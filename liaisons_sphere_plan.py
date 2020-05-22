@@ -9,10 +9,10 @@ from liaisons_fonctions_utiles import *
 def dessin_sphere_plan_2D_cote(options,contexte):
 	#https://doczz.fr/doc/4506137/comment-installer-et-programmer-des-scripts-python-dans-i...
 	#Position *****************************************
-	x0=options.x0
-	y0=options.y0
-	x=options.liaison_sphere_plan_2D_cote_x
-	y=options.liaison_sphere_plan_2D_cote_y
+	x0 = options.x0
+	y0 = options.y0
+	x = options.liaison_sphere_plan_2D_cote_x
+	y = -options.liaison_sphere_plan_2D_cote_y
 	#Orientation **************************************
 	rotation_normale=options.liaison_sphere_plan_2D_cote_orientation_normale #Angle par defaut (sens trigo)
 	if(options.liaison_sphere_plan_2D_cote_axe_normale=="y"):
@@ -121,10 +121,10 @@ def dessin_sphere_plan_2D_cote(options,contexte):
 
 def dessin_sphere_plan_2D_dessus(options,contexte):
 	#Position *****************************************
-	x0=options.x0
-	y0=options.y0
-	x=options.liaison_sphere_plan_2D_dessus_x
-	y=options.liaison_sphere_plan_2D_dessus_y
+	x0 = options.x0
+	y0 = options.y0
+	x = options.liaison_sphere_plan_2D_dessus_x
+	y = -options.liaison_sphere_plan_2D_dessus_y
 	#Orientation **************************************
 	rotationPlan=-options.liaison_sphere_plan_2D_dessus_orientation_plan #Angle par defaut (sens trigo)
 	if(options.liaison_sphere_plan_2D_dessus_axe_plan=="x"):

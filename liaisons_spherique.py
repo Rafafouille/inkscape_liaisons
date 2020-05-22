@@ -7,10 +7,10 @@ from liaisons_parametres import *
 def dessin_spherique_2D(options,contexte):
 	#https://doczz.fr/doc/4506137/comment-installer-et-programmer-des-scripts-python-dans-i...
 	#Position *****************************************
-	x0=options.x0
-	y0=options.y0
-	x=options.liaison_spherique_2D_x
-	y=options.liaison_spherique_2D_y
+	x0 = options.x0
+	y0 = options.y0
+	x = options.liaison_spherique_2D_x
+	y = -options.liaison_spherique_2D_y
 	#Orientation **************************************
 	rotation_male=options.liaison_spherique_2D_orientation_male #Angle par defaut (sens trigo)
 	if(options.liaison_spherique_2D_axe_male=="x"):
@@ -122,8 +122,8 @@ def dessin_spherique_2D(options,contexte):
 #===============================================================
 def dessin_spherique_3D(options,contexte):
 	#Origine 2D
-	x0=options.x0
-	y0=options.y0
+	x0 = options.x0
+	y0 = options.y0
 	#Base Axonometrique
 	echelle=options.echelle
 	Vx,Vy,Vz=getVecteursAxonometriques(echelle)

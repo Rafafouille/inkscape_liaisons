@@ -10,7 +10,7 @@ def dessin_Pivot_Glissant_2D_cote(options,contexte):
 	x0 = options.x0
 	y0 = options.y0
 	x = options.liaison_pivot_glissant_2D_cote_x
-	y = options.liaison_pivot_glissant_2D_cote_y
+	y = -options.liaison_pivot_glissant_2D_cote_y
 	#Parametres ****************************
 	old_liaisons = options.opt_gene_gene_old
 	largeur = pg2Dc_longueur
@@ -115,7 +115,7 @@ def dessin_Pivot_Glissant_2D_face(options,contexte):
 	x0 = options.x0
 	y0 = options.y0
 	x = options.liaison_pivot_glissant_2D_face_x
-	y = options.liaison_pivot_glissant_2D_face_y
+	y = -options.liaison_pivot_glissant_2D_face_y
 	#Parametres ****************************
 	rayon=15./2
 	couleur_femelle=options.opt_gene_piece2_couleur

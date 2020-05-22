@@ -9,10 +9,10 @@ def dessin_Sphere_Cylindre_2D_cote(options,contexte):
 	#https://doczz.fr/doc/4506137/comment-installer-et-programmer-des-scripts-python-dans-i...
 	
 	#Position *****************************************
-	x0=options.x0
-	y0=options.y0
-	x=options.liaison_sphere_cylindre_2D_cote_x
-	y=options.liaison_sphere_cylindre_2D_cote_y
+	x0 = options.x0
+	y0 = options.y0
+	x = options.liaison_sphere_cylindre_2D_cote_x
+	y = -options.liaison_sphere_cylindre_2D_cote_y
 
 	#Orientation **************************************
 	rotation_cylindre = -options.liaison_sphere_cylindre_2D_cote_orientation_axe #Angle par defaut (sens trigo)
@@ -102,7 +102,7 @@ def dessin_Sphere_Cylindre_2D_cote(options,contexte):
 	# Transformations ***************************************
 	male.set("transform","rotate("+str(rotation_sphere)+")")
 	femelle.set("transform","rotate("+str(rotation_cylindre)+")")
-	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 
@@ -113,10 +113,10 @@ def dessin_Sphere_Cylindre_2D_bout(options,contexte):
 	#https://doczz.fr/doc/4506137/comment-installer-et-programmer-des-scripts-python-dans-i...
 	
 	#Position *****************************************
-	x0=options.x0
-	y0=options.y0
-	x=options.liaison_sphere_cylindre_2D_bout_x
-	y=options.liaison_sphere_cylindre_2D_bout_y
+	x0 = options.x0
+	y0 = options.y0
+	x = options.liaison_sphere_cylindre_2D_bout_x
+	y = -options.liaison_sphere_cylindre_2D_bout_y
 
 	#Orientation **************************************
 	rotation_cylindre = -options.liaison_sphere_cylindre_2D_bout_orientation_axe_base #Angle par defaut (sens trigo)
@@ -223,7 +223,7 @@ def dessin_Sphere_Cylindre_2D_bout(options,contexte):
 	# Transformations ***************************************
 	male.set("transform","rotate("+str(rotation_sphere)+")")
 	femelle.set("transform","rotate("+str(rotation_cylindre)+")")
-	liaison.set("transform","translate("+str(x0+x)+","+str(y0+y)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	
@@ -236,8 +236,8 @@ def dessin_Sphere_Cylindre_2D_bout(options,contexte):
 #===============================================================
 def dessin_Sphere_Cylindre_3D(options,contexte):
 	#Origine 2D
-	x0=options.x0
-	y0=options.y0
+	x0 = options.x0
+	y0 = options.y0
 	#Base Axonometrique
 	echelle=options.echelle
 	Vx,Vy,Vz=getVecteursAxonometriques(echelle)
@@ -380,7 +380,7 @@ def dessin_Sphere_Cylindre_3D(options,contexte):
         
         
 	# Transformations ***************************************
-	liaison.set("transform","translate("+str(x0+x*Vx.x+y*Vy.x+z*Vz.x)+","+str(y0+x*Vx.y+y*Vy.y+z*Vz.y)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	

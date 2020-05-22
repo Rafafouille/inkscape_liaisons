@@ -6,10 +6,10 @@ from liaisons_parametres import *
 def dessin_plane_2D_cote(options,contexte):
 	#https://doczz.fr/doc/4506137/comment-installer-et-programmer-des-scripts-python-dans-i...
 	#Position *****************************************
-	x0=options.x0
-	y0=options.y0
-	x=options.liaison_plane_2D_cote_x
-	y=options.liaison_plane_2D_cote_y
+	x0 = options.x0
+	y0 = options.y0
+	x = options.liaison_plane_2D_cote_x
+	y = -options.liaison_plane_2D_cote_y
 	#Orientation **************************************
 	rotation=90-options.liaison_plane_2D_cote_orientation #Angle par defaut (sens trigo)
 	if(options.liaison_plane_2D_cote_axe=="y"):
@@ -92,10 +92,10 @@ def dessin_plane_2D_cote(options,contexte):
 
 def dessin_plane_2D_dessus(options,contexte):
 	#Position *****************************************
-	x0=options.x0
-	y0=options.y0
-	x=options.liaison_plane_2D_dessus_x
-	y=options.liaison_plane_2D_dessus_y
+	x0 = options.x0
+	y0 = options.y0
+	x = options.liaison_plane_2D_dessus_x
+	y = -options.liaison_plane_2D_dessus_y
 	#Orientation **************************************
 	rotationDessous=-options.liaison_plane_2D_orientation_dessous #Angle par defaut (sens trigo)
 	if(options.liaison_plane_2D_axe_dessous=="x"):

@@ -9,10 +9,10 @@ def dessin_helicoidale_2D_cote(options,contexte):
 	
 	#https://doczz.fr/doc/4506137/comment-installer-et-programmer-des-scripts-python-dans-i...
 	#Position *****************************************
-	x0=options.x0
-	y0=options.y0
-	x=options.liaison_helicoidale_2D_cote_x
-	y=options.liaison_helicoidale_2D_cote_y
+	x0 = options.x0
+	y0 = options.y0
+	x = options.liaison_helicoidale_2D_cote_x
+	y = -options.liaison_helicoidale_2D_cote_y
 	#Orientation **************************************
 	rotation=options.liaison_helicoidale_2D_cote_orientation #Angle par defaut (sens trigo)
 	if(options.liaison_helicoidale_2D_cote_axe=="x"):
@@ -140,10 +140,10 @@ def dessin_helicoidale_2D_cote(options,contexte):
 
 def dessin_helicoidale_2D_face(options,contexte):
 	#Position *****************************************
-	x0=options.x0
-	y0=options.y0
-	x=options.liaison_helicoidale_2D_face_x
-	y=options.liaison_helicoidale_2D_face_y
+	x0 = options.x0
+	y0 = options.y0
+	x = options.liaison_helicoidale_2D_face_x
+	y = -options.liaison_helicoidale_2D_face_y
 	#Orientation **************************************
 	rotation1=-options.liaison_helicoidale_2D_face_orientation1 #Angle par defaut (sens trigo)
 	if(options.liaison_helicoidale_2D_face_axe1=="x"):
