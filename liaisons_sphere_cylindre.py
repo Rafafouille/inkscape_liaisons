@@ -40,19 +40,17 @@ def dessin_Sphere_Cylindre_2D_cote(options,contexte):
 	Vx1,Vy1=getBase2D(echelle)
 	base2D=(Vx1,Vy1)
 	#Parametres ****************************
-	echelle=options.echelle
-	couleur_femelle=options.opt_gene_piece2_couleur
-	couleur_male=options.opt_gene_piece1_couleur
-	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
-	epaisseur_male=options.opt_gene_lignes_epaisseur_1
+	echelle = options.echelle
+	couleur_femelle = options.opt_gene_piece2_couleur
+	couleur_male = options.opt_gene_piece1_couleur
+	epaisseur_femelle = options.opt_gene_lignes_epaisseur_2
+	epaisseur_male = options.opt_gene_lignes_epaisseur_1
 	
 	#Groupes ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
         #groupe_rotation = inkex.etree.SubElement(liaison, 'g')
-	femelle=inkex.etree.SubElement(liaison,'g')
-	male=inkex.etree.SubElement(liaison,'g')
-	
-	
+	femelle = inkex.etree.SubElement(liaison,'g')
+	male = inkex.etree.SubElement(liaison,'g')
 	
 	# Male ***************************************
 	
@@ -85,7 +83,7 @@ def dessin_Sphere_Cylindre_2D_cote(options,contexte):
 	rectangle.set('y',str((SC2Dc_diametre/2.-SC2Dc_hauteur) * echelle) )
 	rectangle.set('width',str(SC2Dc_longueur*echelle))
 	rectangle.set('height',str( SC2Dc_hauteur*echelle + (epaisseur_femelle+epaisseur_male)/2. ))
-	rectangle.set('style','fill:none')
+	rectangle.set('style','fill:white')
 	rectangle.set('stroke',couleur_femelle)
 	rectangle.set('stroke-width',str(epaisseur_femelle))
 	femelle.append(rectangle)
@@ -96,7 +94,7 @@ def dessin_Sphere_Cylindre_2D_cote(options,contexte):
 				(0	,	(SC2Dc_diametre/2.+ SC2Dc_longueur_tige_cylindre)*echelle	)	])
 	ligneF.set('d',chemin)
 	ligneF.set('stroke',couleur_femelle)
-	ligneF.set('stroke-width',str(epaisseur_femelle*echelle))
+	ligneF.set('stroke-width',str(epaisseur_femelle))
 	femelle.append(ligneF)
 	
 	# Transformations ***************************************
@@ -140,23 +138,23 @@ def dessin_Sphere_Cylindre_2D_bout(options,contexte):
 	elif options.liaison_sphere_cylindre_2D_bout_axe_sphere=="normal" :
 		rotation_sphere = rotation_cylindre
 	#Base *********************
-	echelle=options.echelle
-	Vx1,Vy1=getBase2D(echelle)
-	base2D=(Vx1,Vy1)
+	echelle = options.echelle
+	Vx1,Vy1 = getBase2D(echelle)
+	base2D = (Vx1,Vy1)
 	#Parametres ****************************
-	echelle=options.echelle
-	couleur_femelle=options.opt_gene_piece2_couleur
-	couleur_male=options.opt_gene_piece1_couleur
-	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
-	epaisseur_male=options.opt_gene_lignes_epaisseur_1
+	echelle = options.echelle
+	couleur_femelle = options.opt_gene_piece2_couleur
+	couleur_male = options.opt_gene_piece1_couleur
+	epaisseur_femelle = options.opt_gene_lignes_epaisseur_2
+	epaisseur_male = options.opt_gene_lignes_epaisseur_1
+	
+	diam_sphere = SC2Db_diametre
+	diam_calotte = SC2Db_diametre + SC2Db_intervalle_spheres * 2 + epaisseur_femelle + epaisseur_male
 	
 	#Groupes ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
-        #groupe_rotation = inkex.etree.SubElement(liaison, 'g')
-	femelle=inkex.etree.SubElement(liaison,'g')
-	male=inkex.etree.SubElement(liaison,'g')
-	
-	
+	femelle = inkex.etree.SubElement(liaison,'g')
+	male = inkex.etree.SubElement(liaison,'g')
 	
 	# Male ***************************************
 	
@@ -164,7 +162,7 @@ def dessin_Sphere_Cylindre_2D_bout(options,contexte):
 	sphere=inkex.etree.Element(inkex.addNS('circle','svg'))
 	sphere.set('cx',"0")
 	sphere.set('cy',"0")
-	sphere.set('r',str(SC2Db_diametre/2. * echelle))
+	sphere.set('r',str(diam_sphere/2. * echelle))
 	sphere.set('stroke',str(couleur_male))
 	sphere.set('stroke-width',str(epaisseur_male))
 	sphere.set('style','fill:white')
@@ -172,8 +170,8 @@ def dessin_Sphere_Cylindre_2D_bout(options,contexte):
 
 	#Ligne male
 	ligneM=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points2D_to_svgd([	(SC2Db_diametre/2.	,	0),
-					(SC2Db_diametre/2. + SC2Db_longueur_tige_sphere	,	0)	],
+	chemin=points2D_to_svgd([	(diam_sphere/2.	,	0),
+					(diam_sphere/2. + SC2Db_longueur_tige_sphere	,	0)	],
 				False,
 				base2D)
 	ligneM.set('d',chemin)
@@ -189,35 +187,35 @@ def dessin_Sphere_Cylindre_2D_bout(options,contexte):
 	SC2Db_angle_ouverture = SC2Db_angle_ouverture*math.pi/180
 	theta = SC2Db_angle_ouverture/2.
 	while theta < 2*math.pi - SC2Db_angle_ouverture/2.:
-		listeChemin.append(( 	echelle*math.cos(theta)*(SC2Db_diametre/2.+SC2Db_intervalle_spheres),
-					echelle*math.sin(theta)*(SC2Db_diametre/2.+SC2Db_intervalle_spheres) ))
+		listeChemin.append(( 	echelle*math.cos(theta)*(diam_calotte/2.),
+					echelle*math.sin(theta)*(diam_calotte/2.) ))
 		theta += 0.05
-	listeChemin.append(( echelle*math.cos(-SC2Db_angle_ouverture/2.)*(SC2Db_diametre/2.+SC2Db_intervalle_spheres), echelle*math.sin(-SC2Db_angle_ouverture/2.)*(SC2Db_diametre/2.+SC2Db_intervalle_spheres) ))
+	listeChemin.append(( echelle*math.cos(-SC2Db_angle_ouverture/2.)*(diam_calotte/2.), echelle*math.sin(-SC2Db_angle_ouverture/2.)*(diam_calotte/2.) ))
 	chemin=points_to_svgd(listeChemin,False)
 	calotte.set('d',chemin)
 	calotte.set('stroke',couleur_femelle)
-	calotte.set('stroke-width',str(epaisseur_femelle*echelle))
+	calotte.set('stroke-width',str(epaisseur_femelle))
 	calotte.set('style','fill:none')
 	femelle.append(calotte)
 	
 	#Trait
 	ligneF=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	((-SC2Db_diametre/2.-SC2Db_intervalle_spheres)*echelle	,	echelle*SC2Db_largeur_plan/2.),
-				((-SC2Db_diametre/2.-SC2Db_intervalle_spheres)*echelle	,	-echelle*SC2Db_largeur_plan/2.	)	])
+	chemin=points_to_svgd([	(-diam_calotte/2.*echelle	,	echelle*diam_calotte/2.),
+				(-diam_calotte/2.*echelle	,	-echelle*diam_calotte/2.	)	])
 	ligneF.set('d',chemin)
 	ligneF.set('stroke',couleur_femelle)
-	ligneF.set('stroke-width',str(epaisseur_femelle*echelle))
+	ligneF.set('stroke-width',str(epaisseur_femelle))
 	femelle.append(ligneF)
 	
 	
 
 	#Tige femelle
 	ligneF=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(-(SC2Dc_diametre/2.+SC2Db_intervalle_spheres)*echelle	,	0),
-				(	-(SC2Dc_diametre/2.+SC2Db_intervalle_spheres+SC2Db_longueur_tige_cylindre)*echelle	,	0)	])
+	chemin=points_to_svgd([	(	-diam_calotte/2.*echelle	,	0),
+				(	-(diam_calotte+SC2Db_longueur_tige_cylindre)*echelle	,	0)	])
 	ligneF.set('d',chemin)
 	ligneF.set('stroke',couleur_femelle)
-	ligneF.set('stroke-width',str(epaisseur_femelle*echelle))
+	ligneF.set('stroke-width',str(epaisseur_femelle))
 	femelle.append(ligneF)
 	
 	# Transformations ***************************************
@@ -259,6 +257,7 @@ def dessin_Sphere_Cylindre_3D(options,contexte):
 	#Repere local de la liaison
 	if(options.liaison_sphere_cylindre_3D_type_axe=="\"liaison_sphere_cylindre_3D_type_axe_quelconque\""):
 		V=v3D(options.liaison_sphere_cylindre_3D_axe_quelconque_x,options.liaison_sphere_cylindre_3D_axe_quelconque_y,options.liaison_sphere_cylindre_3D_axe_quelconque_z,base)
+		if V.x == V.y == V.z == 0 : V=v3D(1,0,0,base) #Si vecteur nul : on prend X par defaut
 		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle,angle_cylindre)#Repere Femelle
 	else:	#Si vecteur standard
 		if(options.liaison_sphere_cylindre_3D_axe=="x"):
@@ -269,6 +268,7 @@ def dessin_Sphere_Cylindre_3D(options,contexte):
 			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz,echelle,angle_cylindre)#Repere Femelle
 	if(options.liaison_sphere_cylindre_3D_type_direction_sphere=="\"liaison_sphere_plan_3D_type_direction_sphere_quelconque\""):
 		VS=v3D(options.liaison_sphere_cylindre_3D_direction_sphere_quelconque_x,options.liaison_sphere_cylindre_3D_direction_sphere_quelconque_y,options.liaison_sphere_cylindre_3D_direction_sphere_quelconque_z,base)
+		if VS.x == VS.y == VS.z == 0 : VS=v3D(1,0,0,base) #Si vecteur nul : on prend X par defaut
 		Vx2,Vy2,Vz2=getBaseFromVecteur(VS,echelle,angle_cylindre)#Repere Femelle
 	else:	#Si vecteur standard
 		if(options.liaison_sphere_cylindre_3D_axe_sphere=="x"):

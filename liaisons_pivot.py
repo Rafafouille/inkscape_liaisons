@@ -32,10 +32,10 @@ def dessin_Pivot_2D_cote(options,contexte):
 	espace_arrets = p2Dc_ecarts_arrets
 	longueur_axe = p2Dc_longueur_male
 	longueur_tige = p2Dc_longueur_tige_femelle
-	couleur_femelle=options.opt_gene_piece2_couleur
-	couleur_male=options.opt_gene_piece1_couleur
-	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
-	epaisseur_male=options.opt_gene_lignes_epaisseur_1
+	couleur_femelle = options.opt_gene_piece2_couleur
+	couleur_male = options.opt_gene_piece1_couleur
+	epaisseur_femelle=  options.opt_gene_lignes_epaisseur_2
+	epaisseur_male=  options.opt_gene_lignes_epaisseur_1
 
 	
 	#Groupes ******************************************
