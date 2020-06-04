@@ -376,6 +376,10 @@ class Liaisons(inkex.Effect):
 		self.options.opt_gene_piece1_couleur, self.options.opt_gene_piece2_couleur = self.options.opt_gene_piece2_couleur , self.options.opt_gene_piece1_couleur
 		self.options.opt_gene_lignes_epaisseur_1, self.options.opt_gene_lignes_epaisseur_2 = self.options.opt_gene_lignes_epaisseur_2, self.options.opt_gene_lignes_epaisseur_1
 		
+	#Echelle des epaisseurs
+	if self.options.opt_gene_echelle_epaisseurs :
+		self.options.opt_gene_lignes_epaisseur_1 *= self.options.echelle
+		self.options.opt_gene_lignes_epaisseur_2 *= self.options.echelle
         # Create a new layer.
         #groupe = inkex.etree.SubElement(svg, 'g')
         
