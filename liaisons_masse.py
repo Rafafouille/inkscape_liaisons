@@ -9,101 +9,67 @@ def dessin_Masse_2D(options,contexte):
 	#Position *****************************************
 	x0 = options.x0
 	y0 = options.y0
-	x = options.liaison_pivot_glissant_2D_cote_x
-	y = -options.liaison_pivot_glissant_2D_cote_y
+	x = options.liaison_masse_2D_x
+	y = -options.liaison_masse_2D_y
 	#Parametres ****************************
-	old_liaisons = options.opt_gene_gene_old
-	largeur = pg2Dc_longueur
-	hauteur = pg2Dc_diametre
-	couleur_femelle=options.opt_gene_piece2_couleur
-	couleur_male=options.opt_gene_piece1_couleur
-	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
-	epaisseur_male=options.opt_gene_lignes_epaisseur_1
-	longueur_tige = pg2Dc_longueur_tige_femelle
+	couleur = options.opt_gene_piece1_couleur
+	epaisseur = options.opt_gene_lignes_epaisseur_1
 	#Orientation **************************************
-	rotation=-options.liaison_pivot_glissant_2D_cote_orientation #Angle par defaut (sens trigo)
-	if(options.liaison_pivot_glissant_2D_cote_axe=="x"):
+	rotation=-options.liaison_masse_2D_orientation_axe #Angle par defaut (sens trigo)
+	if(options.liaison_masse_2D_axe=="x"):
 		rotation=0
-	elif(options.liaison_pivot_glissant_2D_cote_axe=="y"):
+	elif(options.liaison_masse_2D_axe=="y"):
 		rotation=-90
-	elif(options.liaison_pivot_glissant_2D_cote_axe=="-x"):
+	elif(options.liaison_masse_2D_axe=="-x"):
 		rotation=180
-	elif(options.liaison_pivot_glissant_2D_cote_axe=="-y"):
+	elif(options.liaison_masse_2D_axe=="-y"):
 		rotation=90
+
 	#Groupes ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
-        fond_femelle = inkex.etree.SubElement(liaison,'g')
-	male=inkex.etree.SubElement(liaison,'g')
-	femelle=inkex.etree.SubElement(liaison,'g')
+        masse = inkex.etree.SubElement(liaison,'g')
 	#Base **************************
-	echelle_liaison=options.echelle
-	Vx1,Vy1=getBase2D(echelle_liaison)
+	echelle_liaison = options.echelle
+	Vx1,Vy1 = getBase2D(echelle_liaison)
 	base2D=(Vx1,Vy1)
-	# Male ***************************************
-	#Ligne male
-	ligneM=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points2D_to_svgd([	(-pg2Dc_longueur_male/2.,	0),
-				(pg2Dc_longueur_male/2.	,	0)	],
-				True,base2D)
-	ligneM.set('d',chemin)
-	ligneM.set('stroke',couleur_male)
-	ligneM.set('stroke-width',str(epaisseur_male*echelle_liaison))
-	male.append(ligneM)
-	
-	# Femelle ***************************************
-	if(old_liaisons):
-		barreF1=inkex.etree.Element(inkex.addNS('path','svg'))
-		chemin=points2D_to_svgd([(-largeur/2	,	-hauteur/2),
-					(largeur/2	,	-hauteur/2)	],
-					False,base2D)
-		barreF1.set('d',chemin)
-		barreF1.set('stroke',couleur_femelle)
-		barreF1.set('stroke-width',str(epaisseur_femelle*echelle_liaison))
-		male.append(barreF1)
-		
-		barreF2=inkex.etree.Element(inkex.addNS('path','svg'))
-		chemin=points2D_to_svgd([(-largeur/2	,	hauteur/2),
-					(largeur/2	,	hauteur/2)	],
-					False,base2D)
-		barreF2.set('d',chemin)
-		barreF2.set('stroke',couleur_femelle)
-		barreF2.set('stroke-width',str(epaisseur_femelle*echelle_liaison))
-		male.append(barreF2)
-	else:
-		#Rectangle
-		rectangle=inkex.etree.Element(inkex.addNS('rect','svg'))
-		rectangle.set('x',str(-largeur*echelle_liaison/2) )
-		rectangle.set('y',str(-hauteur*echelle_liaison/2) )
-		rectangle.set('width',str(largeur*echelle_liaison))
-		rectangle.set('height',str(hauteur*echelle_liaison))
-		rectangle.set('style','fill:none')
-		rectangle.set('stroke',couleur_femelle)
-		rectangle.set('stroke-width',str(epaisseur_femelle*echelle_liaison))
-		femelle.append(rectangle)
-		# Fond de femelle opaque ****************************
-		#Rectangle - fond
-		rectangle=inkex.etree.Element(inkex.addNS('rect','svg'))
-		rectangle.set('x',str(-largeur*echelle_liaison/2) )
-		rectangle.set('y',str(-hauteur*echelle_liaison/2) )
-		rectangle.set('width',str(largeur*echelle_liaison))
-		rectangle.set('height',str(hauteur*echelle_liaison))
-		rectangle.set('style','fill:white')
-		fond_femelle.append(rectangle)
-	
-	#Ligne femelle
-	ligneF=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points2D_to_svgd([	(0	,	-hauteur/2),
-				(0	,	-hauteur/2 - longueur_tige)	],
+	# DESSIN ***************************************
+	#Trait principal
+	trait=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin=points2D_to_svgd([	(-REF2D_longueur_tige,	-REF2D_largeur/2.),
+					(-REF2D_longueur_tige,	REF2D_largeur/2.)	],
 				False,base2D)
-	ligneF.set('d',chemin)
-	ligneF.set('stroke',couleur_femelle)
-	ligneF.set('stroke-width',str(epaisseur_femelle*echelle_liaison))
-	femelle.append(ligneF)
+	trait.set('d',chemin)
+	trait.set('stroke',couleur)
+	trait.set('stroke-width',str(epaisseur))
+	trait.set('style',"stroke-linecap:round")
+	masse.append(trait)
+	
+	# Tige
+	tige=inkex.etree.Element(inkex.addNS('path','svg'))
+	chemin=points2D_to_svgd([	(0,	0),
+					(-REF2D_longueur_tige,	0)	],
+				False,base2D)
+	tige.set('d',chemin)
+	tige.set('stroke',couleur)
+	tige.set('stroke-width',str(epaisseur))
+	masse.append(tige)
+	
+	# hachures
+	pas = float(REF2D_largeur) / (REF2D_nombre_hachures-1)
+	for i in range(REF2D_nombre_hachures):
+		hachure=inkex.etree.Element(inkex.addNS('path','svg'))
+		chemin=points2D_to_svgd([	(-REF2D_longueur_tige,	-REF2D_largeur/2. + i*pas),
+						(-REF2D_longueur_tige-REF2D_longueur_hachures,	-REF2D_largeur/2. + i*pas + REF2D_longueur_hachures*math.tan(REF2D_inclinaison/180.*math.pi))	],
+					False,base2D)
+		hachure.set('d',chemin)
+		hachure.set('stroke',couleur)
+		hachure.set('stroke-width',str(epaisseur))
+		hachure.set('style',"stroke-linecap:round")
+		masse.append(hachure)
 	
 	# Transformations ***************************************
-	male.set("transform","rotate("+str(rotation)+")")
-	femelle.set("transform","rotate("+str(rotation)+")")
-	fond_femelle.set("transform","rotate("+str(rotation)+")")
+
+	masse.set("transform","rotate("+str(rotation)+")")
 	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
@@ -120,115 +86,122 @@ def dessin_Masse_2D(options,contexte):
 #===============================================================
 def dessin_Masse_3D(options,contexte):
 	#Origine 2D
-	x0=options.x0
-	y0=options.y0
+	x0 = options.x0
+	y0 = options.y0
 	#Base Axonometrique
 	echelle_liaison=options.echelle
 	Vx,Vy,Vz=getVecteursAxonometriques()
 	base=(Vx,Vy,Vz)
 	#Centre de la liaison dans le repere 3D
-	x=options.liaison_pivot_glissant_3D_position_x
-	y=options.liaison_pivot_glissant_3D_position_y
-	z=options.liaison_pivot_glissant_3D_position_z
+	x = options.liaison_masse_3D_position_x
+	y = options.liaison_masse_3D_position_y
+	z = options.liaison_masse_3D_position_z
 	vPosition=v3D(x,y,z,base)#Vecteur position exprime dans la base axono
 	#Parametres de la liaison
-	largeur=30.
-	rayon=7.5
-	rayonTige=25.
-	couleur_femelle=options.opt_gene_piece2_couleur
-	couleur_male=options.opt_gene_piece1_couleur
-	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2 * echelle_liaison
-	epaisseur_male=options.opt_gene_lignes_epaisseur_1 * echelle_liaison
-	angle_femelle=-float(options.liaison_pivot_glissant_3D_orientation_femelle)/180.*math.pi
+	couleur = options.opt_gene_piece1_couleur
+	epaisseur = options.opt_gene_lignes_epaisseur_1
+	pivotement = -float(options.liaison_masse_3D_pivotement)/180.*math.pi
+	dessin_3D = options.liaison_masse_3D_representation
+
 	#Repere local de la liaison
-	if(options.liaison_pivot_glissant_3D_type_direction=="\"liaison_pivot_glissant_3D_type_direction_quelconque\""):
-		V=v3D(options.liaison_pivot_glissant_3D_type_direction_quelconque_x,options.liaison_pivot_glissant_3D_type_direction_quelconque_y,options.liaison_pivot_glissant_3D_type_direction_quelconque_z,base)
+	if(options.liaison_masse_3D_type_axe=="\"liaison_masse_3D_type_axe_quelconque\""):
+		V=v3D(options.liaison_masse_3D_axe_quelconque_x,options.liaison_masse_3D_axe_quelconque_y,options.liaison_masse_3D_axe_quelconque_z,base)
 		if V.x == V.y == V.z == 0 : V=v3D(1,0,0,base) #Si vecteur nul : on prend X par defaut
-		Vx2,Vy2,Vz2=getBaseFromVecteur(V,echelle_liaison,angle_femelle)#Repere Femelle
+		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle_liaison,pivotement)
 	else:	#Si vecteur standard
-		if(options.liaison_pivot_glissant_3D_axe=="x"):
-#			Vx1,Vy1,Vz1=getBaseFromVecteur(Vx,echelle_liaison,angle_male)#Repere male
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vx,echelle_liaison,angle_femelle)#Repere Femelle
-		elif(options.liaison_pivot_glissant_3D_axe=="y"):
-#			Vx1,Vy1,Vz1=getBaseFromVecteur(Vy,echelle_liaison,angle_male)#Repere male
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vy,echelle_liaison,angle_femelle)#Repere Femelle
-		else:#z
-#			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz,echelle_liaison,angle_male)#Repere male
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vz,ecechelle_liaisonelle,angle_femelle)#Repere Femelle
-#	baseLocale1=(Vx1,Vy1,Vz1)
-	baseLocale=(Vx2,Vy2,Vz2)
+		if(options.liaison_masse_3D_axe=="x"):
+			Vx1,Vy1,Vz1 = getBaseFromVecteur(Vx,echelle_liaison,pivotement)
+		elif(options.liaison_masse_3D_axe=="y"):
+			Vx1,Vy1,Vz1 = getBaseFromVecteur(Vy,echelle_liaison,pivotement)
+		elif(options.liaison_masse_3D_axe=="z"):
+			Vx1,Vy1,Vz1 = getBaseFromVecteur(Vz,echelle_liaison,pivotement)
+		elif(options.liaison_masse_3D_axe=="-x"):
+			Vx1,Vy1,Vz1 = getBaseFromVecteur(-Vx,echelle_liaison,pivotement)
+		elif(options.liaison_masse_3D_axe=="-y"):
+			Vx1,Vy1,Vz1 = getBaseFromVecteur(-Vy,echelle_liaison,pivotement)
+		elif(options.liaison_masse_3D_axe=="-z"):
+			Vx1,Vy1,Vz1 = getBaseFromVecteur(-Vz,echelle_liaison,pivotement)
+	baseLocale=(Vx1,Vy1,Vz1)
+#	baseLocale=(Vx2,Vy2,Vz2)
 
 	
-	# Male ***************************************
-	axe=inkex.etree.Element(inkex.addNS('path','svg'))
+	# Dessin ***************************************
+	
+	listeObjets=[]
+	
+	tige=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
-					(-largeur,	0,	0	),
-					(largeur,	0,	0	)
+					(0,	0,	0	),
+					(-REF3D_longueur_tige,	0,	0	)
 				],False,baseLocale)
-	axe.set('d',chemin)
-	axe.set('stroke',couleur_male)
-	axe.set('stroke-width',str(epaisseur_male))
-	axe.set('style','stroke-linecap:round')
-	axe.set('profondeur',str(profondeur))
+	tige.set('d',chemin)
+	tige.set('stroke',couleur)
+	tige.set('stroke-width',str(epaisseur))
+	tige.set('style','stroke-linecap:round')
+	tige.set('profondeur',str(profondeur))
+	listeObjets.append(tige)
 
-
-	
-	# Femelle ***************************************
-	#On recupere les deux angles qui correspondent aux tangentes par rapport a la vue
-	thetaCoupure1,thetaCoupure2=getAnglesCoupure(baseLocale)
-	
-	#On construit les arcs de cercles projete
-	centre1=v3D(-largeur/2,0,0,baseLocale) #Vecteur OC1, O=centre liaison
-	centre2=v3D(largeur/2,0,0,baseLocale) #Vecteur OC1, O=centre liaison
-	listeArcs1=getListePoints2DCercle(baseLocale,centre1,rayon,0,math.pi*2,thetaCoupure1,thetaCoupure2)
-	listeArcs2=getListePoints2DCercle(baseLocale,centre2,rayon,0,math.pi*2,thetaCoupure1,thetaCoupure2)
-	listeArcs2[0].reverse()#On inverse les arcs de cercle
-	listeArcs2[1].reverse()
-	
-	#On construit les cylindres
-	listeDemiCylindre1=listeArcs1[0]+listeArcs2[0]
-	listeDemiCylindre2=listeArcs1[1]+listeArcs2[1]
-	
-	
-	chemin,profondeurDemiCylindre1=points3D_to_svgd(listeDemiCylindre1,True)
-	#formesFemelles1.append((chemin,profondeur))
-	demiCylindre1=inkex.etree.Element(inkex.addNS('path','svg'))
-	demiCylindre1.set('d',chemin)
-	demiCylindre1.set('stroke',couleur_femelle)
-	demiCylindre1.set('stroke-width',str(epaisseur_femelle))
-	demiCylindre1.set('style','stroke-linecap:round')
-	demiCylindre1.set('style','fill:white')
-	demiCylindre1.set('profondeur',str(profondeurDemiCylindre1))
-	
-	chemin,profondeurDemiCylindre2=points3D_to_svgd(listeDemiCylindre2,True)
-	#formesFemelles2.append((chemin,profondeur))
-	demiCylindre2=inkex.etree.Element(inkex.addNS('path','svg'))
-	demiCylindre2.set('d',chemin)
-	demiCylindre2.set('stroke',couleur_femelle)
-	demiCylindre2.set('stroke-width',str(epaisseur_femelle))
-	demiCylindre2.set('style','stroke-linecap:round')
-	demiCylindre2.set('style','fill:white')
-	demiCylindre2.set('profondeur',str(profondeurDemiCylindre2))
-	
-	#barre femelle
-	barreFemelle=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin,profondeur=points3D_to_svgd([
-					(0,	0,	rayon	),
-					(0,	0,	rayonTige)
+	#DESSIN 3D
+	if dessin_3D:
+		plan=inkex.etree.Element(inkex.addNS('path','svg'))
+		chemin,profondeur_trait=points3D_to_svgd([
+					(-REF3D_longueur_tige,	REF3D_largeur/2.,	REF3D_largeur/2.	),
+					(-REF3D_longueur_tige,	-REF3D_largeur/2.,	REF3D_largeur/2.	),
+					(-REF3D_longueur_tige,	-REF3D_largeur/2.,	-REF3D_largeur/2.	),
+					(-REF3D_longueur_tige,	REF3D_largeur/2.,	-REF3D_largeur/2.	)
+				],True,baseLocale)
+		plan.set('d',chemin)
+		plan.set('stroke',couleur)
+		plan.set('stroke-width',str(epaisseur))
+		plan.set('fill','white')
+		plan.set('profondeur',str(profondeur_trait))
+		plan.set('style',"stroke-linejoin:round")
+		listeObjets.append(plan)
+		
+		# hachures
+		pas = float(REF3D_largeur) / (REF3D_nombre_hachures_3D-1)
+		for i in range(REF3D_nombre_hachures_plat):
+			for j in range(REF3D_nombre_hachures_plat):
+				hachure=inkex.etree.Element(inkex.addNS('path','svg'))
+				chemin,profondeur = points3D_to_svgd([	(-REF3D_longueur_tige,				-REF3D_largeur/2. + i*pas ,									-REF3D_largeur/2. + j*pas ),
+									(-REF3D_longueur_tige-REF3D_longueur_hachures_3D,	-REF3D_largeur/2. + i*pas + REF3D_longueur_hachures_3D*math.tan(REF3D_inclinaison_3D/180.*math.pi),	-REF3D_largeur/2. + j*pas)	],
+							False,baseLocale)
+				hachure.set('d',chemin)
+				hachure.set('stroke',couleur)
+				hachure.set('stroke-width',str(epaisseur))
+				hachure.set('style',"stroke-linecap:round")
+				hachure.set('profondeur',str(2 * profondeur_trait))
+				listeObjets.append(hachure)
+	# DESSIN A PLAT
+	else:
+		trait=inkex.etree.Element(inkex.addNS('path','svg'))
+		chemin,profondeur_trait=points3D_to_svgd([
+					(-REF3D_longueur_tige,	-REF3D_largeur/2.,	0	),
+					(-REF3D_longueur_tige,	REF3D_largeur/2.,	0	)
 				],False,baseLocale)
-	barreFemelle.set('d',chemin)
-	barreFemelle.set('stroke',couleur_femelle)
-	barreFemelle.set('stroke-width',str(epaisseur_femelle))
-	barreFemelle.set('style','stroke-linecap:round')
-	barreFemelle.set('profondeur',str(profondeur*1e10))
+		trait.set('d',chemin)
+		trait.set('stroke',couleur)
+		trait.set('stroke-width',str(epaisseur))
+		trait.set('style','stroke-linecap:round')
+		trait.set('profondeur',str(profondeur_trait))
+		listeObjets.append(trait)
 	
-
+		# hachures
+		pas = float(REF3D_largeur) / (REF3D_nombre_hachures_plat-1)
+		for i in range(REF3D_nombre_hachures_plat):
+			hachure=inkex.etree.Element(inkex.addNS('path','svg'))
+			chemin,profondeur = points3D_to_svgd([	(-REF3D_longueur_tige,				-REF3D_largeur/2. + i*pas ,									0),
+							(-REF3D_longueur_tige-REF3D_longueur_hachures_3D,	-REF3D_largeur/2. + i*pas + REF3D_longueur_hachures_plat*math.tan(REF3D_inclinaison_plat/180.*math.pi),	0)	],
+						False,baseLocale)
+			hachure.set('d',chemin)
+			hachure.set('stroke',couleur)
+			hachure.set('stroke-width',str(epaisseur))
+			hachure.set('style',"stroke-linecap:round")
+			hachure.set('profondeur',str(2 * profondeur_trait))
+			listeObjets.append(hachure)
 
 	# Ajout au Groupe ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
-        
-        listeObjets=[axe,demiCylindre1,demiCylindre2,barreFemelle]
-        
         ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
         
         

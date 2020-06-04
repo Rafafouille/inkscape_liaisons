@@ -126,12 +126,12 @@ def dessin_spherique_3D(options,contexte):
 	y0 = options.y0
 	#Base Axonometrique
 	echelle=options.echelle
-	Vx,Vy,Vz=getVecteursAxonometriques(echelle)
+	Vx,Vy,Vz=getVecteursAxonometriques()
 	base=(Vx,Vy,Vz)
 	#Centre de la liaison dans le repere 3D
-	x=options.liaison_spherique_3D_position_x
-	y=options.liaison_spherique_3D_position_y
-	z=options.liaison_spherique_3D_position_z
+	x = options.liaison_spherique_3D_position_x
+	y = options.liaison_spherique_3D_position_y
+	z = options.liaison_spherique_3D_position_z
 	vPosition=v3D(x,y,z,base)#Vecteur position exprime dans la base axono
 	#Parametres de la liaison
 	couleur_femelle=options.opt_gene_piece2_couleur

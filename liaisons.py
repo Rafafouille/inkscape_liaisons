@@ -24,6 +24,7 @@ from liaisons_helicoidale import *
 from liaisons_sphere_plan import *
 from liaisons_rectiligne import *
 from liaisons_sphere_cylindre import *
+from liaisons_masse import *
 
 
 
@@ -303,18 +304,40 @@ class Liaisons(inkex.Effect):
         self.OptionParser.add_option('--liaison_sphere_cylindre_3D_direction_sphere_quelconque_z', action = 'store', type = 'float', dest = 'liaison_sphere_cylindre_3D_direction_sphere_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur directeur de l'axe de la sphère de la Sphère-Cylindre 3D")
 	
 	
-	
-	
+	#LIAISON MASSE *****************************************
+        self.OptionParser.add_option('--liaison_masse_type', action = 'store', type = 'string', dest = 'liaison_masse_type', default = 'liaison_masse_2D', help = u"Type de representation de la masse du référentiel.")
+        
+        self.OptionParser.add_option('--liaison_masse_2D_x', action = 'store', type = 'float', dest = 'liaison_masse_2D_x', default = '0', help = u"Position sur X du référentiel 2D relativement a l'origine.")
+	self.OptionParser.add_option('--liaison_masse_2D_y', action = 'store', type = 'float', dest = 'liaison_masse_2D_y', default = '0', help = u"Position sur Y du référentiel 2D relativement a l'origine.")       
+        self.OptionParser.add_option('--liaison_masse_2D_axe', action = 'store', type = 'string', dest = 'liaison_masse_2D_axe', default = 'x', help = u"Principales directions de la tige de la masse 2D")
+        self.OptionParser.add_option('--liaison_masse_2D_orientation_axe', action = 'store', type = 'float', dest = 'liaison_masse_2D_orientation_axe', default = '0', help = u"Orientation de la direction de la tige du referentiel 2D en degres")
+        
+        self.OptionParser.add_option('--liaison_masse_3D_position_x', action = 'store', type = 'float', dest = 'liaison_masse_3D_position_x', default = 0, help = u"Coordonnee sur x du référentiel 3D")
+        self.OptionParser.add_option('--liaison_masse_3D_position_y', action = 'store', type = 'float', dest = 'liaison_masse_3D_position_y', default = 0, help = u"Coordonnee sur y du référentiel 3D")
+        self.OptionParser.add_option('--liaison_masse_3D_position_z', action = 'store', type = 'float', dest = 'liaison_masse_3D_position_z', default = 0, help = u"Coordonnee sur z du référentiel 3D")
+        self.OptionParser.add_option('--liaison_masse_3D_type_axe', action = 'store', type = 'str', dest = 'liaison_masse_3D_type_axe', default = 'liaison_masse_3D_type_standard', help = u"Choix du type de direction de la tige du référentiel 3D")
+	self.OptionParser.add_option('--liaison_masse_3D_axe', action = 'store', type = 'str', dest = 'liaison_masse_3D_axe', default = 'x', help = u"Orientations standard de la tige du referentiel 2D")
+	self.OptionParser.add_option('--liaison_masse_3D_axe_quelconque_x', action = 'store', type = 'float', dest = 'liaison_masse_3D_axe_quelconque_x', default = 1, help = u"Coordonnee sur x du vecteur directeur de la tige du referentiel 3D")
+	self.OptionParser.add_option('--liaison_masse_3D_axe_quelconque_y', action = 'store', type = 'float', dest = 'liaison_masse_3D_axe_quelconque_y', default = 1, help = u"Coordonnee sur y du vecteur directeur de la tige du referentiel 3D")
+	self.OptionParser.add_option('--liaison_masse_3D_axe_quelconque_z', action = 'store', type = 'float', dest = 'liaison_masse_3D_axe_quelconque_z', default = 1, help = u"Coordonnee sur z du vecteur directeur de la tige du referentiel 3D")
+        self.OptionParser.add_option('--liaison_masse_3D_pivotement', action = 'store', type = 'float', dest = 'liaison_masse_3D_pivotement', default = '0', help = u"Rotation (en degrés) de la masse autour de sa tige")	
+	self.OptionParser.add_option('--liaison_masse_3D_representation', action = 'store', type = 'inkbool', dest = 'liaison_masse_3D_representation', default = 'False', help = u"Représentation 3D de la masse, en dessin 3D")
+        
+        
+        
         #OPTIONS GENERALES ******************************************
         self.OptionParser.add_option('--opt_generales', action = 'store', type = 'string', dest = 'opt_generales', default = 'opt_gene_origine', help = u"Onglet des options generales")
         
+        self.OptionParser.add_option('--opt_gene_inverse', action = 'store', type = 'inkbool', dest = 'opt_gene_inverse', default = 'False', help = u"Inverse les parametres piece 1 / piece 2")
         self.OptionParser.add_option('--opt_gene_gene_old', action = 'store', type = 'inkbool', dest = 'opt_gene_gene_old', default = 'False', help = u"Utilisation des anciennes normes")
-
+        
         self.OptionParser.add_option('--x0', action = 'store', type = 'float', dest = 'x0', default = 0, help = u"Origine (2D) du repere (sur x)")
         self.OptionParser.add_option('--y0', action = 'store', type = 'float', dest = 'y0', default = 0, help = u"Origine (2D) du repere (sur y)")
         self.OptionParser.add_option('--longueur_base', action = 'store', type = 'float', dest = 'longueur_base', default = 1, help = u"Longueur des vecteur unitaire de la base")
         self.OptionParser.add_option('--unite_base', action = 'store', type = 'string', dest = 'unite_base', default = "cm", help = u"Unité dans laquelle est exprimé la longueur de la base.")
         self.OptionParser.add_option('--echelle', action = 'store', type = 'float', dest = 'echelle', default = 1, help = u"Coefficient d'echelle pour les liaisons")
+        self.OptionParser.add_option('--opt_gene_echelle_epaisseurs', action = 'store', type = 'inkbool', dest = 'opt_gene_echelle_epaisseurs', default = 'False', help = u"L'echelle affecte (ou pas) les épaisseurs")
+
 
         self.OptionParser.add_option('--opt_gene_lignes_epaisseur_1', action = 'store', type = 'float', dest = 'opt_gene_lignes_epaisseur_1', default = 1, help = u"Epaisseur des traits de la piece 1")
         self.OptionParser.add_option('--opt_gene_lignes_epaisseur_2', action = 'store', type = 'float', dest = 'opt_gene_lignes_epaisseur_2', default = 1, help = u"Epaisseur des traits de la piece 2")
@@ -340,15 +363,6 @@ class Liaisons(inkex.Effect):
         # Get access to main SVG document element and get its dimensions.
         svg = self.document.getroot()
         
-        # Quelle est l'unité courante        
-        #infos_de_base = self.getElementById('base')
-        #UNITE_COURANTE = self.getDocumentUnit();
-        #assert 0,infos_de_base.attrib["inkscape:document-units"]#elf.document.xpath('//sodipodi:namedview/@inkscape:document-units')
-        
-        
-        # or alternatively
-        # svg = self.document.xpath('//svg:inkex getrootsvg',namespaces=inkex.NSS)[0]
-
         # Again, there are two ways to get the attibutes:
         width  = self.unittouu(svg.get('width'))
         height = self.unittouu(svg.attrib['height'])
@@ -356,7 +370,12 @@ class Liaisons(inkex.Effect):
 	#Conversion des couleurs dans un format correct
 	self.options.opt_gene_piece1_couleur=convertIntColor2Hex(self.options.opt_gene_piece1_couleur)
 	self.options.opt_gene_piece2_couleur=convertIntColor2Hex(self.options.opt_gene_piece2_couleur)
-
+	
+	# Inversion des paramètres pièce 1 / pièce 2
+	if self.options.opt_gene_inverse :
+		self.options.opt_gene_piece1_couleur, self.options.opt_gene_piece2_couleur = self.options.opt_gene_piece2_couleur , self.options.opt_gene_piece1_couleur
+		self.options.opt_gene_lignes_epaisseur_1, self.options.opt_gene_lignes_epaisseur_2 = self.options.opt_gene_lignes_epaisseur_2, self.options.opt_gene_lignes_epaisseur_1
+		
         # Create a new layer.
         #groupe = inkex.etree.SubElement(svg, 'g')
         
@@ -431,6 +450,12 @@ class Liaisons(inkex.Effect):
 			dessin_Sphere_Cylindre_2D_bout(self.options,svg)
 		if(type_liaison=="\"liaison_sphere_cylindre_3D\""):
 			dessin_Sphere_Cylindre_3D(self.options,svg)
+	if liaison == "\"liaison_masse\"" :
+		type_liaison=self.options.liaison_masse_type
+		if(type_liaison=="\"liaison_masse_2D\""):
+			dessin_Masse_2D(self.options,svg)
+		if(type_liaison=="\"liaison_masse_3D\""):
+			dessin_Masse_3D(self.options,svg)
 			
 		
 		

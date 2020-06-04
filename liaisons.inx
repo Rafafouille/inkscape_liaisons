@@ -15,6 +15,7 @@
   <dependency type="executable" location="extensions">liaisons_sphere_plan.py</dependency>
   <dependency type="executable" location="extensions">liaisons_rectiligne.py</dependency>
   <dependency type="executable" location="extensions">liaisons_sphere_cylindre.py</dependency>
+  <dependency type="executable" location="extensions">liaisons_masse.py</dependency>
   <dependency type="executable" location="extensions">inkex.py</dependency>
   
   <!-- ====================================================  -->
@@ -733,11 +734,9 @@
 			</param>
 		</page>
 		<!-- MASSE -->
-		<!-- 
 		<page name="liaison_masse" gui-text="Référentiel">
-			<param name="liaison_masse_type" type="notebook">-->
+			<param name="liaison_masse_type" type="notebook">
 				<!-- 2D -->
-				<!--
 				<page name="liaison_masse_2D" gui-text="2D">
 					<param name="titre_position_masse_2D" type="description" appearance="header">Position</param>
 	  					<param name="liaison_masse_2D_x" type="float" _gui-text="X : " min="-1000000" max="1000000" >0</param>
@@ -752,9 +751,7 @@
 						</param>
 						<param name="liaison_masse_2D_orientation_axe" type="float"  min="-360" max="360" precision="1" gui-text="Direction personnalisée (degrés) : ">0</param>
 				</page>
-				-->
 				<!-- 3D -->
-				<!--
 				<page name="liaison_masse_3D" gui-text="3D">
 					<param name="titre_position_masse_3D" type="description" appearance="header">Position</param>
 	  					<param name="liaison_masse_3D_position_x" type="float" _gui-text="X :" min="-1000000" max="1000000" >0</param>
@@ -782,7 +779,7 @@
 					<param name="liaison_masse_3D_representation" type="boolean" gui-text="Dessiner en 3D">True</param>
 				</page>
 			</param>
-		</page>-->
+		</page>
 	  </param>
       </page>
       
@@ -798,13 +795,14 @@
 		<page name="opt_gene_gene" gui-text="Général">
 			<!-- <param name="opt_gene_gene_ombres" type="boolean" gui-text="Ombre sur les représentations 3D">False</param>-->
 			
+			<param name="opt_gene_inverse" type="boolean" gui-text="Inverser les paramètres pièces_1 / pièce_2 (couleur, épaisseur, etc.)">False</param>
 			<param name="opt_gene_gene_old" type="boolean" gui-text="Utiliser les anciennes représentations">False</param>
 		</page>
-		<page name="opt_gene_origine" gui-text="Repère">
+		<page name="opt_gene_origine" gui-text="Repère et échelle">
 			<param name="opt_gene_decalage_titre" type="description" appearance="header">Décallage de l'origine</param>
 				<param name="x0" type="float" _gui-text="X0 :" min="-1000000" max="1000000" >0</param>
 				<param name="y0" type="float" _gui-text="Y0 :" min="-1000000" max="1000000" >0</param>
-			<param name="opt_gene_echelle_titre" type="description" appearance="header">Echelle des longueurs</param>
+			<param name="opt_gene_echelle_titre" type="description" appearance="header">Echelle des longueurs pour les postions</param>
 				<param name="longueur_base" type="float" _gui-text="Longueur unitaire" precision="1" min="0.00001" max="10" >1</param>
 				<param name="unite_base" type="enum" gui-text="Unité :">
 									<item value="mm">mm</item>
@@ -817,6 +815,7 @@
 								</param>
 			<param name="opt_gene_echelle_liaison_titre" type="description" appearance="header">Echelle des liaisons</param>
 				<param name="echelle" type="float" appearance="full" _gui-text="Échelle des liaisons" precision="1" min="0.00001" max="10" >10</param>
+				<param name="opt_gene_echelle_epaisseurs" type="boolean" gui-text="Affecter l'épaisseur des lignes">False</param>
 		</page>
 		<!-- <page name="opt_gene_lignes" gui-text="Lignes">
 			<param name="opt_gene_lignes_titre1" type="description" appearance="header">Pièce 1 (Mâle ?)</param>
@@ -834,7 +833,7 @@
 		</page>
 		<page name="opt_gene_A_Propos" gui-text="A Propos">
 			<param name="" type="description" appearance="header">Crédit :</param>
-				<param name="" type="description">Extension "Liaison", Version du 29/08/19.</param>
+				<param name="" type="description">Extension "Liaison", Version du 04/06/20.</param>
 				<param name="" type="description"></param>
 				<param name="" type="description">Créé dans le cadre d'Éduscol STI (https://eduscol.education.fr/sti/)</param>
 				<param name="" type="description">pour l'Éducation Nationale.</param>

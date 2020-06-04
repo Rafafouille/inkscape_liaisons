@@ -120,7 +120,7 @@ s2D_rayon_tiges = rayon_tiges_spherique			# Distance entre le centre de la sphè
 s3D_diametre = diametre_spherique			# Diamètre de la boule intérieure
 s3D_angle_ouverture = 120.				# Angle ouverture de la calotte femelle
 s3D_ecart = ecart_spherique * 0.25			# Interstice entre la sphère et la calotte femelle. Prend en compte l'épaisseur des traits
-s3D_rayon_tiges = rayon_tiges_spherique			# Distance entre le centre de la sphère et le bout des tiges qui sortent de chaque pièce
+s3D_rayon_tiges = rayon_tiges_spherique * 0.75		# Distance entre le centre de la sphère et le bout des tiges qui sortent de chaque pièce
 
 
 # ============== LIAISON HÉLICOIDALE ========================
@@ -244,6 +244,30 @@ SC3D_longueur_tige_cylindre = SPHERE_CYLINDRE_diametre * 0.75	# Longueur de tige
 SC3D_longueur_tige_sphere = SPHERE_CYLINDRE_diametre * 0.75	# Longueur de tige sur la sphère
 SC3D_angle_ouverture = 140.					# Angle d'ouverture du cylindre (en degres)
 
+# ============== MASSE (Référentiel) ========================
 
+# Parametres généraux
+REFERENTIEL_largeur = 0.5 * longueur_pivot			# Longueur du trait principal (sur lequel sont raccrochées les hachures)
+REFERENTIEL_longueur_tige = REFERENTIEL_largeur * 0.75		# Longueur de la tige qui sort du trait principal
+REFERENTIEL_longueur_hachures = 0.5 * REFERENTIEL_largeur	# Longueur des hachures projetées sur l'axe de la tige
+REFERENTIEL_inclinaison = 20					# Inclinaison des hachures par rapport l'axe de la tige (en degrés)
+REFERENTIEL_nombre_hachures = 4					# Nombre de hachures
+
+# Référentiel 2D
+REF2D_largeur = REFERENTIEL_largeur			# Longueur du trait principal (sur lequel sont raccrochées les hachures)
+REF2D_longueur_tige = REFERENTIEL_longueur_tige		# Longueur de la tige qui sort du trait principal
+REF2D_longueur_hachures = REFERENTIEL_longueur_hachures	# Longueur des hachures projetées sur l'axe de la tige
+REF2D_inclinaison = REFERENTIEL_inclinaison		# Inclinaison des hachures par rapport l'axe de la tige (en degrés)
+REF2D_nombre_hachures = REFERENTIEL_nombre_hachures	# Nombre de hachures
+
+# Référentiel 3D
+REF3D_largeur = REFERENTIEL_largeur					# Longueur du trait principal (sur lequel sont raccrochées les hachures)
+REF3D_longueur_tige = REFERENTIEL_longueur_tige				# Longueur de la tige qui sort du trait principal
+REF3D_longueur_hachures_plat = REFERENTIEL_longueur_hachures		# Longueur des hachures projetées sur l'axe de la tige, en représentation à plat
+REF3D_longueur_hachures_3D = REFERENTIEL_longueur_hachures * 1.2	# Longueur des hachures projetées sur l'axe de la tige, en représentation 3D
+REF3D_inclinaison_plat = REFERENTIEL_inclinaison			# Inclinaison des hachures par rapport l'axe de la tige (en degrés), en représentation plane
+REF3D_inclinaison_3D = REFERENTIEL_inclinaison				# Inclinaison des hachures par rapport l'axe de la tige (en degrés), en représentation 3D
+REF3D_nombre_hachures_plat = REFERENTIEL_nombre_hachures 		# Nombre de hachures pour la représentation à plat
+REF3D_nombre_hachures_3D = REFERENTIEL_nombre_hachures			# Nombre de hachures par coté
 
 

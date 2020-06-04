@@ -117,12 +117,12 @@ def dessin_Pivot_Glissant_2D_face(options,contexte):
 	x = options.liaison_pivot_glissant_2D_face_x
 	y = -options.liaison_pivot_glissant_2D_face_y
 	#Parametres ****************************
-	rayon=15./2
-	couleur_femelle=options.opt_gene_piece2_couleur
-	couleur_male=options.opt_gene_piece1_couleur
-	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
-	epaisseur_male=options.opt_gene_lignes_epaisseur_1
-	rotation1=-options.liaison_pivot_glissant_2D_face_orientation1 #Angle par defaut (sens trigo)
+	rayon = pg2Df_diametre/2.
+	couleur_femelle = options.opt_gene_piece2_couleur
+	couleur_male = options.opt_gene_piece1_couleur
+	epaisseur_femelle = options.opt_gene_lignes_epaisseur_2
+	epaisseur_male = options.opt_gene_lignes_epaisseur_1
+	rotation1 = -options.liaison_pivot_glissant_2D_face_orientation1 #Angle par defaut (sens trigo)
 	if(options.liaison_pivot_glissant_2D_face_axe1=="x"):
 		rotation1=0
 	elif(options.liaison_pivot_glissant_2D_face_axe1=="y"):
@@ -154,11 +154,11 @@ def dessin_Pivot_Glissant_2D_face(options,contexte):
 	#axe
 	axe2=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(0	,	0),
-					(2*rayon,	0)	],
+					(rayon + pg2Df_longueur_tige,	0)	],
 					False,base2D)
 	axe2.set('d',chemin)
 	axe2.set('stroke',couleur_femelle)
-	axe2.set('stroke-width',str(epaisseur_femelle*echelle_liaison))
+	axe2.set('stroke-width',str(epaisseur_femelle))
 	femelle.append(axe2)
 	#cercle
 	cercle=inkex.etree.Element(inkex.addNS('circle','svg'))
@@ -166,24 +166,24 @@ def dessin_Pivot_Glissant_2D_face(options,contexte):
 	cercle.set('cy',"0")
 	cercle.set('r',str(rayon*echelle_liaison))
 	cercle.set('stroke',str(couleur_femelle))
-	cercle.set('stroke-width',str(epaisseur_femelle*echelle_liaison))
+	cercle.set('stroke-width',str(epaisseur_femelle))
 	cercle.set('style','fill:white')
 	femelle.append(cercle)
 	
 	# Male ***************************************
 	axe1=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(0	,	0),
-					(2*rayon,	0)	],
+					(rayon + pg2Df_longueur_tige,	0)	],
 					False,base2D)
 	axe1.set('d',chemin)
 	axe1.set('stroke',couleur_male)
-	axe1.set('stroke-width',str(epaisseur_male*echelle_liaison))
+	axe1.set('stroke-width',str(epaisseur_male))
 	male.append(axe1)
 	#Puce
 	puce=inkex.etree.Element(inkex.addNS('circle','svg'))
 	puce.set('cx',"0")
 	puce.set('cy',"0")
-	puce.set('r',str(2*epaisseur_male*echelle_liaison))
+	puce.set('r',str(2*epaisseur_male))
 	puce.set('stroke','none')
 	puce.set('style','fill:'+couleur_male)
 	male.append(puce)
@@ -216,13 +216,14 @@ def dessin_Pivot_Glissant_3D(options,contexte):
 	z=options.liaison_pivot_glissant_3D_position_z
 	vPosition=v3D(x,y,z,base)#Vecteur position exprime dans la base axono
 	#Parametres de la liaison
-	largeur=30.
-	rayon=7.5
-	rayonTige=25.
+	longueur = pg3D_longueur
+	longueu_male = pg3D_longueur_male
+	rayon = pg3D_diametre / 2.
+	rayonTige = pg3D_longueur_tige_femelle + rayon
 	couleur_femelle=options.opt_gene_piece2_couleur
 	couleur_male=options.opt_gene_piece1_couleur
-	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2 * echelle_liaison
-	epaisseur_male=options.opt_gene_lignes_epaisseur_1 * echelle_liaison
+	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
+	epaisseur_male=options.opt_gene_lignes_epaisseur_1
 	angle_femelle=-float(options.liaison_pivot_glissant_3D_orientation_femelle)/180.*math.pi
 	#Repere local de la liaison
 	if(options.liaison_pivot_glissant_3D_type_direction=="\"liaison_pivot_glissant_3D_type_direction_quelconque\""):
@@ -238,7 +239,7 @@ def dessin_Pivot_Glissant_3D(options,contexte):
 			Vx2,Vy2,Vz2=getBaseFromVecteur(Vy,echelle_liaison,angle_femelle)#Repere Femelle
 		else:#z
 #			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz,echelle_liaison,angle_male)#Repere male
-			Vx2,Vy2,Vz2=getBaseFromVecteur(Vz,ecechelle_liaisonelle,angle_femelle)#Repere Femelle
+			Vx2,Vy2,Vz2=getBaseFromVecteur(Vz,echelle_liaison,angle_femelle)#Repere Femelle
 #	baseLocale1=(Vx1,Vy1,Vz1)
 	baseLocale=(Vx2,Vy2,Vz2)
 
@@ -246,8 +247,8 @@ def dessin_Pivot_Glissant_3D(options,contexte):
 	# Male ***************************************
 	axe=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
-					(-largeur,	0,	0	),
-					(largeur,	0,	0	)
+					(-pg3D_longueur_male/2.,	0,	0	),
+					(pg3D_longueur_male/2.,	0,	0	)
 				],False,baseLocale)
 	axe.set('d',chemin)
 	axe.set('stroke',couleur_male)
@@ -262,8 +263,8 @@ def dessin_Pivot_Glissant_3D(options,contexte):
 	thetaCoupure1,thetaCoupure2=getAnglesCoupure(baseLocale)
 	
 	#On construit les arcs de cercles projete
-	centre1=v3D(-largeur/2,0,0,baseLocale) #Vecteur OC1, O=centre liaison
-	centre2=v3D(largeur/2,0,0,baseLocale) #Vecteur OC1, O=centre liaison
+	centre1 = v3D(-longueur/2,0,0,baseLocale) #Vecteur OC1, O=centre liaison
+	centre2 = v3D(longueur/2,0,0,baseLocale) #Vecteur OC1, O=centre liaison
 	listeArcs1=getListePoints2DCercle(baseLocale,centre1,rayon,0,math.pi*2,thetaCoupure1,thetaCoupure2)
 	listeArcs2=getListePoints2DCercle(baseLocale,centre2,rayon,0,math.pi*2,thetaCoupure1,thetaCoupure2)
 	listeArcs2[0].reverse()#On inverse les arcs de cercle
