@@ -4,18 +4,7 @@
   <id>org.ekips.filter.liaisons</id>
   
   <!-- FICHIERS LIES ================================  -->
-  <dependency type="executable" location="extensions">liaisons.py</dependency>
-  <dependency type="executable" location="extensions">liaisons_parametres.py</dependency>
-  <dependency type="executable" location="extensions">liaisons_fonctions_utiles.py</dependency>
-  <dependency type="executable" location="extensions">liaisons_pivot.py</dependency>
-  <dependency type="executable" location="extensions">liaisons_pivot_glissant.py</dependency>
-  <dependency type="executable" location="extensions">liaisons_glissiere.py</dependency>
-  <dependency type="executable" location="extensions">liaisons_plane.py</dependency>
-  <dependency type="executable" location="extensions">liaisons_helicoidale.py</dependency>
-  <dependency type="executable" location="extensions">liaisons_sphere_plan.py</dependency>
-  <dependency type="executable" location="extensions">liaisons_rectiligne.py</dependency>
-  <dependency type="executable" location="extensions">liaisons_sphere_cylindre.py</dependency>
-  <dependency type="executable" location="extensions">liaisons_masse.py</dependency>
+  <dependency type="executable" location="extensions">liaisons_mini.py</dependency>
   <dependency type="executable" location="extensions">inkex.py</dependency>
   
   <!-- ====================================================  -->
