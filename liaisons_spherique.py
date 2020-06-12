@@ -125,7 +125,7 @@ def dessin_spherique_3D(options,contexte):
 	x0 = options.x0
 	y0 = options.y0
 	#Base Axonometrique
-	echelle=options.echelle
+	echelle = options.echelle
 	Vx,Vy,Vz=getVecteursAxonometriques()
 	base=(Vx,Vy,Vz)
 	#Centre de la liaison dans le repere 3D
@@ -134,14 +134,18 @@ def dessin_spherique_3D(options,contexte):
 	z = options.liaison_spherique_3D_position_z
 	vPosition=v3D(x,y,z,base)#Vecteur position exprime dans la base axono
 	#Parametres de la liaison
-	couleur_femelle=options.opt_gene_piece2_couleur
-	couleur_male=options.opt_gene_piece1_couleur
-	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
-	epaisseur_male=options.opt_gene_lignes_epaisseur_1
+	couleur_femelle = options.opt_gene_piece2_couleur
+	couleur_male = options.opt_gene_piece1_couleur
+	epaisseur_femelle = options.opt_gene_lignes_epaisseur_2
+	epaisseur_male = options.opt_gene_lignes_epaisseur_1
 	rayon_male = s3D_diametre / 2.
 	rayon_femelle = rayon_male + s3D_ecart + (epaisseur_femelle+epaisseur_male)/2.
-	thetaOuverture = s3D_angle_ouverture / 2. #Demi angle d'ouverture #90 interdit !!!
+	angle_ouverture = s3D_angle_ouverture
+	if angle_ouverture == 180 :
+		angle_ouverture = 179.9
+	thetaOuverture = angle_ouverture / 2. * math.pi/180. #Demi angle d'ouverture #90 interdit !!!
 	rayonTige = s3D_rayon_tiges 
+	rayon_ouverture = rayon_femelle * math.sin(thetaOuverture)
 	#Repere local de la liaison, partie male
 	if(options.liaison_spherique_3D_type_orientation_male=="\"liaison_spherique_3D_type_orientation_male_quelconque\""):
 		V=v3D(options.liaison_spherique_3D_type_direction_male_quelconque_x,options.liaison_spherique_3D_type_direction_male_quelconque_y,options.liaison_spherique_3D_type_direction_male_quelconque_z,base)
@@ -191,6 +195,17 @@ def dessin_spherique_3D(options,contexte):
 	else :
 		Vx3, Vy3, Vz3 = Vx2, Vy2, Vz2
 	baseLocaleCalotte=(Vx3,Vy3,Vz3)
+	
+	listeObjets = [] # Liste des dessins à classer dans l'espace
+		
+	angle_ecran = math.acos((Vx3*v3D(0,0,-1))/Vx3.norme()) # Angle entre la direction de -Vx3 (opposé à la femelle) et la normale à l'écran
+	angle_bord_ouverture_ecran_max = angle_ecran + thetaOuverture	# S'il est supérieur à 90°, cela veut dire que le bord de l'ouverture "le plus en arriere plan" est au dela du plan médian
+	angle_bord_ouverture_ecran_min = angle_ecran - thetaOuverture		# S'il est supérieur à 90°, cela veut dire que le bord de l'ouverture est derrière le cercle
+
+		
+	
+	
+	
 	# Male ***************************************
 	#Tige
 	tigeMale=inkex.etree.Element(inkex.addNS('path','svg'))
@@ -203,6 +218,7 @@ def dessin_spherique_3D(options,contexte):
 	tigeMale.set('stroke-width',str(epaisseur_male))
 	tigeMale.set('style','stroke-linecap:round')
 	tigeMale.set('profondeur',str(profondeur))
+	listeObjets.append(tigeMale)
 
 	#Boule
 	boule=inkex.etree.Element(inkex.addNS('circle','svg'))
@@ -213,100 +229,219 @@ def dessin_spherique_3D(options,contexte):
 	boule.set('stroke-width',str(epaisseur_male))
 	boule.set('style','fill:white')
 	boule.set('profondeur',"0")
+	listeObjets.append(boule)
 
 	
 	# Femelle ***************************************
-	thetaCoupure1,thetaCoupure2=getAnglesCoupure(baseLocaleCalotte)
 
-	centre=v3D(-rayon_femelle*math.cos(thetaOuverture/180*math.pi),0,0,baseLocaleCalotte) #Vecteur OC1, O=centre liaison
-	rayon=rayon_femelle*math.sin(thetaOuverture/180*math.pi)#Rayon de l'ouverture de la calotte
-	listeArcsOuverture=getListePoints2DCercle(baseLocaleCalotte,centre,rayon,0,math.pi*2,thetaCoupure1,thetaCoupure2,100)
-	listeOuverture=listeArcsOuverture[0][:-1]+listeArcsOuverture[1][:-1]#On rassemble les deux arcs en une seule liste
 	
 	
-	
-	#Dans cette partie, on trace le cercle qui va faire le tour de la calotte...
-	n=100
-	pointsCalotteAutour=[(echelle*rayon_femelle*math.cos(i*2*math.pi/n),echelle*rayon_femelle*math.sin(i*2*math.pi/n),0) for i in range(n)] #Cercle de la calotte, entier (n'y a-t-il pas un pb d'echelle) ?
-	#...Puis on cherche les deux points de tangeance (s'ils existent) en calculant la distance de chaque point d'une courbe à l'autre et en gardant les minimums
-	distancesCalotteAutour=getDistancesListe2Liste(pointsCalotteAutour,listeOuverture)
-	distancesOuverture=getDistancesListe2Liste(listeOuverture,pointsCalotteAutour)
-	#Lissage pour éviter les artefacts de discrétisation
-	distancesCalotteAutour=lisseListe(distancesCalotteAutour,3)
-	distancesOuverture=lisseListe(distancesOuverture,3)
-	#Recherche des indices des points tangent dans chaque courbe
-	indicesMiniCalotteAutour=getIndicesMins(distancesCalotteAutour)
-	indicesMiniOuverture=getIndicesMins(distancesOuverture)
-	
-	#debug(distancesCalotteAutour)
-	#debug(indicesMiniCalotteAutour)
-	
-	#S'il n'y a pas 2 distances minimum (s'il n'y a pas 2 points de tangence, si l'un des cercles est inclu dans l'autre)
-	if len(indicesMiniCalotteAutour)<=1 or len(indicesMiniOuverture)<=1:
+	text = " ( "+str(angle_ecran/math.pi*180)+" , "+str(angle_bord_ouverture_ecran_min/math.pi*180)+" , "+str(angle_bord_ouverture_ecran_max/math.pi*180)+" )"
+	# CAS OU L'OUVERTURE EST DERRIERE LA SPHERE
+	if angle_bord_ouverture_ecran_min > math.pi/2 : # Si l'ouverture est derriere le disque
+		boule_femelle=inkex.etree.Element(inkex.addNS('circle','svg'))
+		boule_femelle.set('cx',"0")
+		boule_femelle.set('cy',"0")
+		boule_femelle.set('r',str(rayon_femelle*echelle))
+		boule_femelle.set('stroke',str(couleur_femelle))
+		boule_femelle.set('stroke-width',str(epaisseur_femelle))
+		boule_femelle.set('style','fill:white')
+		boule_femelle.set('profondeur',"0.00001") # Juste devant la boule
+		listeObjets.append(boule_femelle)
+	#CAS OU L'OUVERTURE EST ENTIEREMENT DEVANT LA SPHERE
+	elif angle_bord_ouverture_ecran_max < math.pi/2 : # Si l'ouverture est totalement devant le disque
+		#assert 0, "devant le cercle"+text
+		n = 100
+		liste_points_calotte = [( rayon_femelle*math.cos(2*math.pi/n*i)*echelle, rayon_femelle*math.sin(2*math.pi/n*i)*echelle, 0 ) for i in range(n)] # Dans la base normale à l'écran
+		liste_points_ouverture = [( -rayon_femelle*math.cos(thetaOuverture) , rayon_ouverture*math.cos(2*math.pi/n*i), rayon_ouverture*math.sin(2*math.pi/n*i) ) for i in range(n)] # Dans la base normale à l'écran
+		liste_points_ouverture.reverse() #Pour avoir le chemin dans l'autre sens
 		
-		cheminSVGOuverture,profondeurOuverture=points3D_to_svgd(listeOuverture,True)#Attention, on travaille dans la base globale
-		cheminSVGCalotte,profondeurDerriere=points3D_to_svgd(pointsCalotteAutour,True)#Attention, on travaille dans la base globale
+		calotte=inkex.etree.Element(inkex.addNS('path','svg'))
+		
+		chemin_calotte,profondeur_calotte=points3D_to_svgd(liste_points_calotte,True,(v3D(1,0,0),v3D(0,1,0),v3D(0,0,1)))
+		chemin_ouverture,profondeur_ouverture=points3D_to_svgd(liste_points_ouverture,True,baseLocaleCalotte)
+		
+		#assert 0, chemin_calotte
+		calotte.set('d',chemin_calotte+chemin_ouverture)
+		calotte.set('stroke',couleur_femelle)
+		calotte.set('stroke-width',str(epaisseur_femelle))
+		calotte.set('fill',"white")
+		calotte.set('style','stroke-linecap:round')
+		calotte.set('profondeur',str(profondeur_calotte))
+		listeObjets.append(calotte)
+
+		
+	# l'ouverture est cachée, mais on voit l'un de ses bords
+	elif angle_ecran > math.pi/2 :
+
+		# On calcule l'ouverture ******
+		ouverture=inkex.etree.Element(inkex.addNS('path','svg'))
+		n = 100
+		
+
+		liste_points_ouverture = [( -rayon_femelle*math.cos(thetaOuverture) , rayon_ouverture*math.cos(2*math.pi/n*i), rayon_ouverture*math.sin(2*math.pi/n*i) ) for i in range(n)] # Dans la base normale à l'écran
+		
+		liste_points_ouverture_ecran=[v3D(liste_points_ouverture[i][0],liste_points_ouverture[i][1],liste_points_ouverture[i][2],baseLocaleCalotte) for i in range(len(liste_points_ouverture))]
+
+		#assert 0,liste_points_ouverture_ecran
+		
+		# On va couper le bout d'ouverture qui n'est pas visible
+		liste_troncons = []	# On va couper le chemin de l'ellipse en troncons
+		troncon=[]
+		for i in range(len(liste_points_ouverture)) : #On va enlever les points qui sont en avant plan, dans l'ellipse
+			point=liste_points_ouverture_ecran[i] #Projection dans la base de l'ecran
+			if point.z >= 0: #Si on le garde (en avant plan)
+				troncon.append(liste_points_ouverture[i])
+				#assert 0,str(liste_points_ouverture[i])+"\n"+str(point)
+			elif len(troncon)!=0: # Si on le garde pas, mais qu'on gardait le precedent (on coupe le troncon precedent)
+				liste_troncons.append(troncon)
+				troncon=[]
+				#assert 0,"point vide"
+		if len(troncon)!=0 : liste_troncons.append(troncon) #Dernier tour
+		liste_troncons.reverse()
+		liste_points_ouverture = [] #On refait la liste de points juste avec les bons troncons
+		for i in range(len(liste_troncons)):
+			liste_points_ouverture+=liste_troncons[i]
+		chemin_ouverture,profondeur_ouverture=points3D_to_svgd(liste_points_ouverture,False,baseLocaleCalotte)
+
 		
 		
-		if(profondeurOuverture>0):#Si l'ouverture est devant, on met la coque derriere, loin !
-			profondeurDerriere=-0.0001
-		else:#Sinon, on le met juste en avant plan
-			profondeurDerriere=0.0001
+		# On calcule la sphere
+		p_ouverture_min= v3D(liste_points_ouverture[0][0],liste_points_ouverture[0][1],liste_points_ouverture[0][2],baseLocaleCalotte) # onnrecupere les extremités de louverture
+		p_ouverture_max= v3D(liste_points_ouverture[-1][0],liste_points_ouverture[-1][1],liste_points_ouverture[-1][2],baseLocaleCalotte)
+		theta_min = math.atan2(p_ouverture_min.y,p_ouverture_min.x) % (2*math.pi)	# Angles (projeté dans le plan de l'écran) entre les deux extrémités de la courbe qui décrit la calotte
+		theta_max = math.atan2(p_ouverture_max.y,p_ouverture_max.x) % (2*math.pi)
+		theta_min,theta_max = min([theta_min,theta_max]),max([theta_min,theta_max])
+		# Dans quel sens on dessine ?
+		if (math.pi-(theta_max-theta_min)) > 0 and angle_ouverture < 180 :
+			theta_min, theta_max = theta_max-2*math.pi, theta_min
+		if (math.pi-(theta_max-theta_min)) < 0 and angle_ouverture > 180 :
+			theta_min, theta_max = theta_max-2*math.pi, theta_min
 			
+		pas = (theta_max-theta_min)/float(n)
 		
-		#debug(cheminSVGOuverture+cheminSVGOuverture)
-		cheminSVGdevant,profondeurDevant=cheminSVGCalotte+cheminSVGOuverture,profondeurOuverture
-		cheminSVGderriere,profondeurDerriere=cheminSVGCalotte,profondeurDerriere
+		liste_points_calotte = [( rayon_femelle*math.cos(theta_min+i*pas)*echelle, rayon_femelle*math.sin(theta_min+i*pas)*echelle, 0 ) for i in range(n+1)] # Dans la base normale à l'écran
+		#assert 0, liste_troncons
 		
-	else:	#S'il y a 2 points de tangence
-		#On decoupe les arcs en deux :
-		calotteAutour1_1=pointsCalotteAutour[:indicesMiniCalotteAutour[0][0]+1]
-		calotteAutour2=pointsCalotteAutour[indicesMiniCalotteAutour[0][0]:indicesMiniCalotteAutour[1][0]+1]
-		calotteAutour1_2=pointsCalotteAutour[indicesMiniCalotteAutour[1][0]:]
-		calotteAutour1=calotteAutour1_2+calotteAutour1_1
-		ouverture1_1=listeOuverture[:indicesMiniOuverture[0][0]+1]
-		ouverture2=listeOuverture[indicesMiniOuverture[0][0]:indicesMiniOuverture[1][0]+1]
-		ouverture1_2=listeOuverture[indicesMiniOuverture[1][0]:]
-		ouverture1=ouverture1_2+ouverture1_1
-	
-		#Quel arc de cercle pour la calotte ?
-		# Si l'angle d'ouverture est <90, c'est la plus grande courbe.
-		if(thetaOuverture<90):
-			if len(calotteAutour1)>len(calotteAutour2):
-				calotteAutour=calotteAutour1
-			else:
-				calotteAutour=calotteAutour2
-		else:
-			if len(calotteAutour1)>len(calotteAutour2):
-				calotteAutour=calotteAutour2
-			else:
-				calotteAutour=calotteAutour1
-	
-		#On concatene les bouts de chemin
-		cheminDevant=concateneContinu(calotteAutour,ouverture1)
-		cheminDerriere=concateneContinu(calotteAutour,ouverture2)
+		chemin_calotte,profondeur_calotte=points3D_to_svgd(liste_points_calotte,False,(v3D(1,0,0),v3D(0,1,0),v3D(0,0,1)))
 		
-		cheminSVGdevant,profondeurDevant=points3D_to_svgd(cheminDevant,True)#Attention, on travaille dans la base globale
-		cheminSVGderriere,profondeurDerriere=points3D_to_svgd(cheminDerriere,True)#Attention, on travaille dans la base globale
-	
-	
-	calotteDevant=inkex.etree.Element(inkex.addNS('path','svg'))
-	calotteDevant.set('d',cheminSVGdevant)
-	calotteDevant.set('stroke',couleur_femelle)
-	calotteDevant.set('stroke-width',str(epaisseur_femelle))
-	calotteDevant.set('style','fill:white')
-	calotteDevant.set('profondeur',str(profondeurDevant))
-	
-	calotteDerriere=inkex.etree.Element(inkex.addNS('path','svg'))
-	calotteDerriere.set('d',cheminSVGderriere)
-	calotteDerriere.set('stroke',couleur_femelle)
-	calotteDerriere.set('stroke-width',str(epaisseur_femelle))
-	calotteDerriere.set('style','fill:white')
-	calotteDerriere.set('profondeur',str(profondeurDerriere))
-	
+		calotte=inkex.etree.Element(inkex.addNS('path','svg'))	
+		calotte.set('d',chemin_calotte+chemin_ouverture)
+		calotte.set('stroke',couleur_femelle)
+		calotte.set('stroke-width',str(epaisseur_femelle))
+		calotte.set('fill',"white")
+		calotte.set('style','stroke-linecap:round')
+		calotte.set('profondeur',str(profondeur_calotte))
+		listeObjets.append(calotte)	
+			
+	else:# angle_ecran < math.pi/2 :
+		ouverture=inkex.etree.Element(inkex.addNS('path','svg'))
+		n = 100
+		liste_points_ouverture = [( -rayon_femelle*math.cos(thetaOuverture) , rayon_ouverture*math.cos(2*math.pi/n*i), rayon_ouverture*math.sin(2*math.pi/n*i) ) for i in range(n)] # Dans la base normale à l'écran
+		liste_points_ouverture_ecran=[v3D(liste_points_ouverture[i][0],liste_points_ouverture[i][1],liste_points_ouverture[i][2],baseLocaleCalotte) for i in range(len(liste_points_ouverture))]
 
+
+		# On va couper le bout d'ouverture en deux (avant plan / arriere plan)
+		liste_troncons_devant = []	# On va couper le chemin de l'ellipse en troncons
+		liste_troncons_arriere = []	
+		
+		troncon = []
+		plan = "" # d= devant, a =arriere
+		
+		for i in range(len(liste_points_ouverture)) : #On va enlever les points qui sont en avant plan, dans l'ellipse
+			point=liste_points_ouverture_ecran[i] #Projection dans la base de l'ecran
+			if point.z >= 0: #Si le point appartient à l'avant plan
+				if plan == "a" : #Si on suivait un troncons d'arriere plan
+					liste_troncons_arriere.append(troncon) # On le stocke dans la liste des troncons arriere
+					troncon = [] #On réinitialise avec le 1er point du nouveau troncon
+				troncon.append(liste_points_ouverture[i])
+				plan = "d"
+			else :	# Si le point appartient à l'arriere plan
+				if plan == "d" : #Si on suivait un troncon en avant plan arriere plan
+					liste_troncons_devant.append(troncon) # On le stocke dans la liste des troncons arriere
+					troncon = [] #On réinitialise avec le 1er point du nouveau troncon
+				troncon.append(liste_points_ouverture[i])
+				plan = "a"
+				
+		if len(troncon)!=0 : # On finalise le dernier tour
+			if plan == "a" :
+				liste_troncons_arriere.append(troncon) #Si c'est un arriere plan
+			else:
+				liste_troncons_devant.append(troncon) #Si c'est une avant plan
+				
+		if len(liste_troncons_arriere) > 1 :
+			liste_troncons_arriere.reverse()
+		if len(liste_troncons_devant) > 1 :
+			liste_troncons_devant.reverse()
+
+		liste_points_ouverture_arriere = [] #On refait la liste de points juste avec les bons troncons
+		for i in range(len(liste_troncons_arriere)):
+			liste_points_ouverture_arriere+=liste_troncons_arriere[i]
+		liste_points_ouverture_devant = [] #On refait la liste de points juste avec les bons troncons
+		for i in range(len(liste_troncons_devant)):
+			liste_points_ouverture_devant+=liste_troncons_devant[i]
+			
+			
+
+
+
+		# On calcule la sphere
+		p_ouverture_min= v3D(liste_points_ouverture_arriere[0][0],liste_points_ouverture_arriere[0][1],liste_points_ouverture_arriere[0][2],baseLocaleCalotte) # onnrecupere les extremités de louverture
+		p_ouverture_max= v3D(liste_points_ouverture_arriere[-1][0],liste_points_ouverture_arriere[-1][1],liste_points_ouverture_arriere[-1][2],baseLocaleCalotte)
+		theta_min = math.atan2(p_ouverture_min.y,p_ouverture_min.x) % (2*math.pi)	# Angles (projeté dans le plan de l'écran) entre les deux extrémités de la courbe qui décrit la calotte
+		theta_max = math.atan2(p_ouverture_max.y,p_ouverture_max.x) % (2*math.pi)
+		theta_min,theta_max = min([theta_min,theta_max]),max([theta_min,theta_max])
+		#	assert 0, str(theta_min*180/math.pi)+"    "+str(theta_max*180/math.pi)
+		# Dans quel sens on dessine la sphere ?
+		if (math.pi-(theta_max-theta_min)) > 0 and angle_ouverture < 180 :
+			theta_min, theta_max = theta_max-2*math.pi, theta_min
+		if (math.pi-(theta_max-theta_min)) < 0 and angle_ouverture > 180 :
+			theta_min, theta_max = theta_max-2*math.pi, theta_min
+			
+		pas = (theta_max-theta_min)/float(n)
+		liste_points_calotte = [( rayon_femelle*math.cos(theta_min+i*pas)*echelle, rayon_femelle*math.sin(theta_min+i*pas)*echelle, 0 ) for i in range(n+1)] # Dans la base normale à l'écran
+
+		
+		
+		# On inverse éventuellement les chemins pour qu'il y ait une continuité
+		deb_ouverture_devant_ecran = v3D(liste_points_ouverture_devant[0][0],liste_points_ouverture_devant[0][1],liste_points_ouverture_devant[0][2],baseLocaleCalotte)
+		fin_ouverture_devant_ecran = v3D(liste_points_ouverture_devant[-1][0],liste_points_ouverture_devant[-1][1],liste_points_ouverture_devant[-1][2],baseLocaleCalotte)
+		deb_ouverture_derriere_ecran = v3D(liste_points_ouverture_arriere[0][0],liste_points_ouverture_arriere[0][1],liste_points_ouverture_arriere[0][2],baseLocaleCalotte)
+		fin_ouverture_derriere_ecran = v3D(liste_points_ouverture_arriere[0][0],liste_points_ouverture_arriere[0][1],liste_points_ouverture_arriere[0][2],baseLocaleCalotte)
+		deb_calotte=v3D(liste_points_calotte[0][0],liste_points_calotte[0][1],liste_points_calotte[0][2])
+		fin_calotte=v3D(liste_points_calotte[-1][0],liste_points_calotte[-1][1],liste_points_calotte[-1][2])
+		
+		if (deb_ouverture_devant_ecran-deb_calotte).norme() < (deb_ouverture_devant_ecran-fin_calotte).norme():
+			liste_points_ouverture_devant.reverse()
+		
+		if (deb_ouverture_derriere_ecran-deb_calotte).norme() < (deb_ouverture_derriere_ecran-fin_calotte).norme():
+			liste_points_ouverture_arriere.reverse()
+			
+
+		
+		#Conversion en chemin SVG
+		chemin_ouverture_devant, profondeur_ouverture_devant = points3D_to_svgd(liste_points_ouverture_devant, False, baseLocaleCalotte)
+		chemin_ouverture_arriere, profondeur_ouverture_arriere = points3D_to_svgd(liste_points_ouverture_arriere, False, baseLocaleCalotte)
+		
+		chemin_calotte,profondeur_calotte=points3D_to_svgd(liste_points_calotte,True,(v3D(1,0,0),v3D(0,1,0),v3D(0,0,1)))
+		
+		devant=inkex.etree.Element(inkex.addNS('path','svg'))	
+		devant.set('d',chemin_ouverture_devant+"L"+chemin_calotte[1:]) # Z pour fermer
+		devant.set('stroke',couleur_femelle)
+		devant.set('stroke-width',str(epaisseur_femelle))
+		devant.set('fill',"white")
+		devant.set('style','stroke-linecap:round;stroke-linejoin:round')
+		devant.set('profondeur','0.00001')
+		listeObjets.append(devant)	
 	
-	
+		arriere=inkex.etree.Element(inkex.addNS('path','svg'))	
+		arriere.set('d',chemin_ouverture_arriere+"L"+chemin_calotte[1:])
+		arriere.set('stroke',couleur_femelle)
+		arriere.set('stroke-width',str(epaisseur_femelle))
+		arriere.set('fill',"white")
+		arriere.set('style','stroke-linecap:round;stroke-linejoin:round')
+		arriere.set('profondeur','-0.00001')
+		listeObjets.append(arriere)
 	
 	#Tige
 	tigeFemelle=inkex.etree.Element(inkex.addNS('path','svg'))
@@ -319,11 +454,12 @@ def dessin_spherique_3D(options,contexte):
 	tigeFemelle.set('stroke-width',str(epaisseur_femelle))
 	tigeFemelle.set('style','stroke-linecap:round')
 	tigeFemelle.set('profondeur',str(profondeur))
+	listeObjets.append(tigeFemelle)
 
 	# Ajout au Groupe ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
         
-        listeObjets=[tigeMale,boule,tigeFemelle,calotteDevant,calotteDerriere]
+        #listeObjets=[tigeMale,boule,tigeFemelle,calotteDevant,calotteDerriere]
         
         ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
 

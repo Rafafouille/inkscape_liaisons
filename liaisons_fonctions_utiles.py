@@ -381,6 +381,35 @@ def getListePoints2DCercle(axes,centre,R,thetaDeb,thetaFin,thetaCoupure1,thetaCo
 			arcs.pop(2)#On vire le dernier troncons 
 	return arcs
 
+# Fonction qui prend une liste de listes points 3D, censés être consécutifs
+# et qui les reconcatènes dans le bon ordre.
+# La liste principale peut être dans le mauvais ordre, mais les listes de troncons doivent être orientees pareil.
+"""def concateneChemins3DDansLOrdre(L):
+	L_result = L[0][:] # On recopie le premier troncon
+	dejaFait = [0] #Troncon deja concatenes
+	for k in range(len(L)-1) :
+		dist= = 99999999
+		cible = -1
+		avant = True #Pous savoir sil faut concatener au debut ou pas
+		for i in range(len(L)):
+			if i not in dejaFait :
+				distAvant = ...
+				distApres = ...
+				if distAvant < dist :
+					dist = distAvant
+					avant = True
+					cible = i
+				if distApres < dist :
+					dist = distApres
+					avant = False
+					cible = i
+			if avant :
+				L_result = L[cible]+L_result
+			else :
+				L_result += L[cible]
+			dejaFait.append(cible)
+	return L_result"""
+
 
 #Fonction qui trie les listes de couple (chemin,profondeur) dans l'ordre croissant
 #Et renvoie la profondeur moyenne (non coefficientee)
