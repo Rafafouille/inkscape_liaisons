@@ -4,7 +4,7 @@
   <id>org.ekips.filter.liaisons</id>
   
   <!-- FICHIERS LIES ================================  -->
-  <dependency type="executable" location="extensions">liaisons_mini.py</dependency>
+  <dependency type="executable" location="extensions">liaisons.py</dependency>
   <dependency type="executable" location="extensions">inkex.py</dependency>
   
   <!-- ====================================================  -->
@@ -749,7 +749,7 @@
 					<param name="titre_axe_masse_3D" type="description" appearance="header">Orientation</param>
 					<param name="liaison_masse_3D_type_axe" type="notebook">
 						<page name="liaison_masse_3D_type_standard" gui-text="Direction standard">
-								<param name="liaison_masse_3D_axe" type="enum" gui-text="Direction de l'axe : ">
+								<param name="liaison_masse_3D_axe" type="enum" gui-text="Direction de la tige : ">
 									<item value="x">X</item>
 									<item value="y">Y</item>
 									<item value="z">Z</item>
@@ -803,13 +803,9 @@
 									<item value="ft">ft</item>
 								</param>
 			<param name="opt_gene_echelle_liaison_titre" type="description" appearance="header">Echelle des liaisons</param>
-				<param name="echelle" type="float" appearance="full" _gui-text="Échelle des liaisons" precision="1" min="0.00001" max="10" >10</param>
+				<param name="echelle" type="float" appearance="full" _gui-text="Échelle des liaisons" precision="1" min="0.00001" max="10" >1</param>
 				<param name="opt_gene_echelle_epaisseurs" type="boolean" gui-text="Affecter l'épaisseur des lignes">False</param>
 		</page>
-		<!-- <page name="opt_gene_lignes" gui-text="Lignes">
-			<param name="opt_gene_lignes_titre1" type="description" appearance="header">Pièce 1 (Mâle ?)</param>
-			<param name="opt_gene_lignes_titre2" type="description" appearance="header">Pièce 2 (Femelle ?)</param>
-		</page> -->
 		<page name="opt_gene_piece1" gui-text="Pièce 1 (mâle)">
 			<param name="opt_gene_lignes_epaisseur_1" type="float" _gui-text="Épaisseur du trait :"  precision="1" min="0" max="1000" >1</param>
 			<param name="opt_gene_couleur_piece1" type="description" appearance="header">Couleur :</param>
@@ -828,12 +824,12 @@
 				<param name="" type="description">pour l'Éducation Nationale.</param>
 			<param name="" type="description" appearance="header">Auteur(s) :</param>
 				<param name="" type="description">Raphaël ALLAIS (allais.raphael@free.fr)</param>
-			<param name="" type="description" appearance="header">Dernière version :</param>
-				<param name="" type="description">https://github.com/Rafafouille/inkscape_liaisons</param>
+			<param name="" type="description" appearance="header">Site web :</param>
+				<param name="" type="description">http://allais.eu</param>
 			<param name="" type="description" appearance="header">Licence :</param>
 				<param name="" type="description">Creative Commons : CC-BY-NC</param>
 			<param name="" type="description" appearance="header">Remerciements :</param>
-				<!--<param name="" type="description">Jacques RIOT, Virgile LACHARNAY</param>-->
+				<param name="" type="description">Jacques RIOT, Virgile LACHARNAY</param>
 		</page>
 	  </param>
       </page>

@@ -14,8 +14,8 @@ import math
 # ============== LIAISON PIVOT ========================
 
 # Parametres généraux
-diametre_pivot = 15.						# Diamètre de la pièce femelle
-longueur_pivot = 30.						# Longueur de la pièce femelle
+diametre_pivot = 10.						# Diamètre de la pièce femelle
+longueur_pivot = 20.						# Longueur de la pièce femelle
 longueur_arrets_pivot = diametre_pivot				# Longueur des arrêts (barres) de la pivot
 ecart_arrets_pivot = 0.5 * diametre_pivot			# Ecart entre la pièce femelle et les arrêts
 longueur_male_pivot = longueur_pivot + 4*ecart_arrets_pivot	# Longueur de la tige mâle
@@ -115,7 +115,7 @@ pl3D_tiges = 1.5 * longueur_tiges_plane	# Longueur des tiges qui repartent de ch
 
 # ============== LIAISON SPHÉRIQUE ========================
 # Parametres généraux
-diametre_spherique = 1.5 * diametre_pivot				# Diamètre de la boule intérieure
+diametre_spherique = diametre_pivot				# Diamètre de la boule intérieure
 angle_ouverture_spherique = 90.						# Angle ouverture de la calotte femelle
 ecart_spherique = diametre_spherique / 5.				# Interstice entre la sphère et la calotte femelle. Prend en compte l'épaisseur des traits
 rayon_tiges_spherique = 1.5 * diametre_spherique + ecart_spherique	# Distance entre le centre de la sphère et le bout des tiges qui sortent de chaque pièce
@@ -128,8 +128,8 @@ s2D_rayon_tiges = rayon_tiges_spherique			# Distance entre le centre de la sphè
 
 # Sphérique 3D
 s3D_diametre = diametre_spherique			# Diamètre de la boule intérieure
-s3D_angle_ouverture = 140				# Angle ouverture de la calotte femelle
-s3D_ecart = ecart_spherique * 0.01			# Interstice entre la sphère et la calotte femelle. Prend en compte l'épaisseur des traits
+s3D_angle_ouverture = 120				# Angle ouverture de la calotte femelle
+s3D_ecart = ecart_spherique * 0.05			# Interstice entre la sphère et la calotte femelle. Prend en compte l'épaisseur des traits
 s3D_rayon_tiges = rayon_tiges_spherique * 0.75		# Distance entre le centre de la sphère et le bout des tiges qui sortent de chaque pièce
 
 
@@ -166,7 +166,7 @@ h2D_longueur_axe = longueur_helicoidale_male			# Longueur de la tige qui part de
 # ============== LIAISON SPHERE PLAN ========================
 
 # Parametres généraux
-largeur_plan_sphere_plan = longueur_pivot			# Largeur du plan
+largeur_plan_sphere_plan = longueur_pivot * 0.75		# Largeur du plan
 diametre_sphere_plan = largeur_plan_sphere_plan * 0.75		# Diamètre de la sphere
 longueur_tiges_sphere_plan = diametre_sphere_plan		# Longueurs des tiges qui repartent de la liaison
 
@@ -222,7 +222,7 @@ r3D_hauteur_prisme = RECTILIGNE_hauteur_prisme			# Hauteur du prisme
 r3D_largeur_plan = RECTILIGNE_largeur_plan			# Largeur du plan
 r3D_longueur_plan = RECTILIGNE_longueur_plan			# Longueur du plan
 r3D_longueur_tige_prisme = RECTILIGNE_hauteur_prisme		# Longueur de la tige au dessus du prisme
-r3D_longueur_tige_plan = RECTILIGNE_hauteur_prisme		# Longueur de la tige sous le plan
+r3D_longueur_tige_plan = RECTILIGNE_hauteur_prisme * 2		# Longueur de la tige sous le plan
 
 # ============== LIAISON SPHÈRE-CYLINDRE ========================
 
@@ -3619,12 +3619,12 @@ def dessin_rectiligne_3D(options,contexte):
 	z=options.liaison_plane_3D_position_z
 	vPosition=v3D(x,y,z,base)#Vecteur position exprime dans la base axono
 	#Parametres de la liaison
-	inclinaison = options.liaison_rectiligne_3D_inclinaison_prisme
+	inclinaison = options.liaison_rectiligne_3D_inclinaison_prisme/180.*math.pi
 	couleur_plan = options.opt_gene_piece1_couleur
 	couleur_dessous = options.opt_gene_piece2_couleur
 	epaisseur_plan = options.opt_gene_lignes_epaisseur_1
 	epaisseur_dessous = options.opt_gene_lignes_epaisseur_2
-	angle_inclinaison_prisme = -float(options.liaison_rectiligne_3D_inclinaison_prisme)/180.*math.pi
+	#angle_inclinaison_prisme = -float(options.liaison_rectiligne_3D_inclinaison_prisme)/180.*math.pi
 	#Repere local de la liaison
 	if(options.liaison_rectiligne_3D_type_normale!="\"liaison_rectiligne_3D_type_normale_standard\""):
 		Vn = v3D(options.liaison_rectiligne_3D_normale_quelconque_x, options.liaison_rectiligne_3D_normale_quelconque_y, options.liaison_rectiligne_3D_normale_quelconque_z,base)
@@ -3663,9 +3663,9 @@ def dessin_rectiligne_3D(options,contexte):
 	Vy1.normalise()
 	Vz1 = Vx1 ^Vy1
 	
-	Vx2 = Vx1*math.cos(inclinaison) - Vz1*math.sin(inclinaison)
+	Vx2 = Vx1*math.cos(inclinaison) + Vz1*math.sin(inclinaison)
 	Vy2 = Vy1
-	Vz2 = Vz1*math.sin(inclinaison) + Vz1*math.cos(inclinaison)
+	Vz2 = Vx2 ^Vy2
 	
 	baseLocale1=(Vx1,Vy1,Vz1)
 	baseLocale2=(Vx2,Vy2,Vz2)
@@ -3791,6 +3791,7 @@ def dessin_rectiligne_3D(options,contexte):
 	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
+	
 	
 
 

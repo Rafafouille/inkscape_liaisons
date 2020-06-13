@@ -1,14 +1,14 @@
 ==============================================================
 
-	LIAISONS CINEMATIQUES POUR INKSCAPE
+	LIAISONS CINEMATIQUES POUR INKSCAPE 0.92
 	
 ==============================================================
 
 
-Auteur : Raphaël ALLAIS (Lycée G.Eiffel de DIJON)
+Auteur : Raphaël ALLAIS
 
-Dernière version : https://github.com/Rafafouille/inkscape_liaisons/archive/master.zip
-Version de développement : https://github.com/Rafafouille/inkscape_liaisons/archive/develop.zip
+Version officielle : https://eduscol.education.fr/sti
+Dernière version : https://github.com/Rafafouille/inkscape_liaisons/tree/inkscape_0.92
 
 ==============================================================
 I . QU'EST CE QUE C'EST ?
@@ -24,15 +24,15 @@ II . INSTALLATION
 
 Ce qu'il faut avoir déjà :
 ------------------------------
-* Inkscape : dans sa version 0.92. (Les plus vieilles version ne fonctionnent pas)
+* Inkscape : dans sa version 0.92. (Les autres versions ne fonctionnent pas)
 --> Lien de téléchargement : https://inkscape.org/release
 
-* Python 2.x : Normalement, je crois qu'il est installé avec Inkscape par défaut.
+* Python 2.x : Normalement, il est installé avec Inkscape par défaut.
 
 Comment installer l'extension ?
 -----------------------------------
 
-En copiant tous les fichiers dans le dossier d'extension d'Inkscape.
+En copiant tous les fichiers .inx et .py dans le dossier d'extension d'Inkscape.
 Pour savoir où se trouve ce dossier, dans la version 0.92, il faut aller dans les menus :
 [Édition] --> [Préférences] --> [Système] --> [Extensions de l'utilisateur]
 

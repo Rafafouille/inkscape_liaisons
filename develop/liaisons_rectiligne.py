@@ -199,12 +199,12 @@ def dessin_rectiligne_3D(options,contexte):
 	z=options.liaison_plane_3D_position_z
 	vPosition=v3D(x,y,z,base)#Vecteur position exprime dans la base axono
 	#Parametres de la liaison
-	inclinaison = options.liaison_rectiligne_3D_inclinaison_prisme
+	inclinaison = options.liaison_rectiligne_3D_inclinaison_prisme/180.*math.pi
 	couleur_plan = options.opt_gene_piece1_couleur
 	couleur_dessous = options.opt_gene_piece2_couleur
 	epaisseur_plan = options.opt_gene_lignes_epaisseur_1
 	epaisseur_dessous = options.opt_gene_lignes_epaisseur_2
-	angle_inclinaison_prisme = -float(options.liaison_rectiligne_3D_inclinaison_prisme)/180.*math.pi
+	#angle_inclinaison_prisme = -float(options.liaison_rectiligne_3D_inclinaison_prisme)/180.*math.pi
 	#Repere local de la liaison
 	if(options.liaison_rectiligne_3D_type_normale!="\"liaison_rectiligne_3D_type_normale_standard\""):
 		Vn = v3D(options.liaison_rectiligne_3D_normale_quelconque_x, options.liaison_rectiligne_3D_normale_quelconque_y, options.liaison_rectiligne_3D_normale_quelconque_z,base)
@@ -243,9 +243,9 @@ def dessin_rectiligne_3D(options,contexte):
 	Vy1.normalise()
 	Vz1 = Vx1 ^Vy1
 	
-	Vx2 = Vx1*math.cos(inclinaison) - Vz1*math.sin(inclinaison)
+	Vx2 = Vx1*math.cos(inclinaison) + Vz1*math.sin(inclinaison)
 	Vy2 = Vy1
-	Vz2 = Vz1*math.sin(inclinaison) + Vz1*math.cos(inclinaison)
+	Vz2 = Vx2 ^Vy2
 	
 	baseLocale1=(Vx1,Vy1,Vz1)
 	baseLocale2=(Vx2,Vy2,Vz2)

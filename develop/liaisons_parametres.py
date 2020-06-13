@@ -4,8 +4,8 @@ import math
 # ============== LIAISON PIVOT ========================
 
 # Parametres généraux
-diametre_pivot = 15.						# Diamètre de la pièce femelle
-longueur_pivot = 30.						# Longueur de la pièce femelle
+diametre_pivot = 10.						# Diamètre de la pièce femelle
+longueur_pivot = 20.						# Longueur de la pièce femelle
 longueur_arrets_pivot = diametre_pivot				# Longueur des arrêts (barres) de la pivot
 ecart_arrets_pivot = 0.5 * diametre_pivot			# Ecart entre la pièce femelle et les arrêts
 longueur_male_pivot = longueur_pivot + 4*ecart_arrets_pivot	# Longueur de la tige mâle
@@ -105,7 +105,7 @@ pl3D_tiges = 1.5 * longueur_tiges_plane	# Longueur des tiges qui repartent de ch
 
 # ============== LIAISON SPHÉRIQUE ========================
 # Parametres généraux
-diametre_spherique = 1.5 * diametre_pivot				# Diamètre de la boule intérieure
+diametre_spherique = diametre_pivot				# Diamètre de la boule intérieure
 angle_ouverture_spherique = 90.						# Angle ouverture de la calotte femelle
 ecart_spherique = diametre_spherique / 5.				# Interstice entre la sphère et la calotte femelle. Prend en compte l'épaisseur des traits
 rayon_tiges_spherique = 1.5 * diametre_spherique + ecart_spherique	# Distance entre le centre de la sphère et le bout des tiges qui sortent de chaque pièce
@@ -118,8 +118,8 @@ s2D_rayon_tiges = rayon_tiges_spherique			# Distance entre le centre de la sphè
 
 # Sphérique 3D
 s3D_diametre = diametre_spherique			# Diamètre de la boule intérieure
-s3D_angle_ouverture = 140				# Angle ouverture de la calotte femelle
-s3D_ecart = ecart_spherique * 0.01			# Interstice entre la sphère et la calotte femelle. Prend en compte l'épaisseur des traits
+s3D_angle_ouverture = 120				# Angle ouverture de la calotte femelle
+s3D_ecart = ecart_spherique * 0.05			# Interstice entre la sphère et la calotte femelle. Prend en compte l'épaisseur des traits
 s3D_rayon_tiges = rayon_tiges_spherique * 0.75		# Distance entre le centre de la sphère et le bout des tiges qui sortent de chaque pièce
 
 
@@ -156,7 +156,7 @@ h2D_longueur_axe = longueur_helicoidale_male			# Longueur de la tige qui part de
 # ============== LIAISON SPHERE PLAN ========================
 
 # Parametres généraux
-largeur_plan_sphere_plan = longueur_pivot			# Largeur du plan
+largeur_plan_sphere_plan = longueur_pivot * 0.75		# Largeur du plan
 diametre_sphere_plan = largeur_plan_sphere_plan * 0.75		# Diamètre de la sphere
 longueur_tiges_sphere_plan = diametre_sphere_plan		# Longueurs des tiges qui repartent de la liaison
 
@@ -212,7 +212,7 @@ r3D_hauteur_prisme = RECTILIGNE_hauteur_prisme			# Hauteur du prisme
 r3D_largeur_plan = RECTILIGNE_largeur_plan			# Largeur du plan
 r3D_longueur_plan = RECTILIGNE_longueur_plan			# Longueur du plan
 r3D_longueur_tige_prisme = RECTILIGNE_hauteur_prisme		# Longueur de la tige au dessus du prisme
-r3D_longueur_tige_plan = RECTILIGNE_hauteur_prisme		# Longueur de la tige sous le plan
+r3D_longueur_tige_plan = RECTILIGNE_hauteur_prisme * 2		# Longueur de la tige sous le plan
 
 # ============== LIAISON SPHÈRE-CYLINDRE ========================
 
