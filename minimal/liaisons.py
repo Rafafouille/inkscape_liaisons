@@ -3614,9 +3614,9 @@ def dessin_rectiligne_3D(options,contexte):
 	Vx,Vy,Vz=getVecteursAxonometriques(echelle)
 	base=(Vx,Vy,Vz)
 	#Centre de la liaison dans le repere 3D
-	x=options.liaison_plane_3D_position_x
-	y=options.liaison_plane_3D_position_y
-	z=options.liaison_plane_3D_position_z
+	x=options.liaison_rectiligne_3D_position_x
+	y=options.liaison_rectiligne_3D_position_y
+	z=options.liaison_rectiligne_3D_position_z
 	vPosition=v3D(x,y,z,base)#Vecteur position exprime dans la base axono
 	#Parametres de la liaison
 	inclinaison = options.liaison_rectiligne_3D_inclinaison_prisme/180.*math.pi
