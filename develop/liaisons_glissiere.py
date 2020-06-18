@@ -226,6 +226,7 @@ def dessin_Glissiere_3D(options,contexte):
 			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz,echelle_liaison,angle)#Repere local
 	baseLocale=(Vx1,Vy1,Vz1)
 
+	listeObjets = []
 	
 	# Male ***************************************
 	#Axe central
@@ -239,63 +240,126 @@ def dessin_Glissiere_3D(options,contexte):
 	axe.set('stroke-width',str(epaisseur_male))
 	axe.set('style','stroke-linecap:round')
 	axe.set('profondeur',str(profondeur))
+	listeObjets.append(axe)
 
-	#Demi croisillon 1
-	demicroix1=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin,profondeur=points3D_to_svgd([
-					(-largeur/2.,	0,	0	),
-					(-largeur/2.,	-epaisseur/2.+epaisseur_femelle/2.,	hauteur/2.-epaisseur_femelle/2.	),
-					(largeur/2.,	-epaisseur/2.+epaisseur_femelle/2.,	hauteur/2.-epaisseur_femelle/2.	),
-					(largeur/2.,	0	,0	),
-				],True,baseLocale)
-	demicroix1.set('d',chemin)
-	demicroix1.set('stroke',couleur_male)
-	demicroix1.set('stroke-width',str(epaisseur_male))
-	demicroix1.set('style','stroke-linecap:round;fill:#FFFFFF;stroke-linejoin:round')
-	demicroix1.set('profondeur',str(profondeur))
-	
-	#Demi croisillon 2
-	demicroix2=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin,profondeur=points3D_to_svgd([
-					(-largeur/2.,	0,	0	),
-					(-largeur/2.,	epaisseur/2.-epaisseur_femelle/2.,	hauteur/2.-epaisseur_femelle/2.	),
-					(largeur/2.,	epaisseur/2.-epaisseur_femelle/2.,	hauteur/2.-epaisseur_femelle/2.	),
-					(largeur/2.,	0	,0	),
-				],True,baseLocale)
-	demicroix2.set('d',chemin)
-	demicroix2.set('stroke',couleur_male)
-	demicroix2.set('stroke-width',str(epaisseur_male))
-	demicroix2.set('style','stroke-linecap:round;fill:#FFFFFF;stroke-linejoin:round')
-	demicroix2.set('profondeur',str(profondeur))
 
-	#Demi croisillon 3
-	demicroix3=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin,profondeur=points3D_to_svgd([
-					(-largeur/2.,	0,	0	),
-					(-largeur/2.,	epaisseur/2.-epaisseur_femelle/2.,	-hauteur/2.+epaisseur_femelle/2.	),
-					(largeur/2.,	epaisseur/2.-epaisseur_femelle/2.,	-hauteur/2.+epaisseur_femelle/2.	),
-					(largeur/2.,	0	,0	),
-				],True,baseLocale)
-	demicroix3.set('d',chemin)
-	demicroix3.set('stroke',couleur_male)
-	demicroix3.set('stroke-width',str(epaisseur_male))
-	demicroix3.set('style','stroke-linecap:round;fill:#FFFFFF;stroke-linejoin:round')
-	demicroix3.set('profondeur',str(profondeur))
+	if(options.liaison_glissiere_3D_representation) : # Si croisillon 3D
+		#	Demi croisillon 1
+		demicroix1=inkex.etree.Element(inkex.addNS('path','svg'))
+		chemin,profondeur=points3D_to_svgd([
+						(-largeur/2.,	0,	0	),
+						(-largeur/2.,	-epaisseur/2.+epaisseur_femelle/2.,	hauteur/2.-epaisseur_femelle/2.	),
+						(largeur/2.,	-epaisseur/2.+epaisseur_femelle/2.,	hauteur/2.-epaisseur_femelle/2.	),
+						(largeur/2.,	0	,0	),
+					],True,baseLocale)
+		demicroix1.set('d',chemin)
+		demicroix1.set('stroke',couleur_male)
+		demicroix1.set('stroke-width',str(epaisseur_male))
+		demicroix1.set('style','stroke-linecap:round;fill:#FFFFFF;stroke-linejoin:round')
+		demicroix1.set('profondeur',str(profondeur))
+		listeObjets.append(demicroix1)
+		
+		#Demi croisillon 2
+		demicroix2=inkex.etree.Element(inkex.addNS('path','svg'))
+		chemin,profondeur=points3D_to_svgd([
+						(-largeur/2.,	0,	0	),
+						(-largeur/2.,	epaisseur/2.-epaisseur_femelle/2.,	hauteur/2.-epaisseur_femelle/2.	),
+						(largeur/2.,	epaisseur/2.-epaisseur_femelle/2.,	hauteur/2.-epaisseur_femelle/2.	),
+						(largeur/2.,	0	,0	),
+					],True,baseLocale)
+		demicroix2.set('d',chemin)
+		demicroix2.set('stroke',couleur_male)
+		demicroix2.set('stroke-width',str(epaisseur_male))
+		demicroix2.set('style','stroke-linecap:round;fill:#FFFFFF;stroke-linejoin:round')
+		demicroix2.set('profondeur',str(profondeur))
+		listeObjets.append(demicroix2)
+
+		#Demi croisillon 3
+		demicroix3=inkex.etree.Element(inkex.addNS('path','svg'))
+		chemin,profondeur=points3D_to_svgd([
+						(-largeur/2.,	0,	0	),
+						(-largeur/2.,	epaisseur/2.-epaisseur_femelle/2.,	-hauteur/2.+epaisseur_femelle/2.	),
+						(largeur/2.,	epaisseur/2.-epaisseur_femelle/2.,	-hauteur/2.+epaisseur_femelle/2.	),
+						(largeur/2.,	0	,0	),
+					],True,baseLocale)
+		demicroix3.set('d',chemin)
+		demicroix3.set('stroke',couleur_male)
+		demicroix3.set('stroke-width',str(epaisseur_male))
+		demicroix3.set('style','stroke-linecap:round;fill:#FFFFFF;stroke-linejoin:round')
+		demicroix3.set('profondeur',str(profondeur))
+		listeObjets.append(demicroix3)
+		
+		#Demi croisillon 4
+		demicroix4=inkex.etree.Element(inkex.addNS('path','svg'))
+		chemin,profondeur=points3D_to_svgd([
+						(-largeur/2.,	0,	0	),
+						(-largeur/2.,	-epaisseur/2.+epaisseur_femelle/2.,	-hauteur/2.+epaisseur_femelle/2.	),
+						(largeur/2.,	-epaisseur/2.+epaisseur_femelle/2.,	-hauteur/2.+epaisseur_femelle/2.	),
+						(largeur/2.,	0	,0	),
+					],True,baseLocale)
+		demicroix4.set('d',chemin)
+		demicroix4.set('stroke',couleur_male)
+		demicroix4.set('stroke-width',str(epaisseur_male))
+		demicroix4.set('style','stroke-linecap:round;fill:#FFFFFF;stroke-linejoin:round')
+		demicroix4.set('profondeur',str(profondeur))
+		listeObjets.append(demicroix4)
 	
-	#Demi croisillon 4
-	demicroix4=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin,profondeur=points3D_to_svgd([
-					(-largeur/2.,	0,	0	),
-					(-largeur/2.,	-epaisseur/2.+epaisseur_femelle/2.,	-hauteur/2.+epaisseur_femelle/2.	),
-					(largeur/2.,	-epaisseur/2.+epaisseur_femelle/2.,	-hauteur/2.+epaisseur_femelle/2.	),
-					(largeur/2.,	0	,0	),
-				],True,baseLocale)
-	demicroix4.set('d',chemin)
-	demicroix4.set('stroke',couleur_male)
-	demicroix4.set('stroke-width',str(epaisseur_male))
-	demicroix4.set('style','stroke-linecap:round;fill:#FFFFFF;stroke-linejoin:round')
-	demicroix4.set('profondeur',str(profondeur))
+	else : #Si croisillon pas 3D
+		
+		#croisillon 1
+		croix1=inkex.etree.Element(inkex.addNS('path','svg'))
+		chemin,profondeur=points3D_to_svgd([
+						(-largeur/2.,	-epaisseur/2.+(epaisseur_femelle+epaisseur_male)/2.,	-hauteur/2.+(epaisseur_femelle+epaisseur_male)/2.	),
+						(-largeur/2.,	epaisseur/2.-(epaisseur_femelle+epaisseur_male)/2.,	hauteur/2.-(epaisseur_femelle+epaisseur_male)/2.	)
+					],False,baseLocale)
+		croix1.set('d',chemin)
+		croix1.set('stroke',couleur_male)
+		croix1.set('stroke-width',str(epaisseur_male))
+		croix1.set('style','stroke-linecap:round;fill:#FFFFFF;stroke-linejoin:round')
+		croix1.set('profondeur',str(profondeur))
+		listeObjets.append(croix1)
+		
+		
+		#croisillon 2
+		croix2 = inkex.etree.Element(inkex.addNS('path','svg'))
+		chemin,profondeur=points3D_to_svgd([
+						(-largeur/2.,	epaisseur/2.-(epaisseur_femelle+epaisseur_male)/2.,	-hauteur/2.+(epaisseur_femelle+epaisseur_male)/2.	),
+						(-largeur/2.,	-epaisseur/2.+(epaisseur_femelle+epaisseur_male)/2.,	hauteur/2.-(epaisseur_femelle+epaisseur_male)/2.	)
+					],False,baseLocale)
+		croix2.set('d',chemin)
+		croix2.set('stroke',couleur_male)
+		croix2.set('stroke-width',str(epaisseur_male))
+		croix2.set('style','stroke-linecap:round;fill:#FFFFFF;stroke-linejoin:round')
+		croix2.set('profondeur',str(profondeur))
+		listeObjets.append(croix2)
 	
+	
+		#croisillon 3
+		croix3 = inkex.etree.Element(inkex.addNS('path','svg'))
+		chemin,profondeur=points3D_to_svgd([
+						(largeur/2.,	epaisseur/2.-(epaisseur_femelle+epaisseur_male)/2.,	-hauteur/2.+(epaisseur_femelle+epaisseur_male)/2.	),
+						(largeur/2.,	-epaisseur/2.+(epaisseur_femelle+epaisseur_male)/2.,	hauteur/2.-(epaisseur_femelle+epaisseur_male)/2.	)
+					],False,baseLocale)
+		croix3.set('d',chemin)
+		croix3.set('stroke',couleur_male)
+		croix3.set('stroke-width',str(epaisseur_male))
+		croix3.set('style','stroke-linecap:round;fill:#FFFFFF;stroke-linejoin:round')
+		croix3.set('profondeur',str(profondeur))
+		listeObjets.append(croix3)
+		
+		
+		#croisillon 4
+		croix4=inkex.etree.Element(inkex.addNS('path','svg'))
+		chemin,profondeur=points3D_to_svgd([
+						(largeur/2.,	-epaisseur/2.+(epaisseur_femelle+epaisseur_male)/2.,	-hauteur/2.+(epaisseur_femelle+epaisseur_male)/2.	),
+						(largeur/2.,	epaisseur/2.-(epaisseur_femelle+epaisseur_male)/2.,	hauteur/2.-(epaisseur_femelle+epaisseur_male)/2.	)
+					],False,baseLocale)
+		croix4.set('d',chemin)
+		croix4.set('stroke',couleur_male)
+		croix4.set('stroke-width',str(epaisseur_male))
+		croix4.set('style','stroke-linecap:round;fill:#FFFFFF;stroke-linejoin:round')
+		croix4.set('profondeur',str(profondeur))
+		listeObjets.append(croix4)
 	
 	# Femelle ***************************************
 	
@@ -312,6 +376,7 @@ def dessin_Glissiere_3D(options,contexte):
 	pan1.set('stroke-width',str(epaisseur_femelle))
 	pan1.set('style','stroke-linecap:round;fill:#FFFFFF;stroke-linejoin:round')
 	pan1.set('profondeur',str(profondeur*1000))
+	listeObjets.append(pan1)
 	
 	#pan2
 	pan2=inkex.etree.Element(inkex.addNS('path','svg'))
@@ -326,6 +391,7 @@ def dessin_Glissiere_3D(options,contexte):
 	pan2.set('stroke-width',str(epaisseur_femelle))
 	pan2.set('style','stroke-linecap:round;fill:#FFFFFF;stroke-linejoin:round')
 	pan2.set('profondeur',str(profondeur*1000))
+	listeObjets.append(pan2)
 
 	#pan3
 	pan3=inkex.etree.Element(inkex.addNS('path','svg'))
@@ -340,6 +406,7 @@ def dessin_Glissiere_3D(options,contexte):
 	pan3.set('stroke-width',str(epaisseur_femelle))
 	pan3.set('style','stroke-linecap:round;fill:#FFFFFF;stroke-linejoin:round')
 	pan3.set('profondeur',str(profondeur*1000))
+	listeObjets.append(pan3)
 
 	#pan4
 	pan4=inkex.etree.Element(inkex.addNS('path','svg'))
@@ -354,6 +421,7 @@ def dessin_Glissiere_3D(options,contexte):
 	pan4.set('stroke-width',str(epaisseur_femelle))
 	pan4.set('style','stroke-linecap:round;fill:#FFFFFF;stroke-linejoin:round')
 	pan4.set('profondeur',str(profondeur*1000))
+	listeObjets.append(pan4)
 	
 
 	#barre femelle
@@ -367,11 +435,12 @@ def dessin_Glissiere_3D(options,contexte):
 	barreFemelle.set('stroke-width',str(epaisseur_femelle))
 	barreFemelle.set('style','stroke-linecap:round')
 	barreFemelle.set('profondeur',str(profondeur*1000000))
+	listeObjets.append(barreFemelle)
 	
 	# Ajout au Groupe ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
         
-        listeObjets=[pan1,pan2,pan3,pan4,axe,demicroix1,demicroix2,demicroix3,demicroix4,barreFemelle]
+        #listeObjets=[pan1,pan2,pan3,pan4,axe,demicroix1,demicroix2,demicroix3,demicroix4,barreFemelle]
         
         ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
 

@@ -127,6 +127,8 @@ class Liaisons(inkex.Effect):
         self.OptionParser.add_option('--liaison_glissiere_3D_type_direction_quelconque_y', action = 'store', type = 'float', dest = 'liaison_glissiere_3D_type_direction_quelconque_y', default = 0, help = u"Coordonnee sur y du vecteur direceur de la glissiere 3D")
         self.OptionParser.add_option('--liaison_glissiere_3D_type_direction_quelconque_z', action = 'store', type = 'float', dest = 'liaison_glissiere_3D_type_direction_quelconque_z', default = 0, help = u"Coordonnee sur z du vecteur direceur de la glissiere 3D")
         self.OptionParser.add_option('--liaison_glissiere_3D_orientation', action = 'store', type = 'float', dest = 'liaison_glissiere_3D_orientation', default = 0, help = u"Orientation de la glissiere 3D")
+	self.OptionParser.add_option('--liaison_glissiere_3D_representation', action = 'store', type = 'inkbool', dest = 'liaison_glissiere_3D_representation', default = 'False', help = u"Représentation 3D du croisillon male, en dessin 3D")
+        
 
         
         #LIAISON PLANE ******************************************
@@ -357,7 +359,7 @@ class Liaisons(inkex.Effect):
         """
         # Get script's "--what" option value.
         liaison=self.options.liaison
-        self.options.credits=u"Auteur : Raphaël ALLAIS (Lycee G.Eiffel de DIJON) - Éduscol"
+        self.options.credits=u"Auteur : Raphaël ALLAIS - Éduscol-STI"
         self.options.effect=self	#On passe la référence de l'objet effect dans les options pour y avoir acces dans les fonctions qui ne sont pas membre
 
         # Get access to main SVG document element and get its dimensions.

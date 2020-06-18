@@ -230,6 +230,9 @@
 					</param>
 					<param name="titre_direction_glissiere_3D" type="description" appearance="header">Orientation (autour de l'axe)</param>
 	  					<param name="liaison_glissiere_3D_orientation" type="float" _gui-text="Angle (degrés) : " precision="1" min="-360" max="360" >0</param>
+	  					
+					<param name="titre_representation_glissiere_3D" type="description" appearance="header">Représentation du croisillon mâle</param>
+	  					<param name="liaison_glissiere_3D_representation" type="boolean" gui-text="Représenter le croisillon en 3D">False</param>
 				</page>
 			</param>
 		</page>
