@@ -8,7 +8,9 @@
 Auteur : Raphaël ALLAIS
 
 Version officielle : https://eduscol.education.fr/sti
+
 Dernière version : https://github.com/Rafafouille/inkscape_liaisons/tree/inkscape_0.92
+Aide en ligne : http://inkscape.allais.eu
 
 ==============================================================
 I . QU'EST CE QUE C'EST ?
@@ -33,8 +35,9 @@ Comment installer l'extension ?
 -----------------------------------
 
 En copiant tous les fichiers .inx et .py dans le dossier d'extension d'Inkscape.
-Pour savoir où se trouve ce dossier, dans la version 0.92, il faut aller dans les menus :
-[Édition] --> [Préférences] --> [Système] --> [Extensions de l'utilisateur]
+Pour savoir où se trouve ce dossier, dans la version 0.92, il faut ouvrir Inkscape,
+aller dans les menus : [Édition] --> [Préférences] --> [Système] --> [Extensions de l'utilisateur]
+Pensez à redémarrer Inkscape après la copie !
 
 
 ==============================================================
@@ -51,17 +54,5 @@ Dans [Choix Liaison], les sous-onglets sont comme des "boutons" que vous sélect
 La liaison dessinées sera celle dont le sous-onglet est sélectionnée.
 
 
-==============================================================
-IV . ÇA NE MARCHE PAS ?
-==============================================================
-
-
-Problème de version de Python :
-----------------------------------
-Peut-être avez-vous également installé, par vous-même,
-une autre version, dans un autre dossier d'installation
-(et peut-être qu'il s'agit d'une version par défaut).
-Dans ce cas, il vous faura vous rendre dans les configuration d'Inscape
-pour lui indiquer explicitement le chemin vers le programme python 2.x.
 
 

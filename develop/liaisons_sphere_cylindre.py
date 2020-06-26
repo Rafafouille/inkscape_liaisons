@@ -199,20 +199,20 @@ def dessin_Sphere_Cylindre_2D_bout(options,contexte):
 	femelle.append(calotte)
 	
 	#Trait
-	ligneF=inkex.etree.Element(inkex.addNS('path','svg'))
+	trait=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(-diam_calotte/2.*echelle	,	echelle*diam_calotte/2.),
 				(-diam_calotte/2.*echelle	,	-echelle*diam_calotte/2.	)	])
-	ligneF.set('d',chemin)
-	ligneF.set('stroke',couleur_femelle)
-	ligneF.set('stroke-width',str(epaisseur_femelle))
-	femelle.append(ligneF)
+	trait.set('d',chemin)
+	trait.set('stroke',couleur_femelle)
+	trait.set('stroke-width',str(epaisseur_femelle))
+	femelle.append(trait)
 	
 	
 
 	#Tige femelle
 	ligneF=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(	-diam_calotte/2.*echelle	,	0),
-				(	-(diam_calotte+SC2Db_longueur_tige_cylindre)*echelle	,	0)	])
+				(	-(diam_sphere/2.+SC2Db_longueur_tige_cylindre)*echelle	,	0)	])
 	ligneF.set('d',chemin)
 	ligneF.set('stroke',couleur_femelle)
 	ligneF.set('stroke-width',str(epaisseur_femelle))

@@ -54,8 +54,8 @@ def dessin_rectiligne_plan_2D_cote(options,contexte):
 	
 	#tige dessus
 	tigeDessus=inkex.etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(r2Dc_hauteur_prisme+epaisseur_prisme/2.					,	0.),
-				(r2Dc_hauteur_prisme + r2Dc_longueur_tige_prisme + epaisseur_prisme/2.	,	0.)	])
+	chemin=points_to_svgd([	(r2Dc_hauteur_prisme+epaisseur_prisme/2.		,	0.),
+				(r2Dc_hauteur_prisme + r2Dc_longueur_tige_prisme 	,	0.)	])
 	tigeDessus.set('d',chemin)
 	tigeDessus.set('stroke',couleur_male)
 	tigeDessus.set('stroke-width',str(epaisseur_prisme))
@@ -74,7 +74,7 @@ def dessin_rectiligne_plan_2D_cote(options,contexte):
 	#tige dessous
 	tigePlan=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(-epaisseur_plan/2.,					0.),
-				(-r2Dc_longueur_tige_plan-epaisseur_plan/2.,	0.)	])
+				(-r2Dc_longueur_tige_plan,	0.)	])
 	tigePlan.set('d',chemin)
 	tigePlan.set('stroke',couleur_femelle)
 	tigePlan.set('stroke-width',str(epaisseur_plan))
@@ -166,7 +166,7 @@ def dessin_rectiligne_2D_bout(options,contexte):
 
 	trait_prisme=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(r2Db_hauteur_prisme+deport_point_fleche				,	0),
-				(r2Db_hauteur_prisme+r2Db_longueur_tige_prisme+deport_point_fleche	,	0)	])
+				(r2Db_hauteur_prisme+r2Db_longueur_tige_prisme	,	0)	])
 	trait_prisme.set('d',chemin)
 	trait_prisme.set('stroke',couleur_prisme)
 	trait_prisme.set('stroke-width',str(epaisseur_prisme))
@@ -204,10 +204,10 @@ def dessin_rectiligne_3D(options,contexte):
 	inclinaison_limite = math.pi/2. - math.atan(r3D_largeur_base_prisme*0.5/r3D_hauteur_prisme)	#EN cas d'inclinaison trop grande
 	if inclinaison<-inclinaison_limite : inclinaison=-inclinaison_limite
 	if inclinaison>inclinaison_limite : inclinaison=inclinaison_limite
-	couleur_plan = options.opt_gene_piece1_couleur
-	couleur_dessous = options.opt_gene_piece2_couleur
-	epaisseur_plan = options.opt_gene_lignes_epaisseur_1
-	epaisseur_prisme = options.opt_gene_lignes_epaisseur_2
+	couleur_plan = options.opt_gene_piece2_couleur
+	couleur_dessous = options.opt_gene_piece1_couleur
+	epaisseur_plan = options.opt_gene_lignes_epaisseur_2
+	epaisseur_prisme = options.opt_gene_lignes_epaisseur_1
 	#angle_inclinaison_prisme = -float(options.liaison_rectiligne_3D_inclinaison_prisme)/180.*math.pi
 	#Repere local de la liaison
 	if(options.liaison_rectiligne_3D_type_normale!="\"liaison_rectiligne_3D_type_normale_standard\""):

@@ -219,6 +219,9 @@
 					</param>
 					<param name="titre_direction_glissiere_3D" type="description" appearance="header">Orientation (autour de l'axe)</param>
 	  					<param name="liaison_glissiere_3D_orientation" type="float" _gui-text="Angle (degrés) : " precision="1" min="-360" max="360" >0</param>
+	  					
+					<param name="titre_representation_glissiere_3D" type="description" appearance="header">Représentation du croisillon mâle</param>
+	  					<param name="liaison_glissiere_3D_representation" type="boolean" gui-text="Représenter le croisillon en 3D">False</param>
 				</page>
 			</param>
 		</page>
@@ -803,7 +806,7 @@
 									<item value="ft">ft</item>
 								</param>
 			<param name="opt_gene_echelle_liaison_titre" type="description" appearance="header">Echelle des liaisons</param>
-				<param name="echelle" type="float" appearance="full" _gui-text="Échelle des liaisons" precision="1" min="0.00001" max="10" >1</param>
+				<param name="echelle" type="float" appearance="full" _gui-text="Échelle des liaisons" precision="1" min="0.00001" max="10" >10</param>
 				<param name="opt_gene_echelle_epaisseurs" type="boolean" gui-text="Affecter l'épaisseur des lignes">False</param>
 		</page>
 		<page name="opt_gene_piece1" gui-text="Pièce 1 (mâle)">
@@ -818,7 +821,7 @@
 		</page>
 		<page name="opt_gene_A_Propos" gui-text="A Propos">
 			<param name="" type="description" appearance="header">Crédit :</param>
-				<param name="" type="description">Extension "Liaison", Version du 04/06/20.</param>
+				<param name="" type="description">Extension "Liaison", Version du 26/06/20.</param>
 				<param name="" type="description"></param>
 				<param name="" type="description">Créé dans le cadre d'Éduscol STI (https://eduscol.education.fr/sti/)</param>
 				<param name="" type="description">pour l'Éducation Nationale.</param>
@@ -829,7 +832,7 @@
 			<param name="" type="description" appearance="header">Licence :</param>
 				<param name="" type="description">Creative Commons : CC-BY-NC</param>
 			<param name="" type="description" appearance="header">Remerciements :</param>
-				<param name="" type="description">Jacques RIOT, Virgile LACHARNAY</param>
+				<param name="" type="description">Jacques RIOT, Virgile LACHARNAY, Pierre SIMON, Alain STRICHER, Jean-Luc BIONDI</param>
 		</page>
 	  </param>
       </page>

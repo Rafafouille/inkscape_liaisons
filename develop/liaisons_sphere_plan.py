@@ -41,10 +41,10 @@ def dessin_sphere_plan_2D_cote(options,contexte):
 	base2D_1=(Vx1,Vy1)
 	base2D_2=(Vx2,Vy2)
 	#Parametres ****************************
-	couleur_sphere=options.opt_gene_piece2_couleur
-	couleur_plan=options.opt_gene_piece1_couleur
-	epaisseur_sphere=options.opt_gene_lignes_epaisseur_2
-	epaisseur_plan=options.opt_gene_lignes_epaisseur_1
+	couleur_sphere=options.opt_gene_piece1_couleur
+	couleur_plan=options.opt_gene_piece2_couleur
+	epaisseur_sphere=options.opt_gene_lignes_epaisseur_1
+	epaisseur_plan=options.opt_gene_lignes_epaisseur_2
 	old_liaisons=options.opt_gene_gene_old
 	
 	#Groupes ******************************************
@@ -68,7 +68,7 @@ def dessin_sphere_plan_2D_cote(options,contexte):
 	#tige
 	tige_plan=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(-epaisseur_plan/2.				,	0),
-					(-epaisseur_plan/2.-sp2Dc_longueur_tige_plan	,	0)	],
+					(-sp2Dc_longueur_tige_plan	,	0)	],
 				False,
 				base2D_1)
 	tige_plan.set('d',chemin)
@@ -86,9 +86,10 @@ def dessin_sphere_plan_2D_cote(options,contexte):
 		sphere_bout.set('style','fill:white')
 	else :
 		sphere_bout=inkex.etree.Element(inkex.addNS('path','svg'))
-		chemin=points_to_svgd([	(0	,	0),
-					(sp2DcOLD_largeur_fleche*(math.sqrt(3)/2*Vx2.x+0.5*Vy2.x)	,	sp2DcOLD_largeur_fleche*(math.sqrt(3)/2*Vx2.y+0.5*Vy2.y)),
-					(sp2DcOLD_largeur_fleche*(math.sqrt(3)/2*Vx2.x-0.5*Vy2.x)	,	sp2DcOLD_largeur_fleche*(math.sqrt(3)/2*Vx2.y-0.5*Vy2.y)), 	])
+		chemin=points2D_to_svgd([	(epaisseur_sphere/2.	,	0),
+						(sp2DcOLD_largeur_fleche*math.sqrt(3)/2.+epaisseur_sphere/2.	,	sp2DcOLD_largeur_fleche/2.),
+						(sp2DcOLD_largeur_fleche*math.sqrt(3)/2.+epaisseur_sphere/2.	,	-sp2DcOLD_largeur_fleche/2.) 	]
+						,True,base2D_2)
 		sphere_bout.set('d',chemin)
 		sphere_bout.set('style','fill:'+couleur_sphere)
 	sphere_bout.set('stroke',couleur_sphere)
@@ -99,7 +100,7 @@ def dessin_sphere_plan_2D_cote(options,contexte):
 	sphere_tige=inkex.etree.Element(inkex.addNS('path','svg'))
 	if not old_liaisons:
 		chemin=points_to_svgd([	(sp2Dc_diametre_sphere/2.*(Vx1.x+Vx2.x) + epaisseur_sphere/2.*Vx1.x					,	sp2Dc_diametre_sphere/2.*(Vx1.y+Vx2.y) + epaisseur_sphere/2.*Vx1.y),
-					(sp2Dc_diametre_sphere/2.*(Vx1.x+Vx2.x) + sp2Dc_longueur_tige_sphere*Vx2.x + epaisseur_sphere/2.*Vx1.x	,	sp2Dc_diametre_sphere/2.*(Vx1.y+Vx2.y) + sp2Dc_longueur_tige_sphere*Vy2.x + epaisseur_sphere/2.*Vx1.y)	])
+					(sp2Dc_diametre_sphere/2.*(Vx1.x+Vx2.x) + (sp2Dc_longueur_tige_sphere-epaisseur_sphere/2.)*Vx2.x + epaisseur_sphere/2.*Vx1.x	,	sp2Dc_diametre_sphere/2.*(Vx1.y+Vx2.y) + (sp2Dc_longueur_tige_sphere-epaisseur_sphere/2.)*Vy2.x + epaisseur_sphere/2.*Vx1.y )	])
 	else:
 		chemin=points_to_svgd([	(sp2DcOLD_largeur_fleche*math.sqrt(3)/2.*Vx2.x	,	sp2DcOLD_largeur_fleche*math.sqrt(3)/2.*Vx2.y),
 					((sp2DcOLD_largeur_fleche+sp2Dc_longueur_tige_sphere)*Vx2.x	,	(sp2DcOLD_largeur_fleche+sp2Dc_longueur_tige_sphere)*Vx2.y)	])
@@ -149,10 +150,10 @@ def dessin_sphere_plan_2D_dessus(options,contexte):
 	Vx1,Vy1=getBase2D(echelle)
 	base2D=(Vx1,Vy1)
 	#Parametres ****************************
-	couleur_femelle=options.opt_gene_piece2_couleur
-	couleur_male=options.opt_gene_piece1_couleur
-	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
-	epaisseur_male=options.opt_gene_lignes_epaisseur_1
+	couleur_plan=options.opt_gene_piece2_couleur
+	couleur_sphere=options.opt_gene_piece1_couleur
+	epaisseur_plan=options.opt_gene_lignes_epaisseur_2
+	epaisseur_sphere=options.opt_gene_lignes_epaisseur_1
 	
 	#Groupes ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
@@ -168,16 +169,16 @@ def dessin_sphere_plan_2D_dessus(options,contexte):
 	plan.set('width',str(sp2Dd_largeur*echelle))
 	plan.set('height',str(sp2Dd_largeur*echelle))
 	plan.set('style','fill:white')
-	plan.set('stroke',couleur_femelle)
-	plan.set('stroke-width',str(epaisseur_femelle))
+	plan.set('stroke',couleur_plan)
+	plan.set('stroke-width',str(epaisseur_plan))
 	groupe_plan.append(plan)
 	#trait
 	traitPlan=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(sp2Dd_largeur/2.*echelle	,	0),
 				((sp2Dd_largeur/2.+sp2Dd_longueur_tige_plan)*echelle	,	0)	])
 	traitPlan.set('d',chemin)
-	traitPlan.set('stroke',couleur_femelle)
-	traitPlan.set('stroke-width',str(epaisseur_femelle))
+	traitPlan.set('stroke',couleur_plan)
+	traitPlan.set('stroke-width',str(epaisseur_plan))
 	groupe_plan.append(traitPlan)
 	
 	# sphere ***************************************
@@ -187,8 +188,8 @@ def dessin_sphere_plan_2D_dessus(options,contexte):
 	sphere.set('cy','0')
 	sphere.set('r',str(sp2Dd_diametre_sphere/2.*echelle))
 	sphere.set('style','fill:white')
-	sphere.set('stroke',couleur_male)
-	sphere.set('stroke-width',str(epaisseur_male))
+	sphere.set('stroke',couleur_sphere)
+	sphere.set('stroke-width',str(epaisseur_sphere))
 	groupe_sphere.append(sphere)
 
 	
@@ -197,8 +198,8 @@ def dessin_sphere_plan_2D_dessus(options,contexte):
 	chemin=points_to_svgd([	(sp2Dd_diametre_sphere/2.*echelle	,0),
 				((sp2Dd_diametre_sphere/2.+sp2Dd_longueur_tige_sphere)*echelle	,0)	])
 	traitSphere.set('d',chemin)
-	traitSphere.set('stroke',couleur_male)
-	traitSphere.set('stroke-width',str(epaisseur_male))
+	traitSphere.set('stroke',couleur_sphere)
+	traitSphere.set('stroke-width',str(epaisseur_sphere))
 	groupe_sphere.append(traitSphere)
 	
 	# Transformations ***************************************
@@ -229,10 +230,10 @@ def dessin_sphere_plan_3D(options,contexte):
 	z=options.liaison_sphere_plan_3D_position_z
 	vPosition=v3D(x,y,z,base)#Vecteur position exprime dans la base axono
 	#Parametres de la liaison
-	couleur_plan=options.opt_gene_piece1_couleur
-	couleur_sphere=options.opt_gene_piece2_couleur
-	epaisseur_plan=options.opt_gene_lignes_epaisseur_1
-	epaisseur_sphere=options.opt_gene_lignes_epaisseur_2
+	couleur_plan=options.opt_gene_piece2_couleur
+	couleur_sphere=options.opt_gene_piece1_couleur
+	epaisseur_plan=options.opt_gene_lignes_epaisseur_2
+	epaisseur_sphere=options.opt_gene_lignes_epaisseur_1
 	angle_plan=-float(options.liaison_sphere_plan_3D_rotation_plan)/180.*math.pi
 	#Repere local de la liaison
 	#Plan

@@ -42,7 +42,8 @@ def dessin_spherique_2D(options,contexte):
 	old_liaisons = options.opt_gene_gene_old
 	rayon_male = s2D_diametre / 2.
 	rayon_femelle = rayon_male + s2D_ecart + (epaisseur_femelle+epaisseur_male)/2.
-	rayon_tige = s2D_rayon_tiges
+	rayon_tige_male = s2D_rayon_tiges_male
+	rayon_tige_femelle = s2D_rayon_tiges_femelle
 	thetaOuverture = s2D_angle_ouverture
 	#Groupes ******************************************
         liaison = inkex.etree.SubElement(contexte, 'g')
@@ -61,7 +62,7 @@ def dessin_spherique_2D(options,contexte):
 	#Tige male
 	tige_male=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(rayon_male	,	0.),
-					(rayon_tige	,	0.)	]
+					(rayon_tige_male	,	0.)	]
 				,False,base2D)
 	tige_male.set('d',chemin)
 	tige_male.set('stroke',couleur_male)
@@ -100,7 +101,7 @@ def dessin_spherique_2D(options,contexte):
 	#Tige femelle
 	tige_femelle=inkex.etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(rayon_femelle	,	0.),
-					(rayon_tige	,	0.)	]
+					(rayon_tige_femelle	,	0.)	]
 				,True,base2D)
 	tige_femelle.set('d',chemin)
 	tige_femelle.set('stroke',couleur_femelle)

@@ -832,7 +832,7 @@
 		</page>
 		<page name="opt_gene_A_Propos" gui-text="A Propos">
 			<param name="" type="description" appearance="header">Crédit :</param>
-				<param name="" type="description">Extension "Liaison", Version du 12/06/20.</param>
+				<param name="" type="description">Extension "Liaison", Version du 26/06/20.</param>
 				<param name="" type="description"></param>
 				<param name="" type="description">Créé dans le cadre d'Éduscol STI (https://eduscol.education.fr/sti/)</param>
 				<param name="" type="description">pour l'Éducation Nationale.</param>
@@ -843,7 +843,7 @@
 			<param name="" type="description" appearance="header">Licence :</param>
 				<param name="" type="description">Creative Commons : CC-BY-NC</param>
 			<param name="" type="description" appearance="header">Remerciements :</param>
-				<param name="" type="description">Jacques RIOT, Virgile LACHARNAY</param>
+				<param name="" type="description">Jacques RIOT, Virgile LACHARNAY, Pierre SIMON, Alain STRICHER, Jean-Luc BIONDI</param>
 		</page>
 	  </param>
       </page>
