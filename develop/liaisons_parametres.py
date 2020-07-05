@@ -108,9 +108,9 @@ pl3D_tiges = 1.5 * longueur_tiges_plane	# Longueur des tiges qui repartent de ch
 diametre_spherique = diametre_pivot					# Diamètre de la boule intérieure
 angle_ouverture_spherique = 90.						# Angle ouverture de la calotte femelle
 ecart_spherique = diametre_spherique / 5.				# Interstice entre la sphère et la calotte femelle. Prend en compte l'épaisseur des traits
-rayon_tiges_spherique = 1.5 * diametre_spherique# + ecart_spherique	# Distance entre le centre de la sphère et le bout des tiges qui sortent de chaque pièce
+rayon_tiges_spherique = 1.5 * diametre_spherique			# Distance entre le centre de la sphère et le bout des tiges qui sortent de chaque pièce
 
-# Sphérique 2D coté
+# Sphérique 2D
 s2D_diametre = diametre_spherique			# Diamètre de la boule intérieure
 s2D_angle_ouverture = angle_ouverture_spherique		# Angle ouverture de la calotte femelle
 s2D_ecart = ecart_spherique				# Interstice entre la sphère et la calotte femelle. Prend en compte l'épaisseur des traits
@@ -119,7 +119,7 @@ s2D_rayon_tiges_femelle = rayon_tiges_spherique		# Distance entre le centre de l
 
 # Sphérique 3D
 s3D_diametre = diametre_spherique			# Diamètre de la boule intérieure
-s3D_angle_ouverture = 120				# Angle ouverture de la calotte femelle
+s3D_angle_ouverture = 120.				# Angle ouverture de la calotte femelle
 s3D_ecart = ecart_spherique * 0.05			# Interstice entre la sphère et la calotte femelle. Prend en compte l'épaisseur des traits
 s3D_rayon_tiges = rayon_tiges_spherique * 0.75		# Distance entre le centre de la sphère et le bout des tiges qui sortent de chaque pièce
 
@@ -196,15 +196,15 @@ r2Dc_longueur_contact = RECTILIGNE_longueur_contact		# Longueur de la ligne de c
 r2Dc_longueur_plan = RECTILIGNE_longueur_plan			# Longueur du plan
 r2Dc_hauteur_prisme = RECTILIGNE_hauteur_prisme			# Hauteur du prisme
 r2Dc_longueur_base_prisme = RECTILIGNE_longueur_base_prisme	# Longueur de la base du prisme
-r2Dc_longueur_tige_plan = RECTILIGNE_hauteur_prisme/0.75	# Longueur de la tige du plan
+r2Dc_longueur_tige_plan = RECTILIGNE_hauteur_prisme / 0.75	# Longueur de la tige du plan
 r2Dc_longueur_tige_prisme = RECTILIGNE_hauteur_prisme		# Longueur de la tige du prisme
 
 # Rectiligne 2D vue du bout
-r2Db_largeur_plan = RECTILIGNE_largeur_plan		# Largeur du plan
-r2Db_longueur_tige_plan = RECTILIGNE_hauteur_prisme/0.74# Longueur de la tige sous le plan
-r2Db_hauteur_prisme = RECTILIGNE_hauteur_prisme		# Hauteur du prisme
-r2Db_largeur_prisme = RECTILIGNE_largeur_base_prisme	# Largeur du prisme
-r2Db_longueur_tige_prisme = RECTILIGNE_hauteur_prisme	# Longueur de la tige au dessus du prisme
+r2Db_largeur_plan = RECTILIGNE_largeur_plan			# Largeur du plan
+r2Db_longueur_tige_plan = RECTILIGNE_hauteur_prisme / 0.74	# Longueur de la tige sous le plan
+r2Db_hauteur_prisme = RECTILIGNE_hauteur_prisme			# Hauteur du prisme
+r2Db_largeur_prisme = RECTILIGNE_largeur_base_prisme		# Largeur du prisme
+r2Db_longueur_tige_prisme = RECTILIGNE_hauteur_prisme		# Longueur de la tige au dessus du prisme
 
 # Rectiligne 3D
 r3D_longueur_contact = RECTILIGNE_longueur_contact		# Longueur de la ligne de contact
@@ -243,7 +243,7 @@ SC2Db_longueur_tige_sphere = SPHERE_CYLINDRE_longueur_tige_sphere	# Longueur de 
 SC3D_longueur = SPHERE_CYLINDRE_longeur					# Longueur du cylindre
 SC3D_diametre = SPHERE_CYLINDRE_diametre				# Diamètre du cylindre + sphère
 SC3D_longueur_tige_cylindre = SPHERE_CYLINDRE_longueur_tige_cylindre	# Longueur de tige sous le cylindre
-SC3D_longueur_tige_sphere = SPHERE_CYLINDRE_longueur_tige_sphere*1.5	# Longueur de tige sur la sphère
+SC3D_longueur_tige_sphere = SPHERE_CYLINDRE_longueur_tige_sphere * 1.5	# Longueur de tige sur la sphère
 SC3D_angle_ouverture = 140.						# Angle d'ouverture du cylindre (en degres)
 
 # ============== MASSE (Référentiel) ========================

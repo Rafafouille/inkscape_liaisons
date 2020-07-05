@@ -7,7 +7,8 @@
 
 Auteur : Raphaël ALLAIS
 
-Version officielle : https://eduscol.education.fr/sti
+Version officielle : https://eduscol.education.fr/sti/ressources_pedagogiques/inkscape-extension-pour-le-dessin-2d-ou-3d-de-liaisons-cinematiques
+Site d'Eduscol : https://eduscol.education.fr/sti/
 
 Dernière version : https://github.com/Rafafouille/inkscape_liaisons/tree/inkscape_0.92
 Aide en ligne : http://inkscape.allais.eu
