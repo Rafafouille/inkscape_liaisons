@@ -1,18 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
-  <_name>Liaisons</_name>
-  <id>org.ekips.filter.liaisons</id>
+	<name>Liaisons Cinématiques</name>	<!-- Nom friendly de l'extension-->
+	<id>org.inkscape.liaisons_cinematiques</id>	<!-- tag pour stocker (entre autres) les derniers parametres utilisés -->
   
-  <!-- FICHIERS LIES ================================  -->
-  <dependency type="executable" location="extensions">liaisons.py</dependency>
-  <dependency type="executable" location="extensions">inkex.py</dependency>
+	<!-- FICHIERS LIÉS ================================  -->
+	<dependency type="executable" location="inx">liaisons.py</dependency>
+	<dependency type="executable" location="inx">liaisons_parametres.py</dependency>
+	<dependency type="executable" location="inx">liaisons_fonctions_utiles.py</dependency>
+	<dependency type="executable" location="inx">liaisons_pivot.py</dependency>
+	<dependency type="executable" location="inx">liaisons_pivot_glissant.py</dependency>
+	<dependency type="executable" location="inx">liaisons_glissiere.py</dependency>
+	<dependency type="executable" location="inx">liaisons_plane.py</dependency>
+	<dependency type="executable" location="inx">liaisons_helicoidale.py</dependency>
+	<dependency type="executable" location="inx">liaisons_sphere_plan.py</dependency>
+	<dependency type="executable" location="inx">liaisons_rectiligne.py</dependency>
+	<dependency type="executable" location="inx">liaisons_sphere_cylindre.py</dependency>
+	<dependency type="executable" location="inx">liaisons_masse.py</dependency>
+
   
-  <!-- ====================================================  -->
-  <!-- INTERFACE GRPAHIQUE ================================  -->
-  <!-- ====================================================  -->
+	<!-- ====================================================  -->
+	<!-- INTERFACE GRAPHIQUE ================================  -->
+	<!-- ====================================================  -->
   
-   <param name="instruction" type="description">1) Choisissez vos options. 2) Selectionnez les onglets de la liaison voulue</param>
-   <param name="onglets_pricipaux" type="notebook">
+	<label>1) Choisissez vos options. 2) Selectionnez les onglets de la liaison voulue.</label>
+
+<param name="onglets_pricipaux" type="notebook">
      <page name="onglets_pricipaux_liaisons" gui-text="Choix Liaison">
 	  <!-- LIAISONS ================================  -->
 	  <param name="titre_liaisons" type="description" appearance="header">Sélectionnez l'onglet de votre liaison</param>
@@ -221,7 +233,7 @@
 	  					<param name="liaison_glissiere_3D_orientation" type="float" _gui-text="Angle (degrés) : " precision="1" min="-360" max="360" >0</param>
 	  					
 					<param name="titre_representation_glissiere_3D" type="description" appearance="header">Représentation du croisillon mâle</param>
-	  					<param name="liaison_glissiere_3D_representation" type="boolean" gui-text="Représenter le croisillon en 3D">False</param>
+	  					<param name="liaison_glissiere_3D_representation" type="boolean" gui-text="Représenter le croisillon en 3D">false</param>
 				</page>
 			</param>
 		</page>
@@ -375,7 +387,7 @@
 		</page>
 		<!-- HELICOIDALE -->
 		<page name="liaison_helicoidale" gui-text="Hélicoïdale">
-			<param name="liaison_helicoidale_pas_a_gauche" type="boolean" gui-text="Pas à gauche ?">False</param>
+			<param name="liaison_helicoidale_pas_a_gauche" type="boolean" gui-text="Pas à gauche ?">false</param>
 			<!-- 2D coté -->
 			<param name="liaison_helicoidale_type" type="notebook">
 				<page name="liaison_helicoidale_2D_cote" gui-text="2D (coté)">
@@ -384,8 +396,8 @@
 	  					<param name="liaison_helicoidale_2D_cote_y" type="float" _gui-text="Y : " min="-1000000" max="1000000" >0</param>
 	  				<param name="titre_orientation_helicoidale_2D_cote" type="description" appearance="header">Axe</param>
 						<param name="liaison_helicoidale_2D_cote_axe" type="enum" gui-text="Direction standard :">
-							<item value="autre">Via l'angle ci-dessous</item>
 							<item value="x">X</item>
+							<item value="autre">Via l'angle ci-dessous</item>
 							<item value="y">Y</item>
 							<item value="-x">-X</item>
 							<item value="-y">-Y</item>
@@ -768,7 +780,7 @@
 						</page>
 					</param>
 					<param name="liaison_masse_3D_pivotement" type="float" _gui-text="Pivotement (degrés) : " min="-360" max="360" >0</param>
-					<param name="liaison_masse_3D_representation" type="boolean" gui-text="Dessiner en 3D">True</param>
+					<param name="liaison_masse_3D_representation" type="boolean" gui-text="Dessiner en 3D">true</param>
 				</page>
 			</param>
 		</page>
@@ -785,10 +797,10 @@
 	  <!-- PARAMETRES GENERAUX ================================  -->
 	  <param name="opt_generales" type="notebook">
 		<page name="opt_gene_gene" gui-text="Général">
-			<!-- <param name="opt_gene_gene_ombres" type="boolean" gui-text="Ombre sur les représentations 3D">False</param>-->
+			<!-- <param name="opt_gene_gene_ombres" type="boolean" gui-text="Ombre sur les représentations 3D">false</param>-->
 			
-			<param name="opt_gene_inverse" type="boolean" gui-text="Inverser les paramètres pièces_1 / pièce_2 (couleur, épaisseur, etc.)">False</param>
-			<param name="opt_gene_gene_old" type="boolean" gui-text="Utiliser les anciennes représentations">False</param>
+			<param name="opt_gene_inverse" type="boolean" gui-text="Inverser les paramètres pièces_1 / pièce_2 (couleur, épaisseur, etc.)">false</param>
+			<param name="opt_gene_gene_old" type="boolean" gui-text="Utiliser les anciennes représentations">false</param>
 		</page>
 		<page name="opt_gene_origine" gui-text="Repère et échelle">
 			<param name="opt_gene_decalage_titre" type="description" appearance="header">Décallage de l'origine</param>
@@ -807,47 +819,58 @@
 								</param>
 			<param name="opt_gene_echelle_liaison_titre" type="description" appearance="header">Echelle des liaisons</param>
 				<param name="echelle" type="float" appearance="full" _gui-text="Échelle des liaisons" precision="1" min="0.00001" max="10" >10</param>
-				<param name="opt_gene_echelle_epaisseurs" type="boolean" gui-text="Affecter l'épaisseur des lignes">False</param>
+				<param name="opt_gene_echelle_epaisseurs" type="boolean" gui-text="Affecter l'épaisseur des lignes">false</param>
 		</page>
 		<page name="opt_gene_piece1" gui-text="Pièce 1 (mâle)">
 			<param name="opt_gene_lignes_epaisseur_1" type="float" _gui-text="Épaisseur du trait :"  precision="1" min="0" max="1000" >1</param>
 			<param name="opt_gene_couleur_piece1" type="description" appearance="header">Couleur :</param>
-				<param name="opt_gene_piece1_couleur" type="color">65280</param>
+			<param name="opt_gene_piece1_couleur" type="color" appearance="colorbutton" gui-text="Color:">65280</param>
 		</page>
 		<page name="opt_gene_piece2" gui-text="Pièce 2 (Femelle)">
 			<param name="opt_gene_lignes_epaisseur_2" type="float" _gui-text="Épaisseur du trait :"  precision="1" min="0" max="1000" >2</param>
 			<param name="opt_gene_couleur_piece2" type="description" appearance="header">Couleur :</param>
-			<param name="opt_gene_piece2_couleur" type="color">4278190080</param>
+			<param name="opt_gene_piece2_couleur" type="color" appearance="colorbutton" gui-text="Color:">4278190080</param>
 		</page>
 		<page name="opt_gene_A_Propos" gui-text="A Propos">
-			<param name="" type="description" appearance="header">Crédit :</param>
-				<param name="" type="description">Extension "Liaison", Version du 26/06/20.</param>
-				<param name="" type="description"></param>
-				<param name="" type="description">Créé dans le cadre d'Éduscol STI (https://eduscol.education.fr/sti/)</param>
-				<param name="" type="description">pour l'Éducation Nationale.</param>
-			<param name="" type="description" appearance="header">Auteur(s) :</param>
-				<param name="" type="description">Raphaël ALLAIS (allais.raphael@free.fr)</param>
-			<param name="" type="description" appearance="header">Site web :</param>
-				<param name="" type="description">http://allais.eu</param>
-			<param name="" type="description" appearance="header">Licence :</param>
-				<param name="" type="description">Creative Commons : CC-BY-NC</param>
-			<param name="" type="description" appearance="header">Remerciements :</param>
-				<param name="" type="description">Jacques RIOT, Virgile LACHARNAY, Pierre SIMON, Alain STRICHER, Jean-Luc BIONDI</param>
+			<label appearance="header">Crédit :</label>
+				<label>Extension "Liaison", Version du 08/08/20.</label>
+				<label></label>
+				<label>Créé dans le cadre d'Éduscol STI (https://eduscol.education.fr/sti/)</label>
+				<label name="" type="description">pour l'Éducation Nationale.</label>
+			<label appearance="header">Auteur :</label>
+				<label>Raphaël ALLAIS (allais.raphael@free.fr)</label>
+			<label appearance="header">Site web :</label>
+				<label>http://allais.eu</label>
+			<label appearance="header">Licence :</label>
+				<label>Creative Commons : CC-BY-NC</label>
+			<label appearance="header">Remerciements :</label>
+				<label>Jacques RIOT, Virgile LACHARNAY, Pierre SIMON, Alain STRICHER, Jean-Luc BIONDI</label>
 		</page>
 	  </param>
       </page>
    </param>
-  
-  
-  <!-- MENU ================================  -->
-  <effect>
-    <object-type>all</object-type>
-    <effects-menu>
-       <submenu _name="Enseignement"/>
-    </effects-menu>
-  </effect>
-  <!-- EXECUTION ================================  -->
-  <script>
-    <command reldir="extensions" interpreter="python">liaisons.py</command>
-  </script>
+
+
+
+
+
+	<!-- ====================================================  -->
+	<!-- FIN DE L'INTERFACE GRAPHIQUE =======================  -->
+	<!-- ====================================================  -->
+
+
+       
+	<!-- MENU ================================  -->
+	<effect>
+		<object-type>all</object-type>
+		<effects-menu>
+			<submenu _name="Enseignement"/>
+		</effects-menu>
+	</effect>
+	
+	
+	<!-- EXECUTION ================================  -->
+	<script>
+		<command location="inx" interpreter="python">liaisons.py</command>
+	</script>
 </inkscape-extension>

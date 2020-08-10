@@ -4,8 +4,18 @@ import math
 #=================================================
 # Fonctions utiles
 #=================================================
+#Fonction qui convertit les couleurs (int en hex) *********************************************
+def convertIntColor2Hex(i):
+	#http://www.hoboes.com/Mimsy/hacks/parsing-and-setting-colors-inkscape-extensions/
+#	longColor = i
+#	if longColor < 0:
+#		longColor = longColor & 0xFFFFFFFF
+#	color="#"+("00000000"+hex(longColor)[2:-1])[-8:-2]
+#	return color
+
 #def getCouleurFromInt(i):
-#	return "#"+("00000000"+hex(int(i))[2:])[-8:]
+	return "#"+("00000000"+hex(int(i))[2:])[-8:-2]
+
 
 CPT=1
 def debug(txt,n=1):
@@ -31,10 +41,10 @@ class v2D:
 			self.y=_y
 		else:
 			self.y=-_y
-		
+
 	def __repr__(self):
 		return "<x="+str(self.x)+",y="+str(self.y)+">"
-		
+	
 	def __add__(self,v):
 		return v2D(self.x+v.x,self.y+v.y)
 	def __radd__(self,v):
@@ -52,7 +62,7 @@ class v2D:
 		self.x-=v.x
 		self.y-=v.y
 		return self
-		
+
 	def __mul__(self,l):
 		return v2D(self.x*l,self.y*l)
 	def __rmul__(self,l):
@@ -61,29 +71,29 @@ class v2D:
 		self.x*=l
 		self.y*=l
 		return self
-		
+
 	def __div__(self,l):
 		return v2D(self.x/float(l),self.y/float(l))
 	def __idiv__(self,l):
 		self.x/=float(l)
 		self.y/=float(l)
 		return self
-		
+
 	def rotation(self,theta,trigo=False):
 		"""Theta en rad"""
 		if(trigo):
 			theta*=-1
 		self.x,self.y=math.cos(theta)*self.x-math.sin(theta)*self.y , math.sin(theta)*self.x+math.cos(theta)*self.y
-		
+
 	def prodSca(self,v2):
 		"""Prod scalaire entre ce vecteur et un autre"""
 		return self.x*v2.x+self.y*v2.y
-		
+
 	def copy(self):
 		return v2D(self.x,self.y)
 
 
-# Objet vecteur en 3D *******************************************	
+# Objet vecteur en 3D *******************************************
 class v3D:
 	def __init__(self,_x,_y,_z,_base=None):
 		if(_base==None):
@@ -95,7 +105,6 @@ class v3D:
 			self.y=_x*_base[0].y+_y*_base[1].y+_z*_base[2].y
 			self.z=_x*_base[0].z+_y*_base[1].z+_z*_base[2].z
 		self.nom=""
-		
 	def __repr__(self):
 		return "<x="+str(self.x)+",y="+str(self.y)+",z="+str(self.z)+">"
 
@@ -108,7 +117,7 @@ class v3D:
 		self.y+=v.y
 		self.z+=v.z
 		return self
-		
+
 	def __sub__(self,v):
 		return v3D(self.x-v.x,self.y-v.y,self.z-v.z)
 	def __rsub__(self,v):
@@ -118,7 +127,7 @@ class v3D:
 		self.y-=v.y
 		self.z-=v.z
 		return self
-		
+
 	def __mul__(self,l):
 		if l.__class__.__name__=="v3D": #Si c'est pour un produit scalaire
 			return self.x*l.x + self.y*l.y + self.z*l.z
@@ -131,7 +140,7 @@ class v3D:
 		self.y*=float(l)
 		self.z*=float(l)
 		return self
-		
+
 	def __div__(self,l):
 		return v3D(self.x/float(l),self.y/float(l),self.z/float(l))
 	def __idiv__(self,l):
@@ -175,92 +184,82 @@ class v3D:
 	def getVec2DProj(self):
 		return v2D(self.x,self.y)
 
-# Converti une liste de couple de point en chemin inkscape *******************************************	
+# Converti une liste de couple de point en chemin inkscape *******************************************
 def points_to_svgd(p, close=True):
-    """ convert list of points (x,y) pairs
-        into a closed SVG path list
-    """
-    f = p[0]
-    p = p[1:]
-    svgd = 'M%.4f,%.4f' % f
-    for x in p:
-        svgd += 'L%.4f,%.4f' % x
-    if close:
-        svgd += 'z'
-    return svgd
+	""" convert list of points (x,y) pairs
+		into a closed SVG path list
+	"""
+	f = p[0]
+	p = p[1:]
+	svgd = 'M%.4f,%.4f' % f
+	for x in p:
+		svgd += 'L%.4f,%.4f' % x
+	if close:
+		svgd += 'z'
+	return svgd
 
 
 #Idem que points_ti_svgd, mais pour de la 2D projetee sur une base *******************************************
 def points2D_to_svgd(p2D,close=True,base2D=None):
 	if(base2D!=None):
-	    (Vx,Vy)=base2D
+		(Vx,Vy)=base2D
 	p=[]
 	for point in p2D:
 		if(base2D==None):
 			p.append(point)
 		else:
-	 	   	p.append( (point[0]*Vx.x+point[1]*Vy.x	,	point[0]*Vx.y+point[1]*Vy.y) )
+			p.append( (point[0]*Vx.x+point[1]*Vy.x	,	point[0]*Vx.y+point[1]*Vy.y) )
 	return points_to_svgd(p,close)
-    
-    
+	
+	
 
 #Idem que points_ti_svgd, mais pour de la 3D projetee *******************************************
 #Si hauteur_ombre>0, alors renvoie aussi le chemin de l'ombre
 def points3D_to_svgd(p3D,close=True,base3D=None,hauteur_ombre=0):
-    """ convert list of points (x,y) pairs
-        into a closed SVG path list
-        base 3D est un triplet de vecteurs projetes dans le plan. Si absent, on prend la base brute de la feuille
-    """
-    if(base3D!=None):
-	    (Vx,Vy,Vz)=base3D
-    p=[]
-    p_ombre=[]
-    for point in p3D:
-    	if(base3D==None):
-    		p.append((point[0],point[1]))
-    	else:
-	    	p.append( (point[0]*Vx.x+point[1]*Vy.x+point[2]*Vz.x	,	point[0]*Vx.y+point[1]*Vy.y+point[2]*Vz.y) )
-	    	if hauteur_ombre>0 :
-		    	p_ombre.append(	(point[0]*Vx.x+point[1]*Vy.x-hauteur_ombre*Vz.x	,	point[0]*Vx.y+point[1]*Vy.y-hauteur_ombre*Vz.y	) )
+	""" convert list of points (x,y) pairs
+		into a closed SVG path list
+		base 3D est un triplet de vecteurs projetes dans le plan. Si absent, on prend la base brute de la feuille
+	"""
+	if(base3D!=None):
+		(Vx,Vy,Vz)=base3D
+	p=[]
+	p_ombre=[]
+	for point in p3D:
+		if(base3D==None):
+			p.append((point[0],point[1]))
+		else:
+			p.append( (point[0]*Vx.x+point[1]*Vy.x+point[2]*Vz.x	,	point[0]*Vx.y+point[1]*Vy.y+point[2]*Vz.y) )
+			if hauteur_ombre>0 :
+				p_ombre.append(	(point[0]*Vx.x+point[1]*Vy.x-hauteur_ombre*Vz.x	,	point[0]*Vx.y+point[1]*Vy.y-hauteur_ombre*Vz.y	) )
 
-    profondeur=0
-    longueur=0
-    for i in range(len(p3D)-1):
-    	p1=p3D[i]
-    	p2=p3D[i+1]
-    	P1P2=(p2[0]-p1[0],p2[1]-p1[1],p2[2]-p1[2])
-    	l=math.sqrt(P1P2[0]**2+P1P2[1]**2+P1P2[2]**2)
-    	if(base3D==None):
-	    	profondeur+=0.5*(p1[2]+p2[2])*l
-	else:
-		profondeur+=0.5*((p1[0]*Vx.z+p1[1]*Vy.z+p1[2]*Vz.z)+(p2[0]*Vx.z+p2[1]*Vy.z+p2[2]*Vz.z))*l
-    	longueur+=l
-    if close:#Ajout du dernier segment
-    	p1=p3D[0]
-    	p2=p3D[-1]
-    	P1P2=(p2[0]-p1[0],p2[1]-p1[1],p2[2]-p1[2])
-    	l=math.sqrt(P1P2[0]**2+P1P2[1]**2+P1P2[2]**2)
-    	if(base3D==None):
-	    	profondeur+=0.5*(p1[2]+p2[2])*l
-	else:
-		profondeur+=0.5*((p1[0]*Vx.z+p1[1]*Vy.z+p1[2]*Vz.z)+(p2[0]*Vx.z+p2[1]*Vy.z+p2[2]*Vz.z))*l
-    	longueur+=l
-    	
-    profondeur/=longueur
-    if hauteur_ombre>0 :
-    	return points_to_svgd(p,close),profondeur,points_to_svgd(p_ombre,close),
-    return points_to_svgd(p,close),profondeur
+	profondeur=0
+	longueur=0
+	for i in range(len(p3D)-1):
+		p1=p3D[i]
+		p2=p3D[i+1]
+		P1P2=(p2[0]-p1[0],p2[1]-p1[1],p2[2]-p1[2])
+		l=math.sqrt(P1P2[0]**2+P1P2[1]**2+P1P2[2]**2)
+		if(base3D==None):
+			profondeur+=0.5*(p1[2]+p2[2])*l
+		else:
+			profondeur+=0.5*((p1[0]*Vx.z+p1[1]*Vy.z+p1[2]*Vz.z)+(p2[0]*Vx.z+p2[1]*Vy.z+p2[2]*Vz.z))*l
+		longueur+=l
+	if close:#Ajout du dernier segment
+		p1=p3D[0]
+		p2=p3D[-1]
+		P1P2=(p2[0]-p1[0],p2[1]-p1[1],p2[2]-p1[2])
+		l=math.sqrt(P1P2[0]**2+P1P2[1]**2+P1P2[2]**2)
+		if(base3D==None):
+			profondeur+=0.5*(p1[2]+p2[2])*l
+		else:
+			profondeur+=0.5*((p1[0]*Vx.z+p1[1]*Vy.z+p1[2]*Vz.z)+(p2[0]*Vx.z+p2[1]*Vy.z+p2[2]*Vz.z))*l
+		longueur+=l
+	profondeur/=longueur
+	if hauteur_ombre>0 :
+		return points_to_svgd(p,close),profondeur,points_to_svgd(p_ombre,close),
+	return points_to_svgd(p,close),profondeur
   
 
-
-#Fonction qui convertit les couleurs (short int en hex) *********************************************
-def convertIntColor2Hex(i):
-	#http://www.hoboes.com/Mimsy/hacks/parsing-and-setting-colors-inkscape-extensions/
-	longColor = long(i)
-	if longColor < 0:
-		longColor = long(longColor & 0xFFFFFFFF)
-	color="#"+("00000000"+hex(longColor)[2:-1])[-8:-2]
-    	return color
 
 
 
@@ -291,15 +290,14 @@ def getBaseFromVecteur(vec,echelle=1,theta=0):
 	if vec.prodVect(Vz).norme()<1e-3:#Si vDiff colineaire
 		vDiff=Vy	#On change
 	u=vec.copy()
-	
+
 	#Base de base
 	u.normalise()
 	v=vDiff.prodVect(u)
 	v.normalise()
 	w=u.prodVect(v)
-	
+
 	#base tournee
-	
 	X=echelle*u
 	X.nom="X"
 	Y=echelle*(math.cos(theta)*v+math.sin(theta)*w)
@@ -308,8 +306,8 @@ def getBaseFromVecteur(vec,echelle=1,theta=0):
 	Z.nom="Z"
 
 	return X,Y,Z
-	
-	
+
+
 #Fonction qui recherche les angles de "coupure" entre l'avant plan et l'arriere plan d'un cercle
 #base = triplet de vecteurs 3D. le premier doit etre l'axe de rotation. Le second est directeur du rayon quand theta=0
 def getAnglesCoupure(base):
@@ -335,7 +333,7 @@ def getAnglesCoupure(base):
 		else:
 			thetaB=thetaC
 	return thetaC,thetaC+math.pi
-	
+
 # Renvoie une liste d'arcs de cercles (triplet de points 3D dans la base de la feuille), en fonction de s'ils sont en avant ou en arriere plan
 # Les arcs sont compris entre thetaDeb et thetaFin
 # Ils sont centres sur "centre" (V3D, defini par rapport a base), et on un rayon "R"
@@ -345,7 +343,6 @@ def getListePoints2DCercle(axes,centre,R,thetaDeb,thetaFin,thetaCoupure1,thetaCo
 	theta=thetaDeb
 	dtheta=math.pi*2./n
 
-	
 	def getPointForCercle(axes,vcentre,R,theta):
 		Vx1,Vy1,Vz1=axes
 		
@@ -357,7 +354,6 @@ def getListePoints2DCercle(axes,centre,R,thetaDeb,thetaFin,thetaCoupure1,thetaCo
 		point=vcentre+vRayon
 		#debug("theta = "+str(theta)+"\n(x1,y1,z1) = "+str((x1,y1,z1))+"\n\n"+"Vx1 = "+str(Vx1)+"\nVy1 = "+str(Vy1)+"\nVz1 = "+str(Vz1)+"\n\nvRayon = "+str(vRayon),2)
 		return (point.x,point.y,point.z)
-			
 
 	while theta<thetaFin: #Pour chaque angle...
 		arcs[-1].append(getPointForCercle(axes,centre,R,theta))#On ajoute le point
@@ -498,9 +494,9 @@ def encadreLimite(a,b,cut):
 	return False
 	
 #Fonction qui converti longueur (float) supposée etre dans les unité de l'option, en longueur propre a Inkscape
-def convertLongueur2Inkscape(options,longueur):	
+def convertLongueur2Inkscape(options,longueur,contexteSVG):	
 	unite = options.unite_base
 	norme = options.longueur_base
-	return options.effect.unittouu(str(longueur*norme)+unite)
+	return contexteSVG.unittouu(str(longueur*norme)+unite)
 	
 		

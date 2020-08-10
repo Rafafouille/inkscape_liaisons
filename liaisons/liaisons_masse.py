@@ -1,5 +1,6 @@
 import math
 import inkex
+from lxml import etree	# Nécessaire pour les groupes depuis la version 1.0
 from liaisons_fonctions_utiles import *
 from liaisons_parametres import *
 
@@ -26,15 +27,15 @@ def dessin_Masse_2D(options,contexte):
 		rotation=90
 
 	#Groupes ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-        masse = inkex.etree.SubElement(liaison,'g')
+	liaison = etree.SubElement(contexte, 'g')
+	masse = etree.SubElement(liaison,'g')
 	#Base **************************
 	echelle_liaison = options.echelle
 	Vx1,Vy1 = getBase2D(echelle_liaison)
 	base2D=(Vx1,Vy1)
 	# DESSIN ***************************************
 	#Trait principal
-	trait=inkex.etree.Element(inkex.addNS('path','svg'))
+	trait=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(-REF2D_longueur_tige,	-REF2D_largeur/2.),
 					(-REF2D_longueur_tige,	REF2D_largeur/2.)	],
 				False,base2D)
@@ -45,7 +46,7 @@ def dessin_Masse_2D(options,contexte):
 	masse.append(trait)
 	
 	# Tige
-	tige=inkex.etree.Element(inkex.addNS('path','svg'))
+	tige=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(0,	0),
 					(-REF2D_longueur_tige,	0)	],
 				False,base2D)
@@ -57,7 +58,7 @@ def dessin_Masse_2D(options,contexte):
 	# hachures
 	pas = float(REF2D_largeur) / (REF2D_nombre_hachures-1)
 	for i in range(REF2D_nombre_hachures):
-		hachure=inkex.etree.Element(inkex.addNS('path','svg'))
+		hachure=etree.Element(inkex.addNS('path','svg'))
 		chemin=points2D_to_svgd([	(-REF2D_longueur_tige,	-REF2D_largeur/2. + i*pas),
 						(-REF2D_longueur_tige-REF2D_longueur_hachures,	-REF2D_largeur/2. + i*pas + REF2D_longueur_hachures*math.tan(REF2D_inclinaison/180.*math.pi))	],
 					False,base2D)
@@ -70,7 +71,7 @@ def dessin_Masse_2D(options,contexte):
 	# Transformations ***************************************
 
 	masse.set("transform","rotate("+str(rotation)+")")
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x,contexte))+","+str(convertLongueur2Inkscape(options,y0+y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 
@@ -104,7 +105,7 @@ def dessin_Masse_3D(options,contexte):
 	dessin_3D = options.liaison_masse_3D_representation
 
 	#Repere local de la liaison
-	if(options.liaison_masse_3D_type_axe=="\"liaison_masse_3D_type_axe_quelconque\""):
+	if(options.liaison_masse_3D_type_axe=="liaison_masse_3D_type_axe_quelconque"):
 		V=v3D(options.liaison_masse_3D_axe_quelconque_x,options.liaison_masse_3D_axe_quelconque_y,options.liaison_masse_3D_axe_quelconque_z,base)
 		if V.x == V.y == V.z == 0 : V=v3D(1,0,0,base) #Si vecteur nul : on prend X par defaut
 		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle_liaison,pivotement)
@@ -129,7 +130,7 @@ def dessin_Masse_3D(options,contexte):
 	
 	listeObjets=[]
 	
-	tige=inkex.etree.Element(inkex.addNS('path','svg'))
+	tige=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(0,	0,	0	),
 					(-REF3D_longueur_tige,	0,	0	)
@@ -143,7 +144,7 @@ def dessin_Masse_3D(options,contexte):
 
 	#DESSIN 3D
 	if dessin_3D:
-		plan=inkex.etree.Element(inkex.addNS('path','svg'))
+		plan=etree.Element(inkex.addNS('path','svg'))
 		chemin,profondeur_trait=points3D_to_svgd([
 					(-REF3D_longueur_tige,	REF3D_largeur/2.,	REF3D_largeur/2.	),
 					(-REF3D_longueur_tige,	-REF3D_largeur/2.,	REF3D_largeur/2.	),
@@ -162,7 +163,7 @@ def dessin_Masse_3D(options,contexte):
 		pas = float(REF3D_largeur) / (REF3D_nombre_hachures_3D-1)
 		for i in range(REF3D_nombre_hachures_plat):
 			for j in range(REF3D_nombre_hachures_plat):
-				hachure=inkex.etree.Element(inkex.addNS('path','svg'))
+				hachure=etree.Element(inkex.addNS('path','svg'))
 				chemin,profondeur = points3D_to_svgd([	(-REF3D_longueur_tige,				-REF3D_largeur/2. + i*pas ,									-REF3D_largeur/2. + j*pas ),
 									(-REF3D_longueur_tige-REF3D_longueur_hachures_3D,	-REF3D_largeur/2. + i*pas + REF3D_longueur_hachures_3D*math.tan(REF3D_inclinaison_3D/180.*math.pi),	-REF3D_largeur/2. + j*pas)	],
 							False,baseLocale)
@@ -174,7 +175,7 @@ def dessin_Masse_3D(options,contexte):
 				listeObjets.append(hachure)
 	# DESSIN A PLAT
 	else:
-		trait=inkex.etree.Element(inkex.addNS('path','svg'))
+		trait=etree.Element(inkex.addNS('path','svg'))
 		chemin,profondeur_trait=points3D_to_svgd([
 					(-REF3D_longueur_tige,	-REF3D_largeur/2.,	0	),
 					(-REF3D_longueur_tige,	REF3D_largeur/2.,	0	)
@@ -189,7 +190,7 @@ def dessin_Masse_3D(options,contexte):
 		# hachures
 		pas = float(REF3D_largeur) / (REF3D_nombre_hachures_plat-1)
 		for i in range(REF3D_nombre_hachures_plat):
-			hachure=inkex.etree.Element(inkex.addNS('path','svg'))
+			hachure=etree.Element(inkex.addNS('path','svg'))
 			chemin,profondeur = points3D_to_svgd([	(-REF3D_longueur_tige,				-REF3D_largeur/2. + i*pas ,									0),
 							(-REF3D_longueur_tige-REF3D_longueur_hachures_3D,	-REF3D_largeur/2. + i*pas + REF3D_longueur_hachures_plat*math.tan(REF3D_inclinaison_plat/180.*math.pi),	0)	],
 						False,baseLocale)
@@ -201,12 +202,12 @@ def dessin_Masse_3D(options,contexte):
 			listeObjets.append(hachure)
 
 	# Ajout au Groupe ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-        ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
+	liaison = etree.SubElement(contexte, 'g')
+	ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
         
         
 	# Transformations ***************************************
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x,contexte))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	

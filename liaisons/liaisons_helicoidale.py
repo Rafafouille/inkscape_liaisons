@@ -1,6 +1,7 @@
 # -- coding: utf-8 --
 import math
 import inkex
+from lxml import etree	# Nécessaire pour les groupes depuis la version 1.0
 from liaisons_parametres import *
 from liaisons_fonctions_utiles import *
 
@@ -37,14 +38,14 @@ def dessin_helicoidale_2D_cote(options,contexte):
 
 	
 	#Groupes ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-        fond_femelle = inkex.etree.SubElement(liaison,'g')
-	male=inkex.etree.SubElement(liaison,'g')
-	femelle=inkex.etree.SubElement(liaison,'g')
+	liaison = etree.SubElement(contexte, 'g')
+	fond_femelle = etree.SubElement(liaison,'g')
+	male=etree.SubElement(liaison,'g')
+	femelle=etree.SubElement(liaison,'g')
 	
 	# Male ***************************************
 	#Ligne male (à gauche)
-	ligneAxeGauche=inkex.etree.Element(inkex.addNS('path','svg'))
+	ligneAxeGauche=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(-h2Dc_longueur_axe/2.,0),
 					(-h2Dc_longueur/2.,0)]
 				,False,base2D)
@@ -55,7 +56,7 @@ def dessin_helicoidale_2D_cote(options,contexte):
 	male.append(ligneAxeGauche)
 	
 	#Ligne male (à droite)
-	ligneAxeDroite=inkex.etree.Element(inkex.addNS('path','svg'))
+	ligneAxeDroite=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(h2Dc_longueur/2.,0),
 					(h2Dc_longueur_axe/2.,0)]
 				,False,base2D)
@@ -66,7 +67,7 @@ def dessin_helicoidale_2D_cote(options,contexte):
 	male.append(ligneAxeDroite)
 	
 	#Helice
-	ligneHelice=inkex.etree.Element(inkex.addNS('path','svg'))
+	ligneHelice=etree.Element(inkex.addNS('path','svg'))
 	
 	if(old_liaisons):
 		if(pas_a_gauche):
@@ -99,7 +100,7 @@ def dessin_helicoidale_2D_cote(options,contexte):
 	
 	
 	# Femelle ***************************************
-	rectangle=inkex.etree.Element(inkex.addNS('rect','svg'))
+	rectangle=etree.Element(inkex.addNS('rect','svg'))
 	rectangle.set('x',str(-h2Dc_longueur*echelle_liaison/2) )
 	rectangle.set('y',str(-h2Dc_diametre*echelle_liaison/2) )
 	rectangle.set('width',str(h2Dc_longueur*echelle_liaison))
@@ -110,7 +111,7 @@ def dessin_helicoidale_2D_cote(options,contexte):
 	femelle.append(rectangle)
 	
 	#Ligne femelle
-	ligneF=inkex.etree.Element(inkex.addNS('path','svg'))
+	ligneF=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(0	,	-h2Dc_diametre/2.),
 					(0	,	-h2Dc_diametre/2.-h2Dc_longueur_tige)	]
 				,True,base2D)
@@ -121,7 +122,7 @@ def dessin_helicoidale_2D_cote(options,contexte):
 	
 	# Fond de femelle opaque ****************************
 	#Rectangle - fond
-	rectangle=inkex.etree.Element(inkex.addNS('rect','svg'))
+	rectangle=etree.Element(inkex.addNS('rect','svg'))
 	rectangle.set('x',str(-h2Dc_longueur*echelle_liaison/2) )
 	rectangle.set('y',str(-h2Dc_diametre*echelle_liaison/2) )
 	rectangle.set('width',str(h2Dc_longueur*echelle_liaison))
@@ -132,7 +133,8 @@ def dessin_helicoidale_2D_cote(options,contexte):
 	# Transformations ***************************************
 	male.set("transform","rotate("+str(-rotation)+")")
 	femelle.set("transform","rotate("+str(-rotation)+")")
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
+	fond_femelle.set("transform","rotate("+str(-rotation)+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x,contexte))+","+str(convertLongueur2Inkscape(options,y0+y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 
@@ -177,13 +179,13 @@ def dessin_helicoidale_2D_face(options,contexte):
 	epaisseur_femelle=options.opt_gene_lignes_epaisseur_2
 	epaisseur_male=options.opt_gene_lignes_epaisseur_1
 	#Groupes ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-	femelle=inkex.etree.SubElement(liaison,'g')
-	male=inkex.etree.SubElement(liaison,'g')
+	liaison = etree.SubElement(contexte, 'g')
+	femelle=etree.SubElement(liaison,'g')
+	male=etree.SubElement(liaison,'g')
 
 	# Femelle ***************************************	
 	#axe
-	axe2=inkex.etree.Element(inkex.addNS('path','svg'))
+	axe2=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(0			,	0),
 					(longueur_tige + rayon	,	0)	]
 				,False,base2D)	
@@ -192,7 +194,7 @@ def dessin_helicoidale_2D_face(options,contexte):
 	axe2.set('stroke-width',str(epaisseur_femelle))
 	femelle.append(axe2)
 	#cercle
-	cercle=inkex.etree.Element(inkex.addNS('circle','svg'))
+	cercle=etree.Element(inkex.addNS('circle','svg'))
 	cercle.set('cx',"0")
 	cercle.set('cy',"0")
 	cercle.set('r',str(rayon*echelle_liaison))
@@ -202,7 +204,7 @@ def dessin_helicoidale_2D_face(options,contexte):
 	femelle.append(cercle)
 	
 	# Male ***************************************
-	axe1=inkex.etree.Element(inkex.addNS('path','svg'))
+	axe1=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(rayon_filet		,	0),
 					(longueur_tige + rayon	,	0)	]
 				,False,base2D)
@@ -212,7 +214,7 @@ def dessin_helicoidale_2D_face(options,contexte):
 	axe1.set('style','stroke-linecap:round')
 	male.append(axe1)
 	
-	pasVis=inkex.etree.Element(inkex.addNS('path','svg'))
+	pasVis=etree.Element(inkex.addNS('path','svg'))
 	cheminVis="M "+str(rayon_filet*echelle_liaison)+",0 A "+str(rayon_filet*echelle_liaison)+" "+str(rayon_filet*echelle_liaison)+" 0 0 "+str(1-int(pas_a_gauche))+" -"+str(rayon_filet*echelle_liaison)+",0"
 	pasVis.set('d',cheminVis)
 	pasVis.set('stroke',couleur_male)
@@ -224,7 +226,7 @@ def dessin_helicoidale_2D_face(options,contexte):
 	# Transformations ***************************************
 	male.set("transform","rotate("+str(rotation1)+")")
 	femelle.set("transform","rotate("+str(rotation2)+")")
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x,contexte))+","+str(convertLongueur2Inkscape(options,y0+y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	
@@ -260,7 +262,7 @@ def dessin_helicoidale_3D(options,contexte):
 	angle_male=0
 	angle_femelle=-float(options.liaison_helicoidale_3D_orientation_femelle)/180.*math.pi
 	#Repere local de la liaison
-	if(options.liaison_helicoidale_3D_type_direction=="\"liaison_helicoidale_3D_type_direction_quelconque\""):
+	if(options.liaison_helicoidale_3D_type_direction=="liaison_helicoidale_3D_type_direction_quelconque"):
 		V=v3D(options.liaison_helicoidale_3D_type_direction_quelconque_x,options.liaison_helicoidale_3D_type_direction_quelconque_y,options.liaison_helicoidale_3D_type_direction_quelconque_z,base)
 		if V.x == V.y == V.z == 0 : V=v3D(1,0,0,base) #Si vecteur nul : on prend X par defaut
 		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle,angle_male)#Repere male
@@ -286,7 +288,7 @@ def dessin_helicoidale_3D(options,contexte):
 	thetaCoupure1_1,thetaCoupure1_2=getAnglesCoupure(baseLocale1)
 	
 	# Male ***************************************
-	axe=inkex.etree.Element(inkex.addNS('path','svg'))
+	axe=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(-h3D_longueur,	0,	0	),
 					(h3D_longueur,	0,	0	)
@@ -362,7 +364,7 @@ def dessin_helicoidale_3D(options,contexte):
 	profondeurHelice2=-profondeurHelice1
 
 	
-	helice1=inkex.etree.Element(inkex.addNS('path','svg'))
+	helice1=etree.Element(inkex.addNS('path','svg'))
 #	cheminHelice1,profondeurHelice1=points3D_to_svgd(listeHelice1,False)
 	helice1.set('d',cheminHelice1)
 	helice1.set('stroke',couleur_male)
@@ -371,7 +373,7 @@ def dessin_helicoidale_3D(options,contexte):
 	helice1.set('style','fill:none')
 	helice1.set('profondeur',str(profondeurHelice1))
 	
-	helice2=inkex.etree.Element(inkex.addNS('path','svg'))
+	helice2=etree.Element(inkex.addNS('path','svg'))
 #	listeHelice2=[]
 #	for p in listeArcsHelice[1]:
 #		listeHelice2.append(p)
@@ -398,7 +400,7 @@ def dessin_helicoidale_3D(options,contexte):
 	
 	
 	chemin,profondeurDemiCylindre1=points3D_to_svgd(listeDemiCylindre1,True)
-	demiCylindre1=inkex.etree.Element(inkex.addNS('path','svg'))
+	demiCylindre1=etree.Element(inkex.addNS('path','svg'))
 	demiCylindre1.set('d',chemin)
 	demiCylindre1.set('stroke',couleur_femelle)
 	demiCylindre1.set('stroke-width',str(epaisseur_femelle))
@@ -406,7 +408,7 @@ def dessin_helicoidale_3D(options,contexte):
 	demiCylindre1.set('style','fill:white')
 	demiCylindre1.set('profondeur',str(profondeurDemiCylindre1*0.001))
 	
-	demiCylindreContours1=inkex.etree.Element(inkex.addNS('path','svg'))
+	demiCylindreContours1=etree.Element(inkex.addNS('path','svg'))
 	demiCylindreContours1.set('d',chemin)
 	demiCylindreContours1.set('stroke',couleur_femelle)
 	demiCylindreContours1.set('stroke-width',str(epaisseur_femelle))
@@ -415,7 +417,7 @@ def dessin_helicoidale_3D(options,contexte):
 	demiCylindreContours1.set('profondeur',str(profondeurDemiCylindre1*100000))
 	
 	chemin,profondeurDemiCylindre2=points3D_to_svgd(listeDemiCylindre2,True)
-	demiCylindre2=inkex.etree.Element(inkex.addNS('path','svg'))
+	demiCylindre2=etree.Element(inkex.addNS('path','svg'))
 	demiCylindre2.set('d',chemin)
 	demiCylindre2.set('stroke',couleur_femelle)
 	demiCylindre2.set('stroke-width',str(epaisseur_femelle))
@@ -423,7 +425,7 @@ def dessin_helicoidale_3D(options,contexte):
 	demiCylindre2.set('style','fill:white')
 	demiCylindre2.set('profondeur',str(profondeurDemiCylindre2*0.001))
 	
-	demiCylindreContours2=inkex.etree.Element(inkex.addNS('path','svg'))
+	demiCylindreContours2=etree.Element(inkex.addNS('path','svg'))
 	demiCylindreContours2.set('d',chemin)
 	demiCylindreContours2.set('stroke',couleur_femelle)
 	demiCylindreContours2.set('stroke-width',str(epaisseur_femelle))
@@ -434,7 +436,7 @@ def dessin_helicoidale_3D(options,contexte):
 	
 	
 	#barre femelle
-	barreFemelle=inkex.etree.Element(inkex.addNS('path','svg'))
+	barreFemelle=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(0,	0,	rayon	),
 					(0,	0,	rayonTige)
@@ -448,14 +450,14 @@ def dessin_helicoidale_3D(options,contexte):
 
 
 	# Ajout au Groupe ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
+	liaison = etree.SubElement(contexte, 'g')
         
-        listeObjets=[axe,demiCylindre1,demiCylindreContours1,demiCylindre2,demiCylindreContours2,barreFemelle,helice1,helice2]
+	listeObjets=[axe,demiCylindre1,demiCylindreContours1,demiCylindre2,demiCylindreContours2,barreFemelle,helice1,helice2]
         
-        ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
+	ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
 
 	# Transformations ***************************************
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x,contexte))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	

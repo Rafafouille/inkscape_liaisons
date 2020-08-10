@@ -1,6 +1,7 @@
 # -- coding: utf-8 --
 import math
 import inkex
+from lxml import etree	# Nécessaire pour les groupes depuis la version 1.0
 from liaisons_fonctions_utiles import *
 from liaisons_parametres import *
 
@@ -47,15 +48,15 @@ def dessin_Sphere_Cylindre_2D_cote(options,contexte):
 	epaisseur_male = options.opt_gene_lignes_epaisseur_1
 	
 	#Groupes ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-        #groupe_rotation = inkex.etree.SubElement(liaison, 'g')
-	femelle = inkex.etree.SubElement(liaison,'g')
-	male = inkex.etree.SubElement(liaison,'g')
+	liaison = etree.SubElement(contexte, 'g')
+	#groupe_rotation = etree.SubElement(liaison, 'g')
+	femelle = etree.SubElement(liaison,'g')
+	male = etree.SubElement(liaison,'g')
 	
 	# Male ***************************************
 	
 	#Sphère
-	sphere=inkex.etree.Element(inkex.addNS('circle','svg'))
+	sphere=etree.Element(inkex.addNS('circle','svg'))
 	sphere.set('cx',"0")
 	sphere.set('cy',"0")
 	sphere.set('r',str(SC2Dc_diametre/2. * echelle))
@@ -65,7 +66,7 @@ def dessin_Sphere_Cylindre_2D_cote(options,contexte):
 	male.append(sphere)
 
 	#Ligne male
-	ligneM=inkex.etree.Element(inkex.addNS('path','svg'))
+	ligneM=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(SC2Dc_diametre/2.	,	0),
 					(SC2Dc_diametre/2. + SC2Dc_longueur_tige_sphere	,	0)	],
 				False,
@@ -78,7 +79,7 @@ def dessin_Sphere_Cylindre_2D_cote(options,contexte):
 	# Femelle ***************************************
 
 	#Rectangle
-	rectangle=inkex.etree.Element(inkex.addNS('rect','svg'))
+	rectangle=etree.Element(inkex.addNS('rect','svg'))
 	rectangle.set('x',str(-SC2Dc_longueur*echelle / 2.) )
 	rectangle.set('y',str((SC2Dc_diametre/2.-SC2Dc_hauteur) * echelle) )
 	rectangle.set('width',str(SC2Dc_longueur*echelle))
@@ -89,7 +90,7 @@ def dessin_Sphere_Cylindre_2D_cote(options,contexte):
 	femelle.append(rectangle)
 	
 	#Ligne femelle
-	ligneF=inkex.etree.Element(inkex.addNS('path','svg'))
+	ligneF=etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(0	,	SC2Dc_diametre/2.*echelle + (epaisseur_femelle+epaisseur_male)/2.),
 				(0	,	(SC2Dc_diametre/2.+ SC2Dc_longueur_tige_cylindre)*echelle	)	])
 	ligneF.set('d',chemin)
@@ -100,7 +101,7 @@ def dessin_Sphere_Cylindre_2D_cote(options,contexte):
 	# Transformations ***************************************
 	male.set("transform","rotate("+str(rotation_sphere)+")")
 	femelle.set("transform","rotate("+str(rotation_cylindre)+")")
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x,contexte))+","+str(convertLongueur2Inkscape(options,y0+y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 
@@ -152,14 +153,14 @@ def dessin_Sphere_Cylindre_2D_bout(options,contexte):
 	diam_calotte = SC2Db_diametre + SC2Db_intervalle_spheres * 2 + epaisseur_femelle + epaisseur_male
 	
 	#Groupes ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-	femelle = inkex.etree.SubElement(liaison,'g')
-	male = inkex.etree.SubElement(liaison,'g')
+	liaison = etree.SubElement(contexte, 'g')
+	femelle = etree.SubElement(liaison,'g')
+	male = etree.SubElement(liaison,'g')
 	
 	# Male ***************************************
 	
 	#Sphère
-	sphere=inkex.etree.Element(inkex.addNS('circle','svg'))
+	sphere=etree.Element(inkex.addNS('circle','svg'))
 	sphere.set('cx',"0")
 	sphere.set('cy',"0")
 	sphere.set('r',str(diam_sphere/2. * echelle))
@@ -169,7 +170,7 @@ def dessin_Sphere_Cylindre_2D_bout(options,contexte):
 	male.append(sphere)
 
 	#Ligne male
-	ligneM=inkex.etree.Element(inkex.addNS('path','svg'))
+	ligneM=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(diam_sphere/2.	,	0),
 					(diam_sphere/2. + SC2Db_longueur_tige_sphere	,	0)	],
 				False,
@@ -182,7 +183,7 @@ def dessin_Sphere_Cylindre_2D_bout(options,contexte):
 	# Femelle ***************************************
 
 	#Calotte
-	calotte=inkex.etree.Element(inkex.addNS('path','svg'))
+	calotte=etree.Element(inkex.addNS('path','svg'))
 	listeChemin = []
 	SC2Db_angle_ouverture = SC2Db_angle_ouverture*math.pi/180
 	theta = SC2Db_angle_ouverture/2.
@@ -199,7 +200,7 @@ def dessin_Sphere_Cylindre_2D_bout(options,contexte):
 	femelle.append(calotte)
 	
 	#Trait
-	trait=inkex.etree.Element(inkex.addNS('path','svg'))
+	trait=etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(-diam_calotte/2.*echelle	,	echelle*diam_calotte/2.),
 				(-diam_calotte/2.*echelle	,	-echelle*diam_calotte/2.	)	])
 	trait.set('d',chemin)
@@ -210,7 +211,7 @@ def dessin_Sphere_Cylindre_2D_bout(options,contexte):
 	
 
 	#Tige femelle
-	ligneF=inkex.etree.Element(inkex.addNS('path','svg'))
+	ligneF=etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(	-diam_calotte/2.*echelle	,	0),
 				(	-(diam_sphere/2.+SC2Db_longueur_tige_cylindre)*echelle	,	0)	])
 	ligneF.set('d',chemin)
@@ -221,7 +222,7 @@ def dessin_Sphere_Cylindre_2D_bout(options,contexte):
 	# Transformations ***************************************
 	male.set("transform","rotate("+str(rotation_sphere)+")")
 	femelle.set("transform","rotate("+str(rotation_cylindre)+")")
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x,contexte))+","+str(convertLongueur2Inkscape(options,y0+y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	
@@ -252,10 +253,10 @@ def dessin_Sphere_Cylindre_3D(options,contexte):
 	epaisseur_male = options.opt_gene_lignes_epaisseur_1
 	rayon = SC3D_diametre / 2.
 	longueur = SC3D_longueur
-#	angle_male-=float(options.liaison_pivot_glissant_3D_orientation_male)/180.*math.pi
+#	angle_male-=float(options.liaison_pivot_glissan	t_3D_orientation_male)/180.*math.pi
 	angle_cylindre=-float(options.liaison_sphere_cylindre_3D_rotation_cylindre)/180.*math.pi
 	#Repere local de la liaison
-	if(options.liaison_sphere_cylindre_3D_type_axe=="\"liaison_sphere_cylindre_3D_type_axe_quelconque\""):
+	if(options.liaison_sphere_cylindre_3D_type_axe=="liaison_sphere_cylindre_3D_type_axe_quelconque"):
 		V=v3D(options.liaison_sphere_cylindre_3D_axe_quelconque_x,options.liaison_sphere_cylindre_3D_axe_quelconque_y,options.liaison_sphere_cylindre_3D_axe_quelconque_z,base)
 		if V.x == V.y == V.z == 0 : V=v3D(1,0,0,base) #Si vecteur nul : on prend X par defaut
 		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle,angle_cylindre)#Repere Femelle
@@ -266,7 +267,7 @@ def dessin_Sphere_Cylindre_3D(options,contexte):
 			Vx1,Vy1,Vz1=getBaseFromVecteur(Vy,echelle,angle_cylindre)#Repere Femelle
 		else:#z
 			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz,echelle,angle_cylindre)#Repere Femelle
-	if(options.liaison_sphere_cylindre_3D_type_direction_sphere=="\"liaison_sphere_plan_3D_type_direction_sphere_quelconque\""):
+	if(options.liaison_sphere_cylindre_3D_type_direction_sphere=="liaison_sphere_plan_3D_type_direction_sphere_quelconque"):
 		VS=v3D(options.liaison_sphere_cylindre_3D_direction_sphere_quelconque_x,options.liaison_sphere_cylindre_3D_direction_sphere_quelconque_y,options.liaison_sphere_cylindre_3D_direction_sphere_quelconque_z,base)
 		if VS.x == VS.y == VS.z == 0 : VS=v3D(1,0,0,base) #Si vecteur nul : on prend X par defaut
 		Vx2,Vy2,Vz2=getBaseFromVecteur(VS,echelle,angle_cylindre)#Repere Femelle
@@ -293,7 +294,7 @@ def dessin_Sphere_Cylindre_3D(options,contexte):
 	# Male ***************************************
 	
 	#Tige
-	tigeMale=inkex.etree.Element(inkex.addNS('path','svg'))
+	tigeMale=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(rayon,	0,	0	),
 					(rayon + SC3D_longueur_tige_sphere,	0,	0	)
@@ -305,7 +306,7 @@ def dessin_Sphere_Cylindre_3D(options,contexte):
 	tigeMale.set('profondeur',str(profondeur))
 
 	#Boule
-	boule=inkex.etree.Element(inkex.addNS('circle','svg'))
+	boule=etree.Element(inkex.addNS('circle','svg'))
 	boule.set('cx',"0")
 	boule.set('cy',"0")
 	boule.set('r',str(rayon*echelle))
@@ -339,7 +340,7 @@ def dessin_Sphere_Cylindre_3D(options,contexte):
 	
 	chemin,profondeurDemiCylindre1 = points3D_to_svgd(listeDemiCylindre1,True)
 	#formesFemelles1.append((chemin,profondeur))
-	demiCylindre1=inkex.etree.Element(inkex.addNS('path','svg'))
+	demiCylindre1=etree.Element(inkex.addNS('path','svg'))
 	demiCylindre1.set('d',chemin)
 	demiCylindre1.set('stroke',couleur_femelle)
 	demiCylindre1.set('stroke-width',str(epaisseur_femelle))
@@ -349,7 +350,7 @@ def dessin_Sphere_Cylindre_3D(options,contexte):
 	
 	chemin,profondeurDemiCylindre2=points3D_to_svgd(listeDemiCylindre2,True)
 	#formesFemelles2.append((chemin,profondeur))
-	demiCylindre2=inkex.etree.Element(inkex.addNS('path','svg'))
+	demiCylindre2=etree.Element(inkex.addNS('path','svg'))
 	demiCylindre2.set('d',chemin)
 	demiCylindre2.set('stroke',couleur_femelle)
 	demiCylindre2.set('stroke-width',str(epaisseur_femelle))
@@ -358,7 +359,7 @@ def dessin_Sphere_Cylindre_3D(options,contexte):
 	demiCylindre2.set('profondeur',str(profondeurDemiCylindre2))
 	
 	#barre femelle
-	barreFemelle=inkex.etree.Element(inkex.addNS('path','svg'))
+	barreFemelle=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(0,	0,	-rayon	),
 					(0,	0,	-rayon - SC3D_longueur_tige_cylindre)
@@ -372,15 +373,15 @@ def dessin_Sphere_Cylindre_3D(options,contexte):
 
 
 	# Ajout au Groupe ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
+	liaison = etree.SubElement(contexte, 'g')
         
-        listeObjets=[demiCylindre1,demiCylindre2,barreFemelle,boule,tigeMale]
+	listeObjets=[demiCylindre1,demiCylindre2,barreFemelle,boule,tigeMale]
         
-        ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
+	ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
         
         
 	# Transformations ***************************************
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x,contexte))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	

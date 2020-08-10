@@ -1,5 +1,6 @@
 import math
 import inkex
+from lxml import etree	# Nécessaire pour les groupes depuis la version 1.0
 from liaisons_fonctions_utiles import *
 from liaisons_parametres import *
 
@@ -39,15 +40,15 @@ def dessin_Pivot_2D_cote(options,contexte):
 
 	
 	#Groupes ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-        fond_femelle = inkex.etree.SubElement(liaison,'g')
-	male = inkex.etree.SubElement(liaison,'g')
-	femelle = inkex.etree.SubElement(liaison,'g')
+	liaison = etree.SubElement(contexte, 'g')
+	fond_femelle = etree.SubElement(liaison,'g')
+	male = etree.SubElement(liaison,'g')
+	femelle = etree.SubElement(liaison,'g')
 	
 	
 	# Male ***************************************
 	#Ligne male
-	ligneM=inkex.etree.Element(inkex.addNS('path','svg'))
+	ligneM=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(-longueur_axe/2.,0),
 					(longueur_axe/2.,0)]
 				,False,base2D)
@@ -57,7 +58,7 @@ def dessin_Pivot_2D_cote(options,contexte):
 	male.append(ligneM)
 	
 	#Arret male 1
-	arretM1=inkex.etree.Element(inkex.addNS('path','svg'))
+	arretM1=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(-largeur/2.-espace_arrets	,	-hauteur/2),
 					(-largeur/2.-espace_arrets	,	hauteur/2)	]
 				,False,base2D)
@@ -67,7 +68,7 @@ def dessin_Pivot_2D_cote(options,contexte):
 	male.append(arretM1)
 	
 	#Arret male 2
-	arretM2=inkex.etree.Element(inkex.addNS('path','svg'))
+	arretM2=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(largeur/2.+espace_arrets	,	-hauteur/2),
 					(largeur/2.+espace_arrets	,	hauteur/2)	]
 				,False,base2D)
@@ -78,7 +79,7 @@ def dessin_Pivot_2D_cote(options,contexte):
 	
 	# Femelle ***************************************
 	if(old_liaisons):
-		barreF1=inkex.etree.Element(inkex.addNS('path','svg'))
+		barreF1=etree.Element(inkex.addNS('path','svg'))
 		chemin=points2D_to_svgd([	(-largeur/2.	,	-hauteur/2),
 						(largeur/2.	,	-hauteur/2.)	]
 					,False,base2D)
@@ -87,7 +88,7 @@ def dessin_Pivot_2D_cote(options,contexte):
 		barreF1.set('stroke-width',str(epaisseur_femelle))
 		male.append(barreF1)
 		
-		barreF2=inkex.etree.Element(inkex.addNS('path','svg'))
+		barreF2=etree.Element(inkex.addNS('path','svg'))
 		chemin=points2D_to_svgd([	(-largeur/2.	,	hauteur/2),
 						(largeur/2.	,	hauteur/2.)	]
 					,False,base2D)
@@ -97,7 +98,7 @@ def dessin_Pivot_2D_cote(options,contexte):
 		male.append(barreF2)
 	else:
 		#Rectangle
-		rectangle=inkex.etree.Element(inkex.addNS('rect','svg'))
+		rectangle=etree.Element(inkex.addNS('rect','svg'))
 		rectangle.set('x',str(-largeur*echelle_liaison/2) )
 		rectangle.set('y',str(-hauteur*echelle_liaison/2) )
 		rectangle.set('width',str(largeur*echelle_liaison))
@@ -106,19 +107,19 @@ def dessin_Pivot_2D_cote(options,contexte):
 		rectangle.set('stroke',couleur_femelle)
 		rectangle.set('stroke-width',str(epaisseur_femelle))
 		femelle.append(rectangle)
-	
+
 		# Fond de femelle opaque ****************************
 		#Rectangle - fond
-		rectangle=inkex.etree.Element(inkex.addNS('rect','svg'))
+		rectangle=etree.Element(inkex.addNS('rect','svg'))
 		rectangle.set('x',str(-largeur*echelle_liaison/2) )
 		rectangle.set('y',str(-hauteur*echelle_liaison/2) )
 		rectangle.set('width',str(largeur*echelle_liaison))
 		rectangle.set('height',str(hauteur*echelle_liaison))
 		rectangle.set('style','fill:white')
 		fond_femelle.append(rectangle)
-	
+
 	#Tige femelle
-	ligneF=inkex.etree.Element(inkex.addNS('path','svg'))
+	ligneF=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(0	,	-hauteur/2.),
 					(0	,	-hauteur/2.-longueur_tige)	]
 				,True,base2D)
@@ -126,16 +127,16 @@ def dessin_Pivot_2D_cote(options,contexte):
 	ligneF.set('stroke',couleur_femelle)
 	ligneF.set('stroke-width',str(epaisseur_femelle))
 	femelle.append(ligneF)
-	
+
 	# Transformations ***************************************
 	fond_femelle.set("transform","rotate("+str(-rotation)+")")
 	male.set("transform","rotate("+str(-rotation)+")")
 	femelle.set("transform","rotate("+str(-rotation)+")")
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x,contexte))+","+str(convertLongueur2Inkscape(options,y0+y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 
-	
+
 
 def dessin_Pivot_2D_face(options,contexte):
 	#Position *****************************************
@@ -175,13 +176,12 @@ def dessin_Pivot_2D_face(options,contexte):
 	epaisseur_male=options.opt_gene_lignes_epaisseur_1
 
 	#Groupes ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-        #groupe_rotation = inkex.etree.SubElement(liaison, 'g')
-	male=inkex.etree.SubElement(liaison,'g')
-	femelle=inkex.etree.SubElement(liaison,'g')
+	liaison = etree.SubElement(contexte, 'g')
+	male=etree.SubElement(liaison,'g')
+	femelle=etree.SubElement(liaison,'g')
 
 	# Male ***************************************
-	axe1=inkex.etree.Element(inkex.addNS('path','svg'))
+	axe1=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(0	,	0),
 					(rayon+longueur_tige	,	0)	]
 				,False,base2D)
@@ -192,7 +192,7 @@ def dessin_Pivot_2D_face(options,contexte):
 
 	# Femelle ***************************************	
 	#axe
-	axe2=inkex.etree.Element(inkex.addNS('path','svg'))
+	axe2=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(0	,	0),
 					(longueur_tige+rayon	,	0)	]
 				,False,base2D)	
@@ -201,7 +201,7 @@ def dessin_Pivot_2D_face(options,contexte):
 	axe2.set('stroke-width',str(epaisseur_femelle))
 	femelle.append(axe2)
 	#cercle
-	cercle=inkex.etree.Element(inkex.addNS('circle','svg'))
+	cercle=etree.Element(inkex.addNS('circle','svg'))
 	cercle.set('cx',"0")
 	cercle.set('cy',"0")
 	cercle.set('r',str(rayon*echelle_liaison))
@@ -213,7 +213,7 @@ def dessin_Pivot_2D_face(options,contexte):
 	# Transformations ***************************************
 	male.set("transform","rotate("+str(rotation1)+")")
 	femelle.set("transform","rotate("+str(rotation2)+")")
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x,contexte))+","+str(convertLongueur2Inkscape(options,y0+y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	
@@ -249,7 +249,7 @@ def dessin_Pivot_3D(options,contexte):
 	angle_male=-float(options.liaison_pivot_3D_orientation_male)/180.*math.pi
 	angle_femelle=-float(options.liaison_pivot_3D_orientation_femelle)/180.*math.pi
 	#Repere local de la liaison
-	if(options.liaison_pivot_3D_type_direction=="\"liaison_pivot_3D_type_direction_quelconque\""):
+	if(options.liaison_pivot_3D_type_direction=="liaison_pivot_3D_type_direction_quelconque"):
 		V=v3D(options.liaison_pivot_3D_type_direction_quelconque_x,options.liaison_pivot_3D_type_direction_quelconque_y,options.liaison_pivot_3D_type_direction_quelconque_z,base)
 		if V.x == V.y == V.z == 0 : V=v3D(1,0,0,base) #Si vecteur nul : on prend X par defaut
 		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle_liaison,angle_male)#Repere male
@@ -268,11 +268,11 @@ def dessin_Pivot_3D(options,contexte):
 	baseLocale2=(Vx2,Vy2,Vz2)
 
 	#Groupes 
-	liaison = inkex.etree.SubElement(contexte, 'g')
-        ombres = inkex.etree.SubElement(liaison, 'g')
-        
+	liaison = etree.SubElement(contexte, 'g')
+	ombres = etree.SubElement(liaison, 'g')
+		
 	# Male ***************************************
-	axe=inkex.etree.Element(inkex.addNS('path','svg'))
+	axe=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(-p3D_longueur_male/2.,	0,	0	),
 					(p3D_longueur_male/2.,	0,	0	)
@@ -285,14 +285,14 @@ def dessin_Pivot_3D(options,contexte):
 
 	#Ombre
 	#if ombre:
-	#	axe_ombre=inkex.etree.Element(inkex.addNS('path','svg'))
+	#	axe_ombre=etree.Element(inkex.addNS('path','svg'))
 	#	axe_ombre.set('d',chemin_ombre)
 	#	axe_ombre.set('stroke','#000000')
 	#	axe_ombre.set('stroke-width',str(epaisseur_male))
 	#	axe_ombre.set('style','stroke-linecap:round')
-	#        ombres.append(axe_ombre)
+	#		ombres.append(axe_ombre)
 
-	arret1=inkex.etree.Element(inkex.addNS('path','svg'))
+	arret1=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeure=points3D_to_svgd([
 					(2*largeur/3,	rayon,	0	),
 					(2*largeur/3,	-rayon,	0	)
@@ -305,14 +305,14 @@ def dessin_Pivot_3D(options,contexte):
 	
 	#Ombre
 	#if ombre:
-	#	arret1_ombre=inkex.etree.Element(inkex.addNS('path','svg'))
+	#	arret1_ombre=etree.Element(inkex.addNS('path','svg'))
 	#	arret1_ombre.set('d',chemin_ombre)
 	#	arret1_ombre.set('stroke','#000000')
 	#	arret1_ombre.set('stroke-width',str(epaisseur_male))
 	#	arret1_ombre.set('style','stroke-linecap:round')
-	#        ombres.append(arret1_ombre)
+	#		ombres.append(arret1_ombre)
 	
-	arret2=inkex.etree.Element(inkex.addNS('path','svg'))
+	arret2=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(-largeur/2.-p3D_ecarts_arrets,	p3D_longueur_arrets/2.,	0	),
 					(-largeur/2.-p3D_ecarts_arrets,	-p3D_longueur_arrets/2.,	0	)
@@ -323,11 +323,11 @@ def dessin_Pivot_3D(options,contexte):
 	arret2.set('style','stroke-linecap:round')
 	arret2.set('profondeur',str(profondeur))
 
-	
+
 	# Femelle ***************************************
 	#On recupere les deux angles qui correspondent aux tangentes par rapport a la vue
 	thetaCoupure1,thetaCoupure2=getAnglesCoupure(baseLocale2)
-	
+
 	#On construit les arcs de cercles projete
 	centre1=v3D(-largeur/2,0,0,baseLocale2) #Vecteur OC1, O=centre liaison
 	centre2=v3D(largeur/2,0,0,baseLocale2) #Vecteur OC1, O=centre liaison
@@ -335,15 +335,15 @@ def dessin_Pivot_3D(options,contexte):
 	listeArcs2=getListePoints2DCercle(baseLocale2,centre2,rayon,0,math.pi*2,thetaCoupure1,thetaCoupure2)
 	listeArcs2[0].reverse()#On inverse les arcs de cercle
 	listeArcs2[1].reverse()
-	
+
 	#On construit les cylindres
 	listeDemiCylindre1=listeArcs1[0]+listeArcs2[0]
 	listeDemiCylindre2=listeArcs1[1]+listeArcs2[1]
-	
-	
+
+
 	chemin,profondeurDemiCylindre1=points3D_to_svgd(listeDemiCylindre1,True,None)
 	#formesFemelles1.append((chemin,profondeur))
-	demiCylindre1=inkex.etree.Element(inkex.addNS('path','svg'))
+	demiCylindre1=etree.Element(inkex.addNS('path','svg'))
 	demiCylindre1.set('d',chemin)
 	demiCylindre1.set('stroke',couleur_femelle)
 	demiCylindre1.set('stroke-width',str(epaisseur_femelle))
@@ -353,16 +353,16 @@ def dessin_Pivot_3D(options,contexte):
 
 	chemin,profondeurDemiCylindre2=points3D_to_svgd(listeDemiCylindre2,True)
 	#formesFemelles2.append((chemin,profondeur))
-	demiCylindre2=inkex.etree.Element(inkex.addNS('path','svg'))
+	demiCylindre2=etree.Element(inkex.addNS('path','svg'))
 	demiCylindre2.set('d',chemin)
 	demiCylindre2.set('stroke',couleur_femelle)
 	demiCylindre2.set('stroke-width',str(epaisseur_femelle))
 	demiCylindre2.set('style','stroke-linecap:round')
 	demiCylindre2.set('style','fill:white')
 	demiCylindre2.set('profondeur',str(profondeurDemiCylindre2))
-	
+
 	#barre femelle
-	barreFemelle=inkex.etree.Element(inkex.addNS('path','svg'))
+	barreFemelle=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(0,	0,	rayon	),
 					(0,	0,	rayon+p3D_longueur_tige_femelle)
@@ -376,13 +376,13 @@ def dessin_Pivot_3D(options,contexte):
 
 
 	# Ajout au Groupe *****************************************
-        listeObjets=[axe,arret1,arret2,demiCylindre1,demiCylindre2,barreFemelle]
-        
-        ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
+	listeObjets=[axe,arret1,arret2,demiCylindre1,demiCylindre2,barreFemelle]
+		
+	ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
 
 	# Transformations ***************************************
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x,contexte))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
-	
+0,0
  

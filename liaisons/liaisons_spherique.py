@@ -1,6 +1,7 @@
 # -- coding: utf-8 --
 import math
 import inkex
+from lxml import etree	# Nécessaire pour les groupes depuis la version 1.0
 from liaisons_fonctions_utiles import *
 from liaisons_parametres import *
 
@@ -46,12 +47,12 @@ def dessin_spherique_2D(options,contexte):
 	rayon_tige_femelle = s2D_rayon_tiges_femelle
 	thetaOuverture = s2D_angle_ouverture
 	#Groupes ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-	male=inkex.etree.SubElement(liaison,'g')
-	femelle=inkex.etree.SubElement(liaison,'g')
+	liaison = etree.SubElement(contexte, 'g')
+	male=etree.SubElement(liaison,'g')
+	femelle=etree.SubElement(liaison,'g')
 	# Male ***************************************
 	#cercle male
-	cercle=inkex.etree.Element(inkex.addNS('circle','svg'))
+	cercle=etree.Element(inkex.addNS('circle','svg'))
 	cercle.set('cx',"0")
 	cercle.set('cy',"0")
 	cercle.set('r',str(rayon_male*echelle_liaison))
@@ -60,7 +61,7 @@ def dessin_spherique_2D(options,contexte):
 	cercle.set('style','fill:white')
 	male.append(cercle)
 	#Tige male
-	tige_male=inkex.etree.Element(inkex.addNS('path','svg'))
+	tige_male=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(rayon_male	,	0.),
 					(rayon_tige_male	,	0.)	]
 				,False,base2D)
@@ -70,7 +71,7 @@ def dessin_spherique_2D(options,contexte):
 	male.append(tige_male)
 	# Femelle ***************************************
 	#cercle fmelle
-	arc=inkex.etree.Element(inkex.addNS('path','svg'))
+	arc=etree.Element(inkex.addNS('path','svg'))
 	liste=[]
 	N=50.
 	if(options.liaison_spherique_2D_calotte_adaptative):
@@ -99,7 +100,7 @@ def dessin_spherique_2D(options,contexte):
 	
 	
 	#Tige femelle
-	tige_femelle=inkex.etree.Element(inkex.addNS('path','svg'))
+	tige_femelle=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(rayon_femelle	,	0.),
 					(rayon_tige_femelle	,	0.)	]
 				,True,base2D)
@@ -112,11 +113,11 @@ def dessin_spherique_2D(options,contexte):
 	# Transformations ***************************************
 	male.set("transform","rotate("+str(-rotation_male)+")")
 	femelle.set("transform","rotate("+str(-rotation_femelle)+")")
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x,contexte))+","+str(convertLongueur2Inkscape(options,y0+y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 
-	
+
 
 
 
@@ -148,7 +149,7 @@ def dessin_spherique_3D(options,contexte):
 	rayonTige = s3D_rayon_tiges 
 	rayon_ouverture = rayon_femelle * math.sin(thetaOuverture)
 	#Repere local de la liaison, partie male
-	if(options.liaison_spherique_3D_type_orientation_male=="\"liaison_spherique_3D_type_orientation_male_quelconque\""):
+	if(options.liaison_spherique_3D_type_orientation_male=="liaison_spherique_3D_type_orientation_male_quelconque"):
 		V=v3D(options.liaison_spherique_3D_type_direction_male_quelconque_x,options.liaison_spherique_3D_type_direction_male_quelconque_y,options.liaison_spherique_3D_type_direction_male_quelconque_z,base)
 		if V.x == V.y == V.z == 0 : V=v3D(1,0,0,base) #Si vecteur nul : on prend X par defaut
 		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle)#Repere male
@@ -167,7 +168,7 @@ def dessin_spherique_3D(options,contexte):
 			Vx1,Vy1,Vz1=getBaseFromVecteur(Vz*(-1),echelle)#Repere male
 	baseLocale1=(Vx1,Vy1,Vz1)
 	#Repere local de la liaison, partie femelle
-	if(options.liaison_spherique_3D_type_orientation_femelle=="\"liaison_spherique_3D_type_orientation_femelle_quelconque\""):
+	if(options.liaison_spherique_3D_type_orientation_femelle=="liaison_spherique_3D_type_orientation_femelle_quelconque"):
 		V=v3D(options.liaison_spherique_3D_type_direction_femelle_quelconque_x,options.liaison_spherique_3D_type_direction_femelle_quelconque_y,options.liaison_spherique_3D_type_direction_femelle_quelconque_z,base)
 		if V.x == V.y == V.z == 0 : V=v3D(1,0,0,base) #Si vecteur nul : on prend X par defaut
 		Vx2,Vy2,Vz2=getBaseFromVecteur(V,echelle)#Repere male
@@ -209,7 +210,7 @@ def dessin_spherique_3D(options,contexte):
 	
 	# Male ***************************************
 	#Tige
-	tigeMale=inkex.etree.Element(inkex.addNS('path','svg'))
+	tigeMale=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(rayon_male,	0,	0	),
 					(rayonTige,	0,	0	)
@@ -222,7 +223,7 @@ def dessin_spherique_3D(options,contexte):
 	listeObjets.append(tigeMale)
 
 	#Boule
-	boule=inkex.etree.Element(inkex.addNS('circle','svg'))
+	boule=etree.Element(inkex.addNS('circle','svg'))
 	boule.set('cx',"0")
 	boule.set('cy',"0")
 	boule.set('r',str(rayon_male*echelle))
@@ -240,7 +241,7 @@ def dessin_spherique_3D(options,contexte):
 	text = " ( "+str(angle_ecran/math.pi*180)+" , "+str(angle_bord_ouverture_ecran_min/math.pi*180)+" , "+str(angle_bord_ouverture_ecran_max/math.pi*180)+" )"
 	# CAS OU L'OUVERTURE EST DERRIERE LA SPHERE
 	if angle_bord_ouverture_ecran_min > math.pi/2 : # Si l'ouverture est derriere le disque
-		boule_femelle=inkex.etree.Element(inkex.addNS('circle','svg'))
+		boule_femelle=etree.Element(inkex.addNS('circle','svg'))
 		boule_femelle.set('cx',"0")
 		boule_femelle.set('cy',"0")
 		boule_femelle.set('r',str(rayon_femelle*echelle))
@@ -257,7 +258,7 @@ def dessin_spherique_3D(options,contexte):
 		liste_points_ouverture = [( -rayon_femelle*math.cos(thetaOuverture) , rayon_ouverture*math.cos(2*math.pi/n*i), rayon_ouverture*math.sin(2*math.pi/n*i) ) for i in range(n)] # Dans la base normale à l'écran
 		liste_points_ouverture.reverse() #Pour avoir le chemin dans l'autre sens
 		
-		calotte=inkex.etree.Element(inkex.addNS('path','svg'))
+		calotte=etree.Element(inkex.addNS('path','svg'))
 		
 		chemin_calotte,profondeur_calotte=points3D_to_svgd(liste_points_calotte,True,(v3D(1,0,0),v3D(0,1,0),v3D(0,0,1)))
 		chemin_ouverture,profondeur_ouverture=points3D_to_svgd(liste_points_ouverture,True,baseLocaleCalotte)
@@ -276,7 +277,7 @@ def dessin_spherique_3D(options,contexte):
 	elif angle_ecran > math.pi/2 :
 
 		# On calcule l'ouverture ******
-		ouverture=inkex.etree.Element(inkex.addNS('path','svg'))
+		ouverture=etree.Element(inkex.addNS('path','svg'))
 		n = 100
 		
 
@@ -326,7 +327,7 @@ def dessin_spherique_3D(options,contexte):
 		
 		chemin_calotte,profondeur_calotte=points3D_to_svgd(liste_points_calotte,False,(v3D(1,0,0),v3D(0,1,0),v3D(0,0,1)))
 		
-		calotte=inkex.etree.Element(inkex.addNS('path','svg'))	
+		calotte=etree.Element(inkex.addNS('path','svg'))	
 		calotte.set('d',chemin_calotte+chemin_ouverture)
 		calotte.set('stroke',couleur_femelle)
 		calotte.set('stroke-width',str(epaisseur_femelle))
@@ -336,7 +337,7 @@ def dessin_spherique_3D(options,contexte):
 		listeObjets.append(calotte)	
 			
 	else:# angle_ecran < math.pi/2 :
-		ouverture=inkex.etree.Element(inkex.addNS('path','svg'))
+		ouverture=etree.Element(inkex.addNS('path','svg'))
 		n = 100
 		liste_points_ouverture = [( -rayon_femelle*math.cos(thetaOuverture) , rayon_ouverture*math.cos(2*math.pi/n*i), rayon_ouverture*math.sin(2*math.pi/n*i) ) for i in range(n)] # Dans la base normale à l'écran
 		liste_points_ouverture_ecran=[v3D(liste_points_ouverture[i][0],liste_points_ouverture[i][1],liste_points_ouverture[i][2],baseLocaleCalotte) for i in range(len(liste_points_ouverture))]
@@ -426,7 +427,7 @@ def dessin_spherique_3D(options,contexte):
 		
 		chemin_calotte,profondeur_calotte=points3D_to_svgd(liste_points_calotte,True,(v3D(1,0,0),v3D(0,1,0),v3D(0,0,1)))
 		
-		devant=inkex.etree.Element(inkex.addNS('path','svg'))	
+		devant=etree.Element(inkex.addNS('path','svg'))	
 		devant.set('d',chemin_ouverture_devant+"L"+chemin_calotte[1:]) # Z pour fermer
 		devant.set('stroke',couleur_femelle)
 		devant.set('stroke-width',str(epaisseur_femelle))
@@ -435,7 +436,7 @@ def dessin_spherique_3D(options,contexte):
 		devant.set('profondeur','0.00001')
 		listeObjets.append(devant)	
 	
-		arriere=inkex.etree.Element(inkex.addNS('path','svg'))	
+		arriere=etree.Element(inkex.addNS('path','svg'))	
 		arriere.set('d',chemin_ouverture_arriere+"L"+chemin_calotte[1:])
 		arriere.set('stroke',couleur_femelle)
 		arriere.set('stroke-width',str(epaisseur_femelle))
@@ -445,7 +446,7 @@ def dessin_spherique_3D(options,contexte):
 		listeObjets.append(arriere)
 	
 	#Tige
-	tigeFemelle=inkex.etree.Element(inkex.addNS('path','svg'))
+	tigeFemelle=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(rayon_femelle,	0,	0	),
 					(rayonTige,	0,	0	)
@@ -458,14 +459,14 @@ def dessin_spherique_3D(options,contexte):
 	listeObjets.append(tigeFemelle)
 
 	# Ajout au Groupe ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
+	liaison = etree.SubElement(contexte, 'g')
         
-        #listeObjets=[tigeMale,boule,tigeFemelle,calotteDevant,calotteDerriere]
+	#listeObjets=[tigeMale,boule,tigeFemelle,calotteDevant,calotteDerriere]
         
-        ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
+	ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
 
 	# Transformations ***************************************
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x,contexte))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	

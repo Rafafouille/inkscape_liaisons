@@ -1,5 +1,6 @@
 import math
 import inkex
+from lxml import etree	# Nécessaire pour les groupes depuis la version 1.0
 from liaisons_fonctions_utiles import *
 from liaisons_parametres import *
 
@@ -34,14 +35,14 @@ def dessin_plane_2D_cote(options,contexte):
 	epaisseur_male=options.opt_gene_lignes_epaisseur_1
 	
 	#Groupes ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-	dessus=inkex.etree.SubElement(liaison,'g')
-	dessous=inkex.etree.SubElement(liaison,'g')
+	liaison = etree.SubElement(contexte, 'g')
+	dessus=etree.SubElement(liaison,'g')
+	dessous=etree.SubElement(liaison,'g')
 
 	
 	# DESSUS ***************************************
 	#plan dessus
-	planDessus=inkex.etree.Element(inkex.addNS('path','svg'))
+	planDessus=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(-largeur/2	,	(ecart+epaisseur_male)/2.),
 					(largeur/2	,	(ecart+epaisseur_male)/2.)	]
 					,False,base2D)
@@ -51,7 +52,7 @@ def dessin_plane_2D_cote(options,contexte):
 	dessus.append(planDessus)
 	
 	#tige dessus
-	tigeDessus=inkex.etree.Element(inkex.addNS('path','svg'))
+	tigeDessus=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(0	,	(ecart+epaisseur_male)/2.),
 					(0	,	ecart/2.+longueurTige)	]
 				,False,base2D)
@@ -62,7 +63,7 @@ def dessin_plane_2D_cote(options,contexte):
 	
 	# DESSOUS ***************************************
 	#plan dessous
-	planDessous=inkex.etree.Element(inkex.addNS('path','svg'))
+	planDessous=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(-largeur/2	,	-(ecart+epaisseur_femelle)/2.),
 					(largeur/2	,	-(ecart+epaisseur_femelle)/2.)	]
 				,False,base2D)
@@ -72,7 +73,7 @@ def dessin_plane_2D_cote(options,contexte):
 	dessous.append(planDessous)
 	
 	#tige dessous
-	tigeDessous=inkex.etree.Element(inkex.addNS('path','svg'))
+	tigeDessous=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(0	,	-(ecart+epaisseur_femelle)/2.),
 					(0	,	-ecart/2.-longueurTige)	]
 				,False,base2D)
@@ -84,11 +85,11 @@ def dessin_plane_2D_cote(options,contexte):
 	# Transformations ***************************************
 	dessus.set("transform","rotate("+str(rotation)+")")
 	dessous.set("transform","rotate("+str(rotation)+")")
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x,contexte))+","+str(convertLongueur2Inkscape(options,y0+y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 
-	
+
 
 def dessin_plane_2D_dessus(options,contexte):
 	#Position *****************************************
@@ -137,14 +138,14 @@ def dessin_plane_2D_dessus(options,contexte):
 	coteDessus = pl2Dd_largeur - pl2Dd_ecartement - epaisseur_dessus
 	longueurTrait = pl2Dd_tiges
 	#Groupes ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-	dessous=inkex.etree.SubElement(liaison,'g')
-	dessus=inkex.etree.SubElement(liaison,'g')
+	liaison = etree.SubElement(contexte, 'g')
+	dessous=etree.SubElement(liaison,'g')
+	dessus=etree.SubElement(liaison,'g')
 
 	
 	# Dessous ***************************************	
 	# rectangle dessous
-	rectangleDessous=inkex.etree.Element(inkex.addNS('rect','svg'))
+	rectangleDessous=etree.Element(inkex.addNS('rect','svg'))
 	rectangleDessous.set('x',str(-coteDessous*echelle_liaison/2) )
 	rectangleDessous.set('y',str(-coteDessous*echelle_liaison/2) )
 	rectangleDessous.set('width',str(coteDessous*echelle_liaison))
@@ -154,7 +155,7 @@ def dessin_plane_2D_dessus(options,contexte):
 	rectangleDessous.set('stroke-width',str(epaisseur_dessous))
 	dessous.append(rectangleDessous)
 
-	traitDessous=inkex.etree.Element(inkex.addNS('path','svg'))
+	traitDessous=etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(coteDessous/2.	,	0),
 				(coteMoyen/2.+longueurTrait	,	0)	])
 	traitDessous.set('d',chemin)
@@ -164,7 +165,7 @@ def dessin_plane_2D_dessus(options,contexte):
 	
 	# Dessus ***************************************
 	# rectangle dessus
-	rectangleDessus=inkex.etree.Element(inkex.addNS('rect','svg'))
+	rectangleDessus=etree.Element(inkex.addNS('rect','svg'))
 	rectangleDessus.set('x',str(-coteDessus*echelle_liaison/2) )
 	rectangleDessus.set('y',str(-coteDessus*echelle_liaison/2) )
 	rectangleDessus.set('width',str(coteDessus*echelle_liaison))
@@ -174,7 +175,7 @@ def dessin_plane_2D_dessus(options,contexte):
 	rectangleDessus.set('stroke-width',str(epaisseur_dessus))
 	dessus.append(rectangleDessus)
 
-	traitDessus=inkex.etree.Element(inkex.addNS('path','svg'))
+	traitDessus=etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(coteDessus/2.			,	0),
 				(coteMoyen/2.+longueurTrait	,	0)	])
 	traitDessus.set('d',chemin)
@@ -185,7 +186,7 @@ def dessin_plane_2D_dessus(options,contexte):
 	# Transformations ***************************************
 	dessous.set("transform","rotate("+str(rotationDessous)+")")
 	dessus.set("transform","rotate("+str(rotationDessus)+")")
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x,contexte))+","+str(convertLongueur2Inkscape(options,y0+y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	
@@ -220,7 +221,7 @@ def dessin_plane_3D(options,contexte):
 	angle_dessus=-float(options.liaison_plane_3D_orientation1)/180.*math.pi
 	angle_dessous=-float(options.liaison_plane_3D_orientation2)/180.*math.pi
 	#Repere local de la liaison
-	if(options.liaison_plane_3D_type_normale=="\"liaison_plane_3D_type_normale_quelconque\""):
+	if(options.liaison_plane_3D_type_normale=="liaison_plane_3D_type_normale_quelconque"):
 		V=v3D(options.liaison_plane_3D_type_direction_quelconque_x,options.liaison_plane_3D_type_direction_quelconque_y,options.liaison_plane_3D_type_direction_quelconque_z,base)
 		if V.x == V.y == V.z == 0 : V=v3D(1,0,0,base) #Si vecteur nul : on prend X par defaut
 		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle_liaison,angle_dessus)#Repere male
@@ -239,7 +240,7 @@ def dessin_plane_3D(options,contexte):
 	baseLocale2=(Vx2,Vy2,Vz2)
 
 	# Dessus ***************************************
-	planDessus=inkex.etree.Element(inkex.addNS('path','svg'))
+	planDessus=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					( (ecart+epaisseur_dessus)/2.,	-largeur/2.,	-largeur/2.	),
 					( (ecart+epaisseur_dessus)/2.,	-largeur/2.,	largeur/2.	),
@@ -253,7 +254,7 @@ def dessin_plane_3D(options,contexte):
 	planDessus.set('profondeur',str(profondeur))
 	
 
-	tigeDessus=inkex.etree.Element(inkex.addNS('path','svg'))
+	tigeDessus=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					( (ecart+epaisseur_dessus)/2.,	0.,	0.	),
 					( ecart/2.+longueurTige,	0.,	0.	)
@@ -265,7 +266,7 @@ def dessin_plane_3D(options,contexte):
 	tigeDessus.set('profondeur',str(profondeur))
 	
 	# Dessous ***************************************
-	planDessous=inkex.etree.Element(inkex.addNS('path','svg'))
+	planDessous=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(-(ecart+epaisseur_dessous)/2.,	-largeur/2.,	-largeur/2.	),
 					(-(ecart+epaisseur_dessous)/2.,	-largeur/2.,	largeur/2.	),
@@ -278,7 +279,7 @@ def dessin_plane_3D(options,contexte):
 	planDessous.set('style','fill:white')
 	planDessous.set('profondeur',str(profondeur))
 
-	tigeDessous=inkex.etree.Element(inkex.addNS('path','svg'))
+	tigeDessous=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 						(-(ecart+epaisseur_dessous)/2.,	0.,	0.	),
 						(-ecart/2.-longueurTige,	0.,	0.	)
@@ -292,13 +293,13 @@ def dessin_plane_3D(options,contexte):
 
 
 	# Ajout au Groupe ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-        listeObjets=[planDessous,tigeDessous,planDessus,tigeDessus]
-        ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
+	liaison = etree.SubElement(contexte, 'g')
+	listeObjets=[planDessous,tigeDessous,planDessus,tigeDessus]
+	ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
         
         
 	# Transformations ***************************************
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x,contexte))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	

@@ -1,6 +1,7 @@
 # -- coding: utf-8 --
 import math
 import inkex
+from lxml import etree	# Nécessaire pour les groupes depuis la version 1.0
 from liaisons_fonctions_utiles import *
 from liaisons_parametres import *
 
@@ -33,14 +34,14 @@ def dessin_rectiligne_plan_2D_cote(options,contexte):
 	epaisseur_prisme=options.opt_gene_lignes_epaisseur_1
 	
 	#Groupes ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-	dessus=inkex.etree.SubElement(liaison,'g')
-	dessous=inkex.etree.SubElement(liaison,'g')
+	liaison = etree.SubElement(contexte, 'g')
+	dessus=etree.SubElement(liaison,'g')
+	dessous=etree.SubElement(liaison,'g')
 
 	
 	# DESSUS ***************************************
 	# Prisme
-	prisme=inkex.etree.Element(inkex.addNS('path','svg'))
+	prisme=etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(epaisseur_prisme/2.			,	-r2Dc_longueur_contact/2.),
 				(epaisseur_prisme/2.			,	r2Dc_longueur_contact/2.),
 				(r2Dc_hauteur_prisme + epaisseur_prisme/2.,	r2Dc_longueur_base_prisme/2.),
@@ -53,7 +54,7 @@ def dessin_rectiligne_plan_2D_cote(options,contexte):
 	dessus.append(prisme)
 	
 	#tige dessus
-	tigeDessus=inkex.etree.Element(inkex.addNS('path','svg'))
+	tigeDessus=etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(r2Dc_hauteur_prisme+epaisseur_prisme/2.		,	0.),
 				(r2Dc_hauteur_prisme + r2Dc_longueur_tige_prisme 	,	0.)	])
 	tigeDessus.set('d',chemin)
@@ -63,7 +64,7 @@ def dessin_rectiligne_plan_2D_cote(options,contexte):
 	
 	# DESSOUS ***************************************
 	#plan dessous
-	plan=inkex.etree.Element(inkex.addNS('path','svg'))
+	plan=etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(-epaisseur_plan/2.	,	-r2Dc_longueur_plan/2.),
 				(-epaisseur_plan/2.	,	r2Dc_longueur_plan/2.)	])
 	plan.set('d',chemin)
@@ -72,7 +73,7 @@ def dessin_rectiligne_plan_2D_cote(options,contexte):
 	dessous.append(plan)
 	
 	#tige dessous
-	tigePlan=inkex.etree.Element(inkex.addNS('path','svg'))
+	tigePlan=etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(-epaisseur_plan/2.,					0.),
 				(-r2Dc_longueur_tige_plan,	0.)	])
 	tigePlan.set('d',chemin)
@@ -83,11 +84,11 @@ def dessin_rectiligne_plan_2D_cote(options,contexte):
 	# Transformations ***************************************
 	dessus.set("transform","rotate("+str(rotation)+")")
 	dessous.set("transform","rotate("+str(rotation)+")")
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x,contexte))+","+str(convertLongueur2Inkscape(options,y0+y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 
-	
+
 
 def dessin_rectiligne_2D_bout(options,contexte):
 	#Position *****************************************
@@ -127,14 +128,14 @@ def dessin_rectiligne_2D_bout(options,contexte):
 	epaisseur_prisme = options.opt_gene_lignes_epaisseur_1
 	
 	#Groupes ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-	prisme = inkex.etree.SubElement(liaison,'g')
-	plan = inkex.etree.SubElement(liaison,'g')
+	liaison = etree.SubElement(contexte, 'g')
+	prisme = etree.SubElement(liaison,'g')
+	plan = etree.SubElement(liaison,'g')
 
 	
 	# Plan ***************************************	
 	# plan
-	trait_plan=inkex.etree.Element(inkex.addNS('path','svg'))
+	trait_plan=etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(-epaisseur_plan/2.	,	-r2Db_largeur_plan/2.),
 				(-epaisseur_plan/2.	,	r2Db_largeur_plan/2.)	])
 	trait_plan.set('d',chemin)
@@ -142,7 +143,7 @@ def dessin_rectiligne_2D_bout(options,contexte):
 	trait_plan.set('stroke-width',str(epaisseur_plan))
 	plan.append(trait_plan)
 	# tige
-	tige_plan=inkex.etree.Element(inkex.addNS('path','svg'))
+	tige_plan=etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(-r2Db_longueur_tige_plan	,	0),
 				(-epaisseur_plan/2.		,	0)	])
 	tige_plan.set('d',chemin)
@@ -153,7 +154,7 @@ def dessin_rectiligne_2D_bout(options,contexte):
 	# prisme ***************************************
 	# triangle
 	deport_point_fleche = epaisseur_prisme/2. / math.sin( math.atan((r2Db_largeur_prisme/2.)/(r2Db_hauteur_prisme)) )
-	triangle=inkex.etree.Element(inkex.addNS('path','svg'))
+	triangle=etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(deport_point_fleche			,	0),
 				(r2Db_hauteur_prisme+deport_point_fleche	,	r2Db_largeur_prisme/2.),
 				(r2Db_hauteur_prisme+deport_point_fleche	,	-r2Db_largeur_prisme/2.)	],
@@ -164,7 +165,7 @@ def dessin_rectiligne_2D_bout(options,contexte):
 	triangle.set('style','fill:white')
 	prisme.append(triangle)
 
-	trait_prisme=inkex.etree.Element(inkex.addNS('path','svg'))
+	trait_prisme=etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(r2Db_hauteur_prisme+deport_point_fleche				,	0),
 				(r2Db_hauteur_prisme+r2Db_longueur_tige_prisme	,	0)	])
 	trait_prisme.set('d',chemin)
@@ -175,7 +176,7 @@ def dessin_rectiligne_2D_bout(options,contexte):
 	# Transformations ***************************************
 	plan.set("transform","rotate("+str(rotationNormale)+")")
 	prisme.set("transform","rotate("+str(rotationPrisme)+")")
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x,contexte))+","+str(convertLongueur2Inkscape(options,y0+y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	
@@ -210,7 +211,7 @@ def dessin_rectiligne_3D(options,contexte):
 	epaisseur_prisme = options.opt_gene_lignes_epaisseur_1
 	#angle_inclinaison_prisme = -float(options.liaison_rectiligne_3D_inclinaison_prisme)/180.*math.pi
 	#Repere local de la liaison
-	if(options.liaison_rectiligne_3D_type_normale!="\"liaison_rectiligne_3D_type_normale_standard\""):
+	if(options.liaison_rectiligne_3D_type_normale!="liaison_rectiligne_3D_type_normale_standard"):
 		Vn = v3D(options.liaison_rectiligne_3D_normale_quelconque_x, options.liaison_rectiligne_3D_normale_quelconque_y, options.liaison_rectiligne_3D_normale_quelconque_z,base)
 	else:	#Si vecteur standard
 		if(options.liaison_rectiligne_3D_axe_normale=="x"):
@@ -225,7 +226,7 @@ def dessin_rectiligne_3D(options,contexte):
 			Vn = v3D(0, -1, 0, base)
 		elif(options.liaison_rectiligne_3D_axe_normale=="-z"):
 			Vn = v3D(0, 0, -1, base)
-	if(options.liaison_rectiligne_3D_type_direction!="\"liaison_rectiligne_3D_type_direction_standard\""):
+	if(options.liaison_rectiligne_3D_type_direction!="liaison_rectiligne_3D_type_direction_standard"):
 		Vd = v3D(options.liaison_rectiligne_3D_direction_quelconque_x, options.liaison_rectiligne_3D_direction_quelconque_y, options.liaison_rectiligne_3D_direction_quelconque_z,base)
 	else:
 		if(options.liaison_rectiligne_3D_axe_direction=="x"):
@@ -244,7 +245,7 @@ def dessin_rectiligne_3D(options,contexte):
 	
 
 	if (Vn ^ Vd).norme() < 1E-10 :
-		assert 0, "Erreur : La normale est la direction du contact ne peuvent pas être colinéaires. Choisissez une autre normale, ou une autre direction."
+		assert 0, "*** ERREUR *** : La normale et la direction du contact ne peuvent pas être colinéaires. Choisissez une autre normale ou une autre direction."
 	
 	Vn.normalise()
 	Vx1 = Vn
@@ -268,7 +269,7 @@ def dessin_rectiligne_3D(options,contexte):
 	else:
 		decalageProfondeur = 10000000
 	
-	plan=inkex.etree.Element(inkex.addNS('path','svg'))
+	plan=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(0,	-r3D_longueur_plan/2.,	-r3D_largeur_plan/2.	),
 					(0,	-r3D_longueur_plan/2.,	r3D_largeur_plan/2.	),
@@ -282,7 +283,7 @@ def dessin_rectiligne_3D(options,contexte):
 	plan.set('style','fill:white;stroke-linejoin:round')
 	
 
-	tige_plan=inkex.etree.Element(inkex.addNS('path','svg'))
+	tige_plan=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(0,				0.,	0.	),
 					(-r3D_longueur_tige_plan,	0.,	0.	)
@@ -294,7 +295,7 @@ def dessin_rectiligne_3D(options,contexte):
 	tige_plan.set('profondeur',str(profondeur+decalageProfondeur))
 	
 	# Prisme ***************************************
-	base_prisme=inkex.etree.Element(inkex.addNS('path','svg'))
+	base_prisme=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(r3D_hauteur_prisme+epaisseur_prisme/2.,	-r3D_longueur_base_prisme/2.,	-r3D_largeur_base_prisme/2.	),
 					(r3D_hauteur_prisme+epaisseur_prisme/2.,	-r3D_longueur_base_prisme/2.,	r3D_largeur_base_prisme/2.	),
@@ -309,7 +310,7 @@ def dessin_rectiligne_3D(options,contexte):
 	profondeur_base = profondeur
 	
 	
-	flanc1_prisme=inkex.etree.Element(inkex.addNS('path','svg'))
+	flanc1_prisme=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(epaisseur_prisme/2.,	-r3D_longueur_contact/2.,	0	),
 					(epaisseur_prisme/2.,	r3D_longueur_contact/2.,	0	),
@@ -323,7 +324,7 @@ def dessin_rectiligne_3D(options,contexte):
 	flanc1_prisme.set('profondeur',str(profondeur_base*0.999+profondeur*0.001))
 	
 	
-	flanc2_prisme=inkex.etree.Element(inkex.addNS('path','svg'))
+	flanc2_prisme=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(epaisseur_prisme/2.,	-r3D_longueur_contact/2.,	0	),
 					(epaisseur_prisme/2.,	r3D_longueur_contact/2.,	0	),
@@ -337,7 +338,7 @@ def dessin_rectiligne_3D(options,contexte):
 	flanc2_prisme.set('profondeur',str(profondeur_base*0.999+profondeur*0.001))
 	
 	
-	bout1_prisme=inkex.etree.Element(inkex.addNS('path','svg'))
+	bout1_prisme=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(epaisseur_prisme/2.,	r3D_longueur_contact/2.,	0	),
 					(r3D_hauteur_prisme+epaisseur_prisme/2.,	r3D_longueur_base_prisme/2.,	r3D_largeur_base_prisme/2.	),
@@ -350,7 +351,7 @@ def dessin_rectiligne_3D(options,contexte):
 	bout1_prisme.set('profondeur',str(profondeur_base*0.999+profondeur*0.001))
 	
 	
-	bout2_prisme=inkex.etree.Element(inkex.addNS('path','svg'))
+	bout2_prisme=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(epaisseur_prisme/2.,	-r3D_longueur_contact/2.,	0	),
 					(r3D_hauteur_prisme+epaisseur_prisme/2.,	-r3D_longueur_base_prisme/2.,	r3D_largeur_base_prisme/2.	),
@@ -365,7 +366,7 @@ def dessin_rectiligne_3D(options,contexte):
 
 
 
-	tige_prisme=inkex.etree.Element(inkex.addNS('path','svg'))
+	tige_prisme=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(r3D_hauteur_prisme+epaisseur_prisme/2.,	0.,	0.	),
 					(r3D_hauteur_prisme+r3D_longueur_tige_prisme+epaisseur_prisme/2.,	0.,	0.	)
@@ -379,13 +380,13 @@ def dessin_rectiligne_3D(options,contexte):
 
 
 	# Ajout au Groupe ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-        listeObjets=[plan,tige_plan,base_prisme,tige_prisme,flanc1_prisme,flanc2_prisme,bout1_prisme,bout2_prisme]
-        ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
+	liaison = etree.SubElement(contexte, 'g')
+	listeObjets=[plan,tige_plan,base_prisme,tige_prisme,flanc1_prisme,flanc2_prisme,bout1_prisme,bout2_prisme]
+	ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
         
         
 	# Transformations ***************************************
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x,contexte))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	

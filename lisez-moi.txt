@@ -1,6 +1,6 @@
 ==============================================================
 
-	LIAISONS CINEMATIQUES POUR INKSCAPE 0.92
+	LIAISONS CINEMATIQUES POUR INKSCAPE 1.00
 	
 ==============================================================
 
@@ -10,7 +10,7 @@ Auteur : Raphaël ALLAIS
 Version officielle : https://eduscol.education.fr/sti/ressources_pedagogiques/inkscape-extension-pour-le-dessin-2d-ou-3d-de-liaisons-cinematiques
 Site d'Eduscol : https://eduscol.education.fr/sti/
 
-Dernière version : https://github.com/Rafafouille/inkscape_liaisons/tree/inkscape_0.92
+Dernière version : https://github.com/Rafafouille/inkscape_liaisons/tree/inkscape_1.00
 Aide en ligne : http://inkscape.allais.eu
 
 ==============================================================
@@ -27,16 +27,16 @@ II . INSTALLATION
 
 Ce qu'il faut avoir déjà :
 ------------------------------
-* Inkscape : dans sa version 0.92. (Les autres versions ne fonctionnent pas)
+* Inkscape : dans sa version 1.00. (Une ancienne version de l'extension existe pour la version 0.92)
 --> Lien de téléchargement : https://inkscape.org/release
 
-* Python 2.x : Normalement, il est installé avec Inkscape par défaut.
+* Python 3.x : Normalement, il est installé avec Inkscape par défaut.
 
 Comment installer l'extension ?
 -----------------------------------
 
-En copiant tous les fichiers .inx et .py dans le dossier d'extension d'Inkscape.
-Pour savoir où se trouve ce dossier, dans la version 0.92, il faut ouvrir Inkscape,
+En copiant le dossier "liaisons" (contenant des fichiers .inx et .py) dans le dossier d'extension d'Inkscape.
+Pour savoir où se trouve ce dossier, dans la version 1.00, il faut ouvrir Inkscape,
 aller dans les menus : [Édition] --> [Préférences] --> [Système] --> [Extensions de l'utilisateur]
 Pensez à redémarrer Inkscape après la copie !
 
@@ -46,7 +46,7 @@ III . FONCTIONNEMENT
 ==============================================================
 
 Pour ouvrir le module, il faut aller dans le menu :
-[Extensions] --> [Enseignement] --> [Liaisons]
+[Extensions] --> [Enseignement] --> [Liaisons Cinématiques]
 
 Une fenêtre s'ouvre avec 2 onglets.
 Je vous conseille de commencer par l'onglet [Options générales], puis de revenir sur [Choix Liaison]

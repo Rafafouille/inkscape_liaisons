@@ -2,6 +2,7 @@
 
 import math
 import inkex
+from lxml import etree	# Nécessaire pour les groupes depuis la version 1.0
 from liaisons_parametres import *
 from liaisons_fonctions_utiles import *
 
@@ -48,14 +49,14 @@ def dessin_sphere_plan_2D_cote(options,contexte):
 	old_liaisons=options.opt_gene_gene_old
 	
 	#Groupes ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-	sphere=inkex.etree.SubElement(liaison,'g')
-	plan=inkex.etree.SubElement(liaison,'g')
+	liaison = etree.SubElement(contexte, 'g')
+	sphere=etree.SubElement(liaison,'g')
+	plan=etree.SubElement(liaison,'g')
 
 	
 	# PLAN ***************************************
 	#plan dessus
-	plan_plan=inkex.etree.Element(inkex.addNS('path','svg'))
+	plan_plan=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(-epaisseur_plan/2.,	-sp2Dc_largeur_plan/2.),
 					(-epaisseur_plan/2.,	sp2Dc_largeur_plan/2)	],
 				False,
@@ -66,7 +67,7 @@ def dessin_sphere_plan_2D_cote(options,contexte):
 	plan.append(plan_plan)
 	
 	#tige
-	tige_plan=inkex.etree.Element(inkex.addNS('path','svg'))
+	tige_plan=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(-epaisseur_plan/2.				,	0),
 					(-sp2Dc_longueur_tige_plan	,	0)	],
 				False,
@@ -79,13 +80,13 @@ def dessin_sphere_plan_2D_cote(options,contexte):
 	# SPHERE ***************************************
 	#Sphere
 	if not old_liaisons:
-		sphere_bout=inkex.etree.Element(inkex.addNS('circle','svg'))
+		sphere_bout=etree.Element(inkex.addNS('circle','svg'))
 		sphere_bout.set('cx',str((echelle*sp2Dc_diametre_sphere/2.+epaisseur_sphere/2.)*math.cos(-rotation_normale*math.pi/180)))
 		sphere_bout.set('cy',str((echelle*sp2Dc_diametre_sphere/2.+epaisseur_sphere/2.)*math.sin(-rotation_normale*math.pi/180)))
 		sphere_bout.set('r',str(sp2Dc_diametre_sphere/2.*echelle))
 		sphere_bout.set('style','fill:white')
 	else :
-		sphere_bout=inkex.etree.Element(inkex.addNS('path','svg'))
+		sphere_bout=etree.Element(inkex.addNS('path','svg'))
 		chemin=points2D_to_svgd([	(epaisseur_sphere/2.	,	0),
 						(sp2DcOLD_largeur_fleche*math.sqrt(3)/2.+epaisseur_sphere/2.	,	sp2DcOLD_largeur_fleche/2.),
 						(sp2DcOLD_largeur_fleche*math.sqrt(3)/2.+epaisseur_sphere/2.	,	-sp2DcOLD_largeur_fleche/2.) 	]
@@ -97,7 +98,7 @@ def dessin_sphere_plan_2D_cote(options,contexte):
 	sphere.append(sphere_bout)
 	
 	#tige
-	sphere_tige=inkex.etree.Element(inkex.addNS('path','svg'))
+	sphere_tige=etree.Element(inkex.addNS('path','svg'))
 	if not old_liaisons:
 		chemin=points_to_svgd([	(sp2Dc_diametre_sphere/2.*(Vx1.x+Vx2.x) + epaisseur_sphere/2.*Vx1.x					,	sp2Dc_diametre_sphere/2.*(Vx1.y+Vx2.y) + epaisseur_sphere/2.*Vx1.y),
 					(sp2Dc_diametre_sphere/2.*(Vx1.x+Vx2.x) + (sp2Dc_longueur_tige_sphere-epaisseur_sphere/2.)*Vx2.x + epaisseur_sphere/2.*Vx1.x	,	sp2Dc_diametre_sphere/2.*(Vx1.y+Vx2.y) + (sp2Dc_longueur_tige_sphere-epaisseur_sphere/2.)*Vy2.x + epaisseur_sphere/2.*Vx1.y )	])
@@ -112,7 +113,7 @@ def dessin_sphere_plan_2D_cote(options,contexte):
 	# Transformations ***************************************
 	#dessus.set("transform","rotate("+str(rotation)+")")
 	#dessous.set("transform","rotate("+str(rotation)+")")
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x,contexte))+","+str(convertLongueur2Inkscape(options,y0+y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 
@@ -156,14 +157,14 @@ def dessin_sphere_plan_2D_dessus(options,contexte):
 	epaisseur_sphere=options.opt_gene_lignes_epaisseur_1
 	
 	#Groupes ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-	groupe_plan=inkex.etree.SubElement(liaison,'g')
-	groupe_sphere=inkex.etree.SubElement(liaison,'g')
+	liaison = etree.SubElement(contexte, 'g')
+	groupe_plan=etree.SubElement(liaison,'g')
+	groupe_sphere=etree.SubElement(liaison,'g')
 
 	
 	# Plan ***************************************	
 	# rectangle 
-	plan=inkex.etree.Element(inkex.addNS('rect','svg'))
+	plan=etree.Element(inkex.addNS('rect','svg'))
 	plan.set('x',str(-sp2Dd_largeur*echelle/2) )
 	plan.set('y',str(-sp2Dd_largeur*echelle/2) )
 	plan.set('width',str(sp2Dd_largeur*echelle))
@@ -173,7 +174,7 @@ def dessin_sphere_plan_2D_dessus(options,contexte):
 	plan.set('stroke-width',str(epaisseur_plan))
 	groupe_plan.append(plan)
 	#trait
-	traitPlan=inkex.etree.Element(inkex.addNS('path','svg'))
+	traitPlan=etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(sp2Dd_largeur/2.*echelle	,	0),
 				((sp2Dd_largeur/2.+sp2Dd_longueur_tige_plan)*echelle	,	0)	])
 	traitPlan.set('d',chemin)
@@ -183,7 +184,7 @@ def dessin_sphere_plan_2D_dessus(options,contexte):
 	
 	# sphere ***************************************
 	# sphere
-	sphere=inkex.etree.Element(inkex.addNS('circle','svg'))
+	sphere=etree.Element(inkex.addNS('circle','svg'))
 	sphere.set('cx','0')
 	sphere.set('cy','0')
 	sphere.set('r',str(sp2Dd_diametre_sphere/2.*echelle))
@@ -194,7 +195,7 @@ def dessin_sphere_plan_2D_dessus(options,contexte):
 
 	
 	#trait
-	traitSphere=inkex.etree.Element(inkex.addNS('path','svg'))
+	traitSphere=etree.Element(inkex.addNS('path','svg'))
 	chemin=points_to_svgd([	(sp2Dd_diametre_sphere/2.*echelle	,0),
 				((sp2Dd_diametre_sphere/2.+sp2Dd_longueur_tige_sphere)*echelle	,0)	])
 	traitSphere.set('d',chemin)
@@ -205,7 +206,7 @@ def dessin_sphere_plan_2D_dessus(options,contexte):
 	# Transformations ***************************************
 	groupe_plan.set("transform","rotate("+str(rotationPlan)+")")
 	groupe_sphere.set("transform","rotate("+str(rotationSphere)+")")
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x,contexte))+","+str(convertLongueur2Inkscape(options,y0+y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	
@@ -237,26 +238,28 @@ def dessin_sphere_plan_3D(options,contexte):
 	angle_plan=-float(options.liaison_sphere_plan_3D_rotation_plan)/180.*math.pi
 	#Repere local de la liaison
 	#Plan
-	if(options.liaison_sphere_plan_3D_type_normale=="\"liaison_sphere_plan_3D_type_normale_quelconque\""):
+	if(options.liaison_sphere_plan_3D_type_normale=="liaison_sphere_plan_3D_type_normale_quelconque"):
 		V=v3D(options.liaison_sphere_plan_3D_normale_quelconque_x,options.liaison_sphere_plan_3D_normale_quelconque_y,options.liaison_sphere_plan_3D_normale_quelconque_z,base)
+		if V.x == V.y == V.z == 0 : V=v3D(1,0,0,base) #Si vecteur nul : on prend X par defaut
 		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle,angle_plan)#Repere plan
 	else:	#Si vecteur standard
-		if options.liaison_plane_3D_axe == "x" :
+		if options.liaison_sphere_plan_3D_axe_normale == "x" :
 			Vx1,Vy1,Vz1 = getBaseFromVecteur(Vx, echelle, angle_plan)
-		elif options.liaison_plane_3D_axe == "-x" :
+		elif options.liaison_sphere_plan_3D_axe_normale == "-x" :
 			Vx1,Vy1,Vz1 = getBaseFromVecteur(-Vx, echelle, angle_plan)
-		elif options.liaison_plane_3D_axe == "y" :
+		elif options.liaison_sphere_plan_3D_axe_normale == "y" :
 			Vx1,Vy1,Vz1 = getBaseFromVecteur(Vy, echelle, angle_plan)
-		elif options.liaison_plane_3D_axe == "-y" :
+		elif options.liaison_sphere_plan_3D_axe_normale == "-y" :
 			Vx1,Vy1,Vz1 = getBaseFromVecteur(-Vy, echelle, angle_plan)
-		elif options.liaison_plane_3D_axe == "z" :
+		elif options.liaison_sphere_plan_3D_axe_normale == "z" :
 			Vx1,Vy1,Vz1 = getBaseFromVecteur(Vz, echelle, angle_plan)
 		else:#z
 			Vx1,Vy1,Vz1 = getBaseFromVecteur(-Vz, echelle, angle_plan)
 	baseLocale1=(Vx1,Vy1,Vz1)
 	#Sphère
-	if(options.liaison_sphere_plan_3D_type_direction_sphere=="\"liaison_sphere_plan_3D_type_direction_sphere_quelconque\""):
+	if(options.liaison_sphere_plan_3D_type_direction_sphere=="liaison_sphere_plan_3D_type_direction_sphere_quelconque"):
 		V=v3D(options.liaison_sphere_plan_3D_direction_sphere_quelconque_x,options.liaison_sphere_plan_3D_direction_sphere_quelconque_y,options.liaison_sphere_plan_3D_direction_sphere_quelconque_z,base)
+		if V.x == V.y == V.z == 0 : V=v3D(1,0,0,base) #Si vecteur nul : on prend X par defaut
 		Vx2,Vy2,Vz2=getBaseFromVecteur(V,echelle,angle_plan)#Repere plan
 	else:	#Si vecteur standard
 		if options.liaison_sphere_plan_3D_axe_sphere == "normale" :
@@ -276,7 +279,7 @@ def dessin_sphere_plan_3D(options,contexte):
 	baseLocale2=(Vx2,Vy2,Vz2)
 
 	# Plan ***************************************
-	plan=inkex.etree.Element(inkex.addNS('path','svg'))
+	plan=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(0,	-sp3D_largeur/2.,	-sp3D_largeur/2.	),
 					(0,	-sp3D_largeur/2.,	sp3D_largeur/2.	),
@@ -290,7 +293,7 @@ def dessin_sphere_plan_3D(options,contexte):
 	plan.set('profondeur',str(profondeur))
 	
 
-	tigePlan=inkex.etree.Element(inkex.addNS('path','svg'))
+	tigePlan=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 						(0,				0.,	0.	),
 						(-sp3D_longueur_tige_plan,	0.,	0.	)
@@ -302,9 +305,9 @@ def dessin_sphere_plan_3D(options,contexte):
 	tigePlan.set('profondeur',str(profondeur))
 	
 	# Sphère ***************************************
-	Vcentre = Vx1 * sp3D_diametre_sphere / 2.
+	Vcentre = Vx1 * (sp3D_diametre_sphere / 2.)
 	
-	sphere=inkex.etree.Element(inkex.addNS('circle','svg'))
+	sphere=etree.Element(inkex.addNS('circle','svg'))
 	sphere.set('cx', str(Vx1.x*sp3D_diametre_sphere/2.))
 	sphere.set('cy', str(Vx1.y*sp3D_diametre_sphere/2.))
 	sphere.set('r',str(sp3D_diametre_sphere/2.*echelle))
@@ -314,9 +317,9 @@ def dessin_sphere_plan_3D(options,contexte):
 	sphere.set('profondeur',str(Vx1.z))
 
 
-	tigeSphere=inkex.etree.Element(inkex.addNS('path','svg'))
-	P1=(Vx1+Vx2) * sp3D_diametre_sphere/2.
-	P2=(Vx1+Vx2) * sp3D_diametre_sphere/2. + Vx2*sp3D_longueur_tige_sphere
+	tigeSphere=etree.Element(inkex.addNS('path','svg'))
+	P1=(Vx1+Vx2) * (sp3D_diametre_sphere/2.)
+	P2=(Vx1+Vx2) * (sp3D_diametre_sphere/2.) + Vx2*sp3D_longueur_tige_sphere
 	chemin,profondeur=points3D_to_svgd([
 					(P1.x,	P1.y,	P1.z	),
 					(P2.x,	P2.y,	P2.z	)
@@ -330,13 +333,13 @@ def dessin_sphere_plan_3D(options,contexte):
 
 
 	# Ajout au Groupe ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-        listeObjets=[sphere,tigeSphere,plan,tigePlan]
-        ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
+	liaison = etree.SubElement(contexte, 'g')
+	listeObjets=[sphere,tigeSphere,plan,tigePlan]
+	ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
         
         
 	# Transformations ***************************************
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x,contexte))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	

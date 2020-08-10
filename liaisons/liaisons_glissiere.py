@@ -1,5 +1,6 @@
 import math
 import inkex
+from lxml import etree	# Nécessaire pour les groupes depuis la version 1.0
 from liaisons_fonctions_utiles import *
 from liaisons_parametres import *
 
@@ -38,13 +39,13 @@ def dessin_Glissiere_2D_cote(options,contexte):
 	epaisseur_male=options.opt_gene_lignes_epaisseur_1
 	
 	#Groupes ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
-	male=inkex.etree.SubElement(liaison,'g')
-	femelle=inkex.etree.SubElement(liaison,'g')
+	liaison = etree.SubElement(contexte, 'g')
+	male=etree.SubElement(liaison,'g')
+	femelle=etree.SubElement(liaison,'g')
 
 	# Male ***************************************
 	#Ligne male
-	ligneM=inkex.etree.Element(inkex.addNS('path','svg'))
+	ligneM=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(-longueur_axe/2.,0),
 					(longueur_axe/2.,0)]
 				,False,base2D)
@@ -57,7 +58,7 @@ def dessin_Glissiere_2D_cote(options,contexte):
 	# Femelle ***************************************
 
 	#Rectangle
-	rectangle=inkex.etree.Element(inkex.addNS('rect','svg'))
+	rectangle=etree.Element(inkex.addNS('rect','svg'))
 	rectangle.set('x',str(-largeur*echelle_liaison/2) )
 	rectangle.set('y',str(-hauteur*echelle_liaison/2) )
 	rectangle.set('width',str(largeur*echelle_liaison))
@@ -68,7 +69,7 @@ def dessin_Glissiere_2D_cote(options,contexte):
 	femelle.append(rectangle)
 	
 	#Ligne femelle
-	ligneF=inkex.etree.Element(inkex.addNS('path','svg'))
+	ligneF=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(0	,	hauteur/2.),
 					(0	,	hauteur/2.+longueur_tige)	]
 				,False,base2D)
@@ -80,7 +81,7 @@ def dessin_Glissiere_2D_cote(options,contexte):
 	# Transformations ***************************************
 	male.set("transform","rotate("+str(-rotation)+")")
 	femelle.set("transform","rotate("+str(-rotation)+")")
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x,contexte))+","+str(convertLongueur2Inkscape(options,y0+y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	
@@ -119,13 +120,13 @@ def dessin_Glissiere_2D_face(options,contexte):
 	epaisseur_femelle = options.opt_gene_lignes_epaisseur_2
 	epaisseur_male = options.opt_gene_lignes_epaisseur_1
 	#Groupes ******************************************
-        liaison = inkex.etree.SubElement(contexte,'g')
-	male = inkex.etree.SubElement(liaison,'g')
-	femelle = inkex.etree.SubElement(liaison,'g')
+	liaison = etree.SubElement(contexte,'g')
+	male = etree.SubElement(liaison,'g')
+	femelle = etree.SubElement(liaison,'g')
 
 	# Femelle ***************************************	
 	#rectangle
-	rectangle=inkex.etree.Element(inkex.addNS('rect','svg'))
+	rectangle=etree.Element(inkex.addNS('rect','svg'))
 	rectangle.set('x',str(-profondeur*echelle_liaiaon/2) )
 	rectangle.set('y',str(-hauteur*echelle_liaiaon/2) )
 	rectangle.set('width',str(profondeur*echelle_liaiaon))
@@ -135,7 +136,7 @@ def dessin_Glissiere_2D_face(options,contexte):
 	rectangle.set('stroke-width',str(epaisseur_femelle))
 	femelle.append(rectangle)
 	#cercle
-	tige=inkex.etree.Element(inkex.addNS('path','svg'))
+	tige=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(0	,	hauteur/2.),
 				(0,	hauteur/2.+longueur_tige_femelle)	]
 				,False,base2D)
@@ -146,7 +147,7 @@ def dessin_Glissiere_2D_face(options,contexte):
 	
 	# Male ***************************************
 	#croisillon1
-	croix1=inkex.etree.Element(inkex.addNS('path','svg'))
+	croix1=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(-profondeur/2.+epaisseur_femelle/2	,	-hauteur/2.+epaisseur_femelle/2),
 					(profondeur/2.-epaisseur_femelle/2,	hauteur/2.-epaisseur_femelle/2)	]
 				,False,base2D)
@@ -155,7 +156,7 @@ def dessin_Glissiere_2D_face(options,contexte):
 	croix1.set('stroke-width',str(epaisseur_male))
 	male.append(croix1)
 	#croisillon2
-	croix2=inkex.etree.Element(inkex.addNS('path','svg'))
+	croix2=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(profondeur/2.-epaisseur_femelle/2	,	-hauteur/2.+epaisseur_femelle/2),
 					(-profondeur/2.+epaisseur_femelle/2,	hauteur/2.-epaisseur_femelle/2)	]
 				,False,base2D)
@@ -164,7 +165,7 @@ def dessin_Glissiere_2D_face(options,contexte):
 	croix2.set('stroke-width', str(epaisseur_male))
 	male.append(croix2)
 	#Trait
-	trait=inkex.etree.Element(inkex.addNS('path','svg'))
+	trait=etree.Element(inkex.addNS('path','svg'))
 	chemin=points2D_to_svgd([	(0	,	0),
 					(longueur_tige_male*math.sin(-rotation_tige_male/180*math.pi),	longueur_tige_male*math.cos(rotation_tige_male/180*math.pi))	]
 				,False,base2D)
@@ -176,7 +177,7 @@ def dessin_Glissiere_2D_face(options,contexte):
 	# Transformations ***************************************
 	male.set("transform","rotate("+str(-rotation)+")")
 	femelle.set("transform","rotate("+str(-rotation)+")")
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x))+","+str(convertLongueur2Inkscape(options,y0+y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x,contexte))+","+str(convertLongueur2Inkscape(options,y0+y,contexte))+")")
 	# Credits **************************************
 	liaison.set("credits",options.credits)
 	
@@ -213,7 +214,7 @@ def dessin_Glissiere_3D(options,contexte):
 	angle=-float(options.liaison_glissiere_3D_orientation)/180.*math.pi
 	
 	#Repere local de la liaison
-	if(options.liaison_glissiere_3D_type_direction=="\"liaison_glissiere_3D_type_direction_quelconque\""):
+	if(options.liaison_glissiere_3D_type_direction=="liaison_glissiere_3D_type_direction_quelconque"):
 		V=v3D(options.liaison_glissiere_3D_type_direction_quelconque_x,options.liaison_glissiere_3D_type_direction_quelconque_y,options.liaison_glissiere_3D_type_direction_quelconque_z,base)
 		if V.x == V.y == V.z == 0 : V=v3D(1,0,0,base) #Si vecteur nul : on prend X par defaut
 		Vx1,Vy1,Vz1=getBaseFromVecteur(V,echelle_liaison,angle)#Repere local
@@ -230,7 +231,7 @@ def dessin_Glissiere_3D(options,contexte):
 	
 	# Male ***************************************
 	#Axe central
-	axe=inkex.etree.Element(inkex.addNS('path','svg'))
+	axe=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(-longueur_male/2.,	0,	0	),
 					(longueur_male/2.,	0,	0	)
@@ -245,7 +246,7 @@ def dessin_Glissiere_3D(options,contexte):
 
 	if(options.liaison_glissiere_3D_representation) : # Si croisillon 3D
 		#	Demi croisillon 1
-		demicroix1=inkex.etree.Element(inkex.addNS('path','svg'))
+		demicroix1=etree.Element(inkex.addNS('path','svg'))
 		chemin,profondeur=points3D_to_svgd([
 						(-largeur/2.,	0,	0	),
 						(-largeur/2.,	-epaisseur/2.+epaisseur_femelle/2.,	hauteur/2.-epaisseur_femelle/2.	),
@@ -260,7 +261,7 @@ def dessin_Glissiere_3D(options,contexte):
 		listeObjets.append(demicroix1)
 		
 		#Demi croisillon 2
-		demicroix2=inkex.etree.Element(inkex.addNS('path','svg'))
+		demicroix2=etree.Element(inkex.addNS('path','svg'))
 		chemin,profondeur=points3D_to_svgd([
 						(-largeur/2.,	0,	0	),
 						(-largeur/2.,	epaisseur/2.-epaisseur_femelle/2.,	hauteur/2.-epaisseur_femelle/2.	),
@@ -275,7 +276,7 @@ def dessin_Glissiere_3D(options,contexte):
 		listeObjets.append(demicroix2)
 
 		#Demi croisillon 3
-		demicroix3=inkex.etree.Element(inkex.addNS('path','svg'))
+		demicroix3=etree.Element(inkex.addNS('path','svg'))
 		chemin,profondeur=points3D_to_svgd([
 						(-largeur/2.,	0,	0	),
 						(-largeur/2.,	epaisseur/2.-epaisseur_femelle/2.,	-hauteur/2.+epaisseur_femelle/2.	),
@@ -290,7 +291,7 @@ def dessin_Glissiere_3D(options,contexte):
 		listeObjets.append(demicroix3)
 		
 		#Demi croisillon 4
-		demicroix4=inkex.etree.Element(inkex.addNS('path','svg'))
+		demicroix4=etree.Element(inkex.addNS('path','svg'))
 		chemin,profondeur=points3D_to_svgd([
 						(-largeur/2.,	0,	0	),
 						(-largeur/2.,	-epaisseur/2.+epaisseur_femelle/2.,	-hauteur/2.+epaisseur_femelle/2.	),
@@ -307,7 +308,7 @@ def dessin_Glissiere_3D(options,contexte):
 	else : #Si croisillon pas 3D
 		
 		#croisillon 1
-		croix1=inkex.etree.Element(inkex.addNS('path','svg'))
+		croix1=etree.Element(inkex.addNS('path','svg'))
 		chemin,profondeur=points3D_to_svgd([
 						(-largeur/2.,	-epaisseur/2.+(epaisseur_femelle+epaisseur_male)/2.,	-hauteur/2.+(epaisseur_femelle+epaisseur_male)/2.	),
 						(-largeur/2.,	epaisseur/2.-(epaisseur_femelle+epaisseur_male)/2.,	hauteur/2.-(epaisseur_femelle+epaisseur_male)/2.	)
@@ -321,7 +322,7 @@ def dessin_Glissiere_3D(options,contexte):
 		
 		
 		#croisillon 2
-		croix2 = inkex.etree.Element(inkex.addNS('path','svg'))
+		croix2 = etree.Element(inkex.addNS('path','svg'))
 		chemin,profondeur=points3D_to_svgd([
 						(-largeur/2.,	epaisseur/2.-(epaisseur_femelle+epaisseur_male)/2.,	-hauteur/2.+(epaisseur_femelle+epaisseur_male)/2.	),
 						(-largeur/2.,	-epaisseur/2.+(epaisseur_femelle+epaisseur_male)/2.,	hauteur/2.-(epaisseur_femelle+epaisseur_male)/2.	)
@@ -335,7 +336,7 @@ def dessin_Glissiere_3D(options,contexte):
 	
 	
 		#croisillon 3
-		croix3 = inkex.etree.Element(inkex.addNS('path','svg'))
+		croix3 = etree.Element(inkex.addNS('path','svg'))
 		chemin,profondeur=points3D_to_svgd([
 						(largeur/2.,	epaisseur/2.-(epaisseur_femelle+epaisseur_male)/2.,	-hauteur/2.+(epaisseur_femelle+epaisseur_male)/2.	),
 						(largeur/2.,	-epaisseur/2.+(epaisseur_femelle+epaisseur_male)/2.,	hauteur/2.-(epaisseur_femelle+epaisseur_male)/2.	)
@@ -349,7 +350,7 @@ def dessin_Glissiere_3D(options,contexte):
 		
 		
 		#croisillon 4
-		croix4=inkex.etree.Element(inkex.addNS('path','svg'))
+		croix4=etree.Element(inkex.addNS('path','svg'))
 		chemin,profondeur=points3D_to_svgd([
 						(largeur/2.,	-epaisseur/2.+(epaisseur_femelle+epaisseur_male)/2.,	-hauteur/2.+(epaisseur_femelle+epaisseur_male)/2.	),
 						(largeur/2.,	epaisseur/2.-(epaisseur_femelle+epaisseur_male)/2.,	hauteur/2.-(epaisseur_femelle+epaisseur_male)/2.	)
@@ -364,7 +365,7 @@ def dessin_Glissiere_3D(options,contexte):
 	# Femelle ***************************************
 	
 	#pan1
-	pan1=inkex.etree.Element(inkex.addNS('path','svg'))
+	pan1=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(-largeur/2.,	-epaisseur/2.,	hauteur/2.	),
 					(largeur/2.,	-epaisseur/2.,	hauteur/2.	),
@@ -379,7 +380,7 @@ def dessin_Glissiere_3D(options,contexte):
 	listeObjets.append(pan1)
 	
 	#pan2
-	pan2=inkex.etree.Element(inkex.addNS('path','svg'))
+	pan2=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(-largeur/2.,	epaisseur/2.,	hauteur/2.	),
 					(largeur/2.,	epaisseur/2.,	hauteur/2.	),
@@ -394,7 +395,7 @@ def dessin_Glissiere_3D(options,contexte):
 	listeObjets.append(pan2)
 
 	#pan3
-	pan3=inkex.etree.Element(inkex.addNS('path','svg'))
+	pan3=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(-largeur/2.,	-epaisseur/2.,	-hauteur/2.	),
 					(largeur/2.,	-epaisseur/2.,	-hauteur/2.	),
@@ -409,7 +410,7 @@ def dessin_Glissiere_3D(options,contexte):
 	listeObjets.append(pan3)
 
 	#pan4
-	pan4=inkex.etree.Element(inkex.addNS('path','svg'))
+	pan4=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(-largeur/2.,	-epaisseur/2.,	hauteur/2.	),
 					(largeur/2.,	-epaisseur/2.,	hauteur/2.	),
@@ -425,7 +426,7 @@ def dessin_Glissiere_3D(options,contexte):
 	
 
 	#barre femelle
-	barreFemelle=inkex.etree.Element(inkex.addNS('path','svg'))
+	barreFemelle=etree.Element(inkex.addNS('path','svg'))
 	chemin,profondeur=points3D_to_svgd([
 					(0,	0,	hauteur/2.	),
 					(0,	0,	hauteur/2. + longueur_tige_femelle)
@@ -438,14 +439,14 @@ def dessin_Glissiere_3D(options,contexte):
 	listeObjets.append(barreFemelle)
 	
 	# Ajout au Groupe ******************************************
-        liaison = inkex.etree.SubElement(contexte, 'g')
+	liaison = etree.SubElement(contexte, 'g')
         
-        #listeObjets=[pan1,pan2,pan3,pan4,axe,demicroix1,demicroix2,demicroix3,demicroix4,barreFemelle]
+	#listeObjets=[pan1,pan2,pan3,pan4,axe,demicroix1,demicroix2,demicroix3,demicroix4,barreFemelle]
         
-        ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
+	ajouteCheminDansLOrdreAuGroupe(liaison,listeObjets)
 
 	# Transformations ***************************************
-	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y))+")")
+	liaison.set("transform","translate("+str(convertLongueur2Inkscape(options,x0+x*Vx.x+y*Vy.x+z*Vz.x,contexte))+","+str(convertLongueur2Inkscape(options,y0+x*Vx.y+y*Vy.y+z*Vz.y,contexte))+")")
 	
 	# Credits **************************************
 	liaison.set("credits",options.credits)
