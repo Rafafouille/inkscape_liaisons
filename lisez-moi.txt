@@ -34,9 +34,8 @@ Ce qu'il faut avoir déjà :
 
 Comment installer l'extension ?
 -----------------------------------
-
-En copiant le dossier "liaisons" (contenant des fichiers .inx et .py) dans le dossier d'extension d'Inkscape.
-Pour savoir où se trouve ce dossier, dans la version 1.00, il faut ouvrir Inkscape,
+En copiant le dossier "liaisons_cinematiques" (contenant des fichiers .inx et .py) dans le dossier d'extension d'Inkscape.
+Pour savoir où se trouve ce dossier d'extension, dans la version 1.00, il faut ouvrir Inkscape,
 aller dans les menus : [Édition] --> [Préférences] --> [Système] --> [Extensions de l'utilisateur]
 Pensez à redémarrer Inkscape après la copie !
 
