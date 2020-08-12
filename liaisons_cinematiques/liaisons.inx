@@ -1286,7 +1286,7 @@
 		</page>
 		<page name="opt_gene_A_Propos" gui-text="A Propos">
 			<label appearance="header">Crédit :</label>
-				<label>Extension "Liaison", Version du 08/08/20.</label>
+				<label>Extension "Liaison", Version du 12/08/20.</label>
 				<label></label>
 				<label>Créé dans le cadre d'Éduscol STI (https://eduscol.education.fr/sti/)</label>
 				<label>pour l'Éducation Nationale.</label>
