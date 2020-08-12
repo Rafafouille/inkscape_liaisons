@@ -7,15 +7,15 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   id="svg8"
-   version="1.1"
-   viewBox="0 0 20.264584 20.769339"
-   height="20.769339mm"
    width="20.264584mm"
+   height="20.769339mm"
+   viewBox="0 0 20.264584 20.769339"
+   version="1.1"
+   id="svg874"
    sodipodi:docname="rectiligne_2D_bout.svg"
    inkscape:version="1.0 (9f2f71dc58, 2020-08-02)">
   <defs
-     id="defs2" />
+     id="defs868" />
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -23,26 +23,26 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.98994949"
-     inkscape:cx="435.45566"
-     inkscape:cy="9.1740793"
+     inkscape:zoom="3.959798"
+     inkscape:cx="166.85112"
+     inkscape:cy="104.49874"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
+     inkscape:window-width="1853"
+     inkscape:window-height="1025"
+     inkscape:window-x="67"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
      inkscape:snap-object-midpoints="true"
      inkscape:snap-page="true"
-     inkscape:window-width="1666"
-     inkscape:window-height="759"
-     inkscape:window-x="117"
-     inkscape:window-y="114"
-     inkscape:window-maximized="0"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0" />
   <metadata
-     id="metadata5">
+     id="metadata871">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
@@ -57,47 +57,39 @@
      inkscape:label="Calque 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(10.132292,10.384669)">
-    <rect
-       style="fill:#c38900;fill-opacity:0.387189;stroke-width:0.264583;stroke-opacity:0.496223"
-       id="rect848"
-       width="20.264584"
-       height="20.769339"
-       x="-10.132292"
-       y="-10.384669" />
-  </g>
+     transform="translate(10.132292,10.384669)" />
   <g
      credits="Auteur : Raphaël ALLAIS - Éduscol-STI"
-     id="g991"
+     id="g2371"
      transform="translate(10.132292,10.384669)">
     <g
        transform="rotate(-90)"
-       id="g983">
+       id="g2363">
       <path
-         d="M 0.5,0 8,4.3301 v -8.6602 z"
+         d="M 0.5,0 4.25,-2.1651 V 2.1651 Z"
          stroke="#ff0000"
          stroke-width="0.5"
          style="fill:#ffffff"
-         id="path979" />
+         id="path2359" />
       <path
-         d="m 8,0 h 7 z"
+         d="M 4.25,0 H 7.5"
          stroke="#ff0000"
          stroke-width="0.5"
-         id="path981" />
+         id="path2361" />
     </g>
     <g
        transform="rotate(-90)"
-       id="g989">
+       id="g2369">
       <path
-         d="M -0.25,-8.6603 V 8.6603 Z"
+         d="M -0.25,4.3301 V -4.3301"
          stroke="#0000ff"
          stroke-width="0.5"
-         id="path985" />
+         id="path2365" />
       <path
-         d="M -10.1351,0 H -0.25 Z"
+         d="M -5.0676,0 H -0.25"
          stroke="#0000ff"
          stroke-width="0.5"
-         id="path987" />
+         id="path2367" />
     </g>
   </g>
 </svg>

@@ -24,8 +24,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.6"
-     inkscape:cx="1.7353451"
-     inkscape:cy="48.045999"
+     inkscape:cx="51.957698"
+     inkscape:cy="35.407874"
      inkscape:document-units="mm"
      inkscape:current-layer="svg8"
      inkscape:document-rotation="0"
@@ -40,7 +40,8 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:snap-object-midpoints="true"
-     inkscape:snap-center="true" />
+     inkscape:snap-center="true"
+     inkscape:snap-page="true" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -49,7 +50,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -61,7 +62,7 @@
   <g
      credits="Auteur : Raphaël ALLAIS - Éduscol-STI"
      id="g860"
-     transform="translate(10.049535,9.9510179)">
+     transform="translate(10.132291,10.384669)">
     <g
        transform="rotate(-45)"
        id="g858">

@@ -24,19 +24,20 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="190.69745"
-     inkscape:cy="66.68982"
+     inkscape:cx="173.3689"
+     inkscape:cy="77.194121"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
-     inkscape:snap-object-midpoints="true"
+     inkscape:window-width="1853"
+     inkscape:window-height="1025"
+     inkscape:window-x="67"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
      inkscape:snap-page="true"
-     inkscape:window-width="1666"
-     inkscape:window-height="759"
-     inkscape:window-x="117"
-     inkscape:window-y="114"
-     inkscape:window-maximized="0"
+     inkscape:snap-object-midpoints="true"
+     inkscape:snap-global="true"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
@@ -57,74 +58,66 @@
      inkscape:label="Calque 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(10.132292,10.384669)">
-    <rect
-       style="fill:#c38900;fill-opacity:0.387189;stroke-width:0.264583;stroke-opacity:0.496223"
-       id="rect848"
-       width="20.264584"
-       height="20.769339"
-       x="-10.132292"
-       y="-10.384669" />
-  </g>
+     transform="translate(10.132292,10.384669)" />
   <g
      credits="Auteur : Raphaël ALLAIS - Éduscol-STI"
-     id="g860"
+     id="g1415"
      transform="translate(10.132292,10.384669)">
     <path
-       d="M 0,0 V 12.2474"
+       d="M 0,0 V 6.1237"
        stroke="#0000ff"
-       stroke-width="0.5"
+       stroke-width="1"
        style="stroke-linecap:round"
-       profondeur="-10000004.33012702"
-       id="path844" />
+       profondeur="-10000002.16506351"
+       id="path1399" />
     <path
-       d="M 15.7122,-2.0004 3.4647,-9.0714 -15.7122,2.0004 -3.4647,9.0714 Z"
+       d="M 7.8561,-1.0002 1.7324,-4.5357 -7.8561,1.0002 -1.7324,4.5357 Z"
        stroke="#0000ff"
-       stroke-width="0.5"
+       stroke-width="1"
        profondeur="-10000000.0"
        style="fill:#ffffff;stroke-linejoin:round"
-       id="path846" />
+       id="path1401" />
     <path
-       d="m 5.3033,-3.266 -1.0731,-9.0397 6.1237,3.5356 z"
+       d="M 2.6517,-1.633 2.1151,-6.1528 5.177,-4.3851 Z"
        stroke="#ff0000"
        stroke-width="0.5"
        style="fill:#ffffff;stroke-linejoin:round"
-       profondeur="4.467593604127113"
-       id="path848" />
+       profondeur="2.2337968020635564"
+       id="path1403" />
     <path
-       d="M 5.3033,-3.266 -5.3033,2.8577 -10.3539,-3.8856 4.2302,-12.3057 Z"
+       d="m 2.6517,-1.633 -5.3034,3.0619 -2.5253,-3.3717 7.2921,-4.21 z"
        stroke="#ff0000"
        stroke-width="0.5"
        style="fill:#ffffff;stroke-linejoin:round"
-       profondeur="4.471145132190184"
-       id="path850" />
+       profondeur="2.235572566095092"
+       id="path1405" />
     <path
-       d="M 5.3033,-3.266 -5.3033,2.8577 -4.2302,-0.35 10.3539,-8.7701 Z"
+       d="M 2.6517,-1.633 -2.6517,1.4289 -2.1151,-0.175 5.177,-4.3851 Z"
        stroke="#ff0000"
        stroke-width="0.5"
        style="fill:#ffffff;stroke-linejoin:round"
-       profondeur="4.473906342147353"
-       id="path852" />
+       profondeur="2.2369531710736763"
+       id="path1407" />
     <path
-       d="m 10.3539,-8.7701 -6.1237,-3.5356 -14.5841,8.4201 6.1237,3.5356 z"
+       d="m 5.177,-4.3851 -3.0619,-1.7677 -7.2921,4.21 3.0619,1.7678 z"
        stroke="#ff0000"
        stroke-width="0.5"
        style="fill:#ffffff;stroke-linejoin:round"
-       profondeur="4.474464586219599"
-       id="path854" />
+       profondeur="2.2372322931097997"
+       id="path1409" />
     <path
-       d="m -5.3033,2.8577 -5.0506,-6.7433 6.1237,3.5356 z"
+       d="M -2.6517,1.4289 -5.177,-1.9428 -2.1151,-0.175 Z"
        stroke="#ff0000"
        stroke-width="0.5"
        style="fill:#ffffff;stroke-linejoin:round"
-       profondeur="4.478400984499385"
-       id="path856" />
+       profondeur="2.2392004922496924"
+       id="path1411" />
     <path
-       d="m 0,-6.3278 v -6.1238"
+       d="M 0,-3.1639 V -6.2258"
        stroke="#ff0000"
        stroke-width="0.5"
        style="stroke-linecap:round"
-       profondeur="6.6395280956806975"
-       id="path858" />
+       profondeur="3.3197640478403487"
+       id="path1413" />
   </g>
 </svg>

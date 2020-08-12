@@ -48,7 +48,7 @@ def dessin_Pivot_Glissant_2D_cote(options,contexte):
 				True,base2D)
 	ligneM.set('d',chemin)
 	ligneM.set('stroke',couleur_male)
-	ligneM.set('stroke-width',str(epaisseur_male*echelle_liaison))
+	ligneM.set('stroke-width',str(epaisseur_male))
 	male.append(ligneM)
 
 	# Femelle ***************************************
@@ -59,7 +59,7 @@ def dessin_Pivot_Glissant_2D_cote(options,contexte):
 					False,base2D)
 		barreF1.set('d',chemin)
 		barreF1.set('stroke',couleur_femelle)
-		barreF1.set('stroke-width',str(epaisseur_femelle*echelle_liaison))
+		barreF1.set('stroke-width',str(epaisseur_femelle))
 		male.append(barreF1)
 		
 		barreF2=etree.Element(inkex.addNS('path','svg'))
@@ -68,7 +68,7 @@ def dessin_Pivot_Glissant_2D_cote(options,contexte):
 					False,base2D)
 		barreF2.set('d',chemin)
 		barreF2.set('stroke',couleur_femelle)
-		barreF2.set('stroke-width',str(epaisseur_femelle*echelle_liaison))
+		barreF2.set('stroke-width',str(epaisseur_femelle))
 		male.append(barreF2)
 	else:
 		#Rectangle
@@ -79,7 +79,7 @@ def dessin_Pivot_Glissant_2D_cote(options,contexte):
 		rectangle.set('height',str(hauteur*echelle_liaison))
 		rectangle.set('style','fill:none')
 		rectangle.set('stroke',couleur_femelle)
-		rectangle.set('stroke-width',str(epaisseur_femelle*echelle_liaison))
+		rectangle.set('stroke-width',str(epaisseur_femelle))
 		femelle.append(rectangle)
 		# Fond de femelle opaque ****************************
 		#Rectangle - fond
@@ -98,7 +98,7 @@ def dessin_Pivot_Glissant_2D_cote(options,contexte):
 				False,base2D)
 	ligneF.set('d',chemin)
 	ligneF.set('stroke',couleur_femelle)
-	ligneF.set('stroke-width',str(epaisseur_femelle*echelle_liaison))
+	ligneF.set('stroke-width',str(epaisseur_femelle))
 	femelle.append(ligneF)
 
 	# Transformations ***************************************

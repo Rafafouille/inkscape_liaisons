@@ -42,11 +42,11 @@ def dessin_rectiligne_plan_2D_cote(options,contexte):
 	# DESSUS ***************************************
 	# Prisme
 	prisme=etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(epaisseur_prisme/2.			,	-r2Dc_longueur_contact/2.),
-				(epaisseur_prisme/2.			,	r2Dc_longueur_contact/2.),
-				(r2Dc_hauteur_prisme + epaisseur_prisme/2.,	r2Dc_longueur_base_prisme/2.),
-				(r2Dc_hauteur_prisme + epaisseur_prisme/2.,	-r2Dc_longueur_base_prisme/2.)	],
-				True)
+	chemin=points2D_to_svgd([	(epaisseur_prisme/2./echelle			,	-r2Dc_longueur_contact/2.),
+				(epaisseur_prisme/2./echelle			,	r2Dc_longueur_contact/2.),
+				(r2Dc_hauteur_prisme + epaisseur_prisme/2./echelle,	r2Dc_longueur_base_prisme/2.),
+				(r2Dc_hauteur_prisme + epaisseur_prisme/2./echelle,	-r2Dc_longueur_base_prisme/2.)	],
+				True,base2D)
 	prisme.set('d',chemin)
 	prisme.set('stroke',couleur_male)
 	prisme.set('style','fill:white')
@@ -55,8 +55,9 @@ def dessin_rectiligne_plan_2D_cote(options,contexte):
 	
 	#tige dessus
 	tigeDessus=etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(r2Dc_hauteur_prisme+epaisseur_prisme/2.		,	0.),
-				(r2Dc_hauteur_prisme + r2Dc_longueur_tige_prisme 	,	0.)	])
+	chemin=points2D_to_svgd([	(r2Dc_hauteur_prisme+epaisseur_prisme/2./echelle	,	0.),
+					(r2Dc_hauteur_prisme + r2Dc_longueur_tige_prisme 	,	0.)	],
+				False,base2D)
 	tigeDessus.set('d',chemin)
 	tigeDessus.set('stroke',couleur_male)
 	tigeDessus.set('stroke-width',str(epaisseur_prisme))
@@ -65,8 +66,9 @@ def dessin_rectiligne_plan_2D_cote(options,contexte):
 	# DESSOUS ***************************************
 	#plan dessous
 	plan=etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(-epaisseur_plan/2.	,	-r2Dc_longueur_plan/2.),
-				(-epaisseur_plan/2.	,	r2Dc_longueur_plan/2.)	])
+	chemin=points2D_to_svgd([	(-epaisseur_plan/2./echelle	,	-r2Dc_longueur_plan/2.),
+					(-epaisseur_plan/2./echelle	,	r2Dc_longueur_plan/2.)	],
+					False,base2D)
 	plan.set('d',chemin)
 	plan.set('stroke',couleur_femelle)
 	plan.set('stroke-width',str(epaisseur_plan))
@@ -74,8 +76,9 @@ def dessin_rectiligne_plan_2D_cote(options,contexte):
 	
 	#tige dessous
 	tigePlan=etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(-epaisseur_plan/2.,					0.),
-				(-r2Dc_longueur_tige_plan,	0.)	])
+	chemin=points2D_to_svgd([	(-epaisseur_plan/2./echelle,				0.),
+					(-r2Dc_longueur_tige_plan,	0.)	],
+					False,base2D)
 	tigePlan.set('d',chemin)
 	tigePlan.set('stroke',couleur_femelle)
 	tigePlan.set('stroke-width',str(epaisseur_plan))
@@ -136,16 +139,18 @@ def dessin_rectiligne_2D_bout(options,contexte):
 	# Plan ***************************************	
 	# plan
 	trait_plan=etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(-epaisseur_plan/2.	,	-r2Db_largeur_plan/2.),
-				(-epaisseur_plan/2.	,	r2Db_largeur_plan/2.)	])
+	chemin=points2D_to_svgd([	(-epaisseur_plan/2./echelle	,	-r2Db_largeur_plan/2.),
+					(-epaisseur_plan/2./echelle	,	r2Db_largeur_plan/2.)	],
+					False,base2D)
 	trait_plan.set('d',chemin)
 	trait_plan.set('stroke',couleur_plan)
 	trait_plan.set('stroke-width',str(epaisseur_plan))
 	plan.append(trait_plan)
 	# tige
 	tige_plan=etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(-r2Db_longueur_tige_plan	,	0),
-				(-epaisseur_plan/2.		,	0)	])
+	chemin=points2D_to_svgd([	(-r2Db_longueur_tige_plan	,	0),
+					(-epaisseur_plan/2./echelle	,	0)	],
+					False,base2D)
 	tige_plan.set('d',chemin)
 	tige_plan.set('stroke',couleur_plan)
 	tige_plan.set('stroke-width',str(epaisseur_plan))
@@ -153,12 +158,12 @@ def dessin_rectiligne_2D_bout(options,contexte):
 	
 	# prisme ***************************************
 	# triangle
-	deport_point_fleche = epaisseur_prisme/2. / math.sin( math.atan((r2Db_largeur_prisme/2.)/(r2Db_hauteur_prisme)) )
+	deport_point_fleche = epaisseur_prisme/2. / math.sin( math.atan((r2Db_largeur_prisme/2.)/(r2Db_hauteur_prisme)) )/echelle
 	triangle=etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(deport_point_fleche			,	0),
-				(r2Db_hauteur_prisme+deport_point_fleche	,	r2Db_largeur_prisme/2.),
-				(r2Db_hauteur_prisme+deport_point_fleche	,	-r2Db_largeur_prisme/2.)	],
-				True)
+	chemin=points2D_to_svgd([	(deport_point_fleche			,	0),
+					(r2Db_hauteur_prisme+deport_point_fleche	,	r2Db_largeur_prisme/2.),
+					(r2Db_hauteur_prisme+deport_point_fleche	,	-r2Db_largeur_prisme/2.)	],
+				True,base2D)
 	triangle.set('d',chemin)
 	triangle.set('stroke',couleur_prisme)
 	triangle.set('stroke-width',str(epaisseur_prisme))
@@ -166,8 +171,9 @@ def dessin_rectiligne_2D_bout(options,contexte):
 	prisme.append(triangle)
 
 	trait_prisme=etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(r2Db_hauteur_prisme+deport_point_fleche				,	0),
-				(r2Db_hauteur_prisme+r2Db_longueur_tige_prisme	,	0)	])
+	chemin=points2D_to_svgd([	(r2Db_hauteur_prisme+deport_point_fleche				,	0),
+					(r2Db_hauteur_prisme+r2Db_longueur_tige_prisme	,	0)	],
+					False,base2D)
 	trait_prisme.set('d',chemin)
 	trait_prisme.set('stroke',couleur_prisme)
 	trait_prisme.set('stroke-width',str(epaisseur_prisme))
@@ -228,6 +234,7 @@ def dessin_rectiligne_3D(options,contexte):
 			Vn = v3D(0, 0, -1, base)
 	if(options.liaison_rectiligne_3D_type_direction!="liaison_rectiligne_3D_type_direction_standard"):
 		Vd = v3D(options.liaison_rectiligne_3D_direction_quelconque_x, options.liaison_rectiligne_3D_direction_quelconque_y, options.liaison_rectiligne_3D_direction_quelconque_z,base)
+		if Vn.x == Vn.y == Vn.z == 0 : V=v3D(0,0,1,base) #Si vecteur nul : on prend X par defaut
 	else:
 		if(options.liaison_rectiligne_3D_axe_direction=="x"):
 			Vd = v3D(1, 0, 0, base)
@@ -257,8 +264,8 @@ def dessin_rectiligne_3D(options,contexte):
 	Vy2 = Vy1
 	Vz2 = Vx2 ^Vy2
 	
-	baseLocale1=(Vx1,Vy1,Vz1)
-	baseLocale2=(Vx2,Vy2,Vz2)
+	baseLocale1=(Vx1*echelle,Vy1*echelle,Vz1*echelle)
+	baseLocale2=(Vx2*echelle,Vy2*echelle,Vz2*echelle)
 	
 	
 

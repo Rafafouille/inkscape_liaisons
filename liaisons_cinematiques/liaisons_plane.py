@@ -156,8 +156,9 @@ def dessin_plane_2D_dessus(options,contexte):
 	dessous.append(rectangleDessous)
 
 	traitDessous=etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(coteDessous/2.	,	0),
-				(coteMoyen/2.+longueurTrait	,	0)	])
+	chemin=points2D_to_svgd([	(coteDessous/2.	,	0),
+					(coteMoyen/2.+longueurTrait	,	0)	],
+				False,base2D)
 	traitDessous.set('d',chemin)
 	traitDessous.set('stroke',couleur_dessous)
 	traitDessous.set('stroke-width',str(epaisseur_dessous))
@@ -176,8 +177,9 @@ def dessin_plane_2D_dessus(options,contexte):
 	dessus.append(rectangleDessus)
 
 	traitDessus=etree.Element(inkex.addNS('path','svg'))
-	chemin=points_to_svgd([	(coteDessus/2.			,	0),
-				(coteMoyen/2.+longueurTrait	,	0)	])
+	chemin=points2D_to_svgd([	(coteDessus/2.			,	0),
+					(coteMoyen/2.+longueurTrait	,	0)	],
+				False,base2D)
 	traitDessus.set('d',chemin)
 	traitDessus.set('stroke',couleur_dessus)
 	traitDessus.set('stroke-width',str(epaisseur_dessus))

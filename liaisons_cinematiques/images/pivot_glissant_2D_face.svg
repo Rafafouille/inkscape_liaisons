@@ -40,7 +40,8 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:snap-object-midpoints="true"
-     inkscape:snap-center="true" />
+     inkscape:snap-center="true"
+     inkscape:snap-page="true" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -61,7 +62,7 @@
   <g
      credits="Auteur : Raphaël ALLAIS - Éduscol-STI"
      id="g860"
-     transform="translate(10.049535,9.9510179)">
+     transform="translate(10.132292,10.384669)">
     <g
        transform="rotate(90)"
        id="g852">
