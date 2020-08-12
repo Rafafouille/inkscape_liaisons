@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="20.264584mm"
+   height="20.769339mm"
+   viewBox="0 0 20.264584 20.769339"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="glissiere_3D.svg"
+   inkscape:version="1.0 (9f2f71dc58, 2020-08-02)">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="3.959798"
+     inkscape:cx="95.83746"
+     inkscape:cy="37.055658"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1666"
+     inkscape:window-height="759"
+     inkscape:window-x="117"
+     inkscape:window-y="114"
+     inkscape:window-maximized="0"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(10.132292,10.169305)" />
+  <g
+     credits="Auteur : Raphaël ALLAIS - Éduscol-STI"
+     id="g857"
+     transform="translate(10.132292,10.169305)">
+    <path
+       d="m 1.3258,-5.1031 -7.071,4.0825 v 3.5722 l 7.071,-4.0825 z"
+       stroke="#0000ff"
+       stroke-width="0.5"
+       style="fill:#ffffff;stroke-linecap:round;stroke-linejoin:round"
+       profondeur="-1804.2195912175805"
+       id="path837" />
+    <path
+       d="m 5.7452,1.0206 -7.071,4.0825 -4.4194,-2.5515 7.071,-4.0825 z"
+       stroke="#0000ff"
+       stroke-width="0.5"
+       style="fill:#ffffff;stroke-linecap:round;stroke-linejoin:round"
+       profondeur="-1262.9537138523065"
+       id="path839" />
+    <path
+       d="M 1.5026,-1.633 5.5685,-2.4495"
+       stroke="#ff0000"
+       stroke-width="0.5"
+       style="fill:#ffffff;stroke-linecap:round;stroke-linejoin:round"
+       profondeur="-2.886751345948129"
+       id="path841" />
+    <path
+       d="M 5.5685,0.7144 1.5026,-4.7969"
+       stroke="#ff0000"
+       stroke-width="0.5"
+       style="fill:#ffffff;stroke-linecap:round;stroke-linejoin:round"
+       profondeur="-2.8867513459481287"
+       id="path843" />
+    <path
+       d="M 7.0711,-4.0825 -7.0711,4.0825"
+       stroke="#ff0000"
+       stroke-width="0.5"
+       style="stroke-linecap:round"
+       profondeur="0.0"
+       id="path845" />
+    <path
+       d="M -1.5026,4.7969 -5.5685,-0.7144"
+       stroke="#ff0000"
+       stroke-width="0.5"
+       style="fill:#ffffff;stroke-linecap:round;stroke-linejoin:round"
+       profondeur="2.8867513459481287"
+       id="path847" />
+    <path
+       d="M -5.5685,2.4495 -1.5026,1.633"
+       stroke="#ff0000"
+       stroke-width="0.5"
+       style="fill:#ffffff;stroke-linecap:round;stroke-linejoin:round"
+       profondeur="2.886751345948129"
+       id="path849" />
+    <path
+       d="m 5.7452,-2.5516 -7.071,4.0825 -4.4194,-2.5515 7.071,-4.0825 z"
+       stroke="#0000ff"
+       stroke-width="0.5"
+       style="fill:#ffffff;stroke-linecap:round;stroke-linejoin:round"
+       profondeur="1262.9537138523067"
+       id="path851" />
+    <path
+       d="m 5.7452,-2.5516 -7.071,4.0825 v 3.5722 l 7.071,-4.0825 z"
+       stroke="#0000ff"
+       stroke-width="0.5"
+       style="fill:#ffffff;stroke-linecap:round;stroke-linejoin:round"
+       profondeur="1804.2195912175803"
+       id="path853" />
+    <path
+       d="M 0,-1.7861 V -6.1237"
+       stroke="#0000ff"
+       stroke-width="0.5"
+       style="stroke-linecap:round"
+       profondeur="2796540.3660264057"
+       id="path855" />
+  </g>
+</svg>

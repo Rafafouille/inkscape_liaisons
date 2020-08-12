@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="20.264584mm"
+   height="20.769339mm"
+   viewBox="0 0 20.264584 20.769339"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="glissiere_2D_face.svg"
+   inkscape:version="1.0 (9f2f71dc58, 2020-08-02)">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="146.48136"
+     inkscape:cy="66.460948"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1666"
+     inkscape:window-height="759"
+     inkscape:window-x="117"
+     inkscape:window-y="114"
+     inkscape:window-maximized="0"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(8.0534229,9.8177052)" />
+  <g
+     credits="Auteur : Raphaël ALLAIS - Éduscol-STI"
+     id="g851"
+     transform="translate(10.132292,10.047169)">
+    <g
+       id="g841">
+      <path
+         d="m -3,2.0625 6,-4.125"
+         stroke="#ff0000"
+         stroke-width="0.5"
+         id="path837" />
+      <path
+         d="m 3,2.0625 -6,-4.125"
+         stroke="#ff0000"
+         stroke-width="0.5"
+         id="path839" />
+    </g>
+    <g
+       id="g847">
+      <rect
+         x="-3.125"
+         y="-2.1875"
+         width="6.25"
+         height="4.375"
+         style="fill:none"
+         stroke="#0000ff"
+         stroke-width="0.5"
+         id="rect843" />
+      <path
+         d="M 0,-2.1875 V -7.5"
+         stroke="#0000ff"
+         stroke-width="0.5"
+         id="path845" />
+    </g>
+    <path
+       d="M 0,0 V 5"
+       stroke="#ff0000"
+       stroke-width="0.5"
+       id="path849" />
+  </g>
+</svg>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg8"
+   version="1.1"
+   viewBox="0 0 20.264584 30"
+   height="30mm"
+   width="20.264584mm"
+   sodipodi:docname="plane_2D_dessus.svg"
+   inkscape:version="1.0 (9f2f71dc58, 2020-08-02)">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="259.46179"
+     inkscape:cy="76.18729"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1666"
+     inkscape:window-height="759"
+     inkscape:window-x="117"
+     inkscape:window-y="114"
+     inkscape:window-maximized="0"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(4.3555803,8.2362368)">
+    <rect
+       style="fill:#c38900;fill-opacity:0.387189;stroke:none;stroke-width:0.264583;stroke-opacity:0.496223"
+       id="rect840"
+       width="20.264584"
+       height="20.769339"
+       x="-4.3555803"
+       y="-3.6209061" />
+  </g>
+  <g
+     credits="Auteur : Raphaël ALLAIS - Éduscol-STI"
+     id="g875"
+     transform="translate(10.132292,15)">
+    <g
+       transform="rotate(-90)"
+       id="g867">
+      <rect
+         x="-4.1875"
+         y="-4.1875"
+         width="8.375"
+         height="8.375"
+         style="fill:#ffffff"
+         stroke="#0000ff"
+         stroke-width="0.5"
+         id="rect863" />
+      <path
+         d="M 8.375,0 H 15 Z"
+         stroke="#0000ff"
+         stroke-width="0.5"
+         id="path865" />
+    </g>
+    <g
+       transform="rotate(90)"
+       id="g873">
+      <rect
+         x="-3.3125"
+         y="-3.3125"
+         width="6.625"
+         height="6.625"
+         style="fill:#ffffff"
+         stroke="#ff0000"
+         stroke-width="0.5"
+         id="rect869" />
+      <path
+         d="M 6.625,0 H 15 Z"
+         stroke="#ff0000"
+         stroke-width="0.5"
+         id="path871" />
+    </g>
+  </g>
+</svg>

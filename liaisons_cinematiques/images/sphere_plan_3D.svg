@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="20.264584mm"
+   height="20.769339mm"
+   viewBox="0 0 20.264584 20.769339"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="sphere_plan_3D.svg"
+   inkscape:version="1.0 (9f2f71dc58, 2020-08-02)">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="180.80114"
+     inkscape:cy="77.093121"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1666"
+     inkscape:window-height="759"
+     inkscape:window-x="117"
+     inkscape:window-y="114"
+     inkscape:window-maximized="0"
+     inkscape:snap-page="true"
+     inkscape:snap-object-midpoints="true"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(10.132292,10.384669)" />
+  <g
+     credits="Auteur : Raphaël ALLAIS - Éduscol-STI"
+     id="g974"
+     transform="translate(10.132292,10.384669)">
+    <path
+       d="M 0,0 V 4.0825"
+       stroke="#0000ff"
+       stroke-width="0.5"
+       style="stroke-linecap:round"
+       profondeur="-1.4433756729740645"
+       id="path966" />
+    <path
+       d="M -5.3033,0 0,3.0619 5.3033,0 0,-3.0619 Z"
+       stroke="#0000ff"
+       stroke-width="0.5"
+       style="fill:#ffffff"
+       profondeur="0.0"
+       id="path968" />
+    <circle
+       cx="0"
+       cy="-1.5309311"
+       r="1.875"
+       style="fill:#ffffff"
+       stroke="#ff0000"
+       stroke-width="0.5"
+       profondeur="0.2886751345948129"
+       id="circle970" />
+    <path
+       d="M 0.3216,-2.8305 0.9647,-5.4296"
+       stroke="#ff0000"
+       stroke-width="0.5"
+       style="stroke-linecap:round"
+       profondeur="3.708056912283067"
+       id="path972" />
+  </g>
+</svg>
