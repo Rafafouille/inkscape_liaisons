@@ -48,7 +48,7 @@ Pour ouvrir le module, il faut aller dans le menu :
 [Extensions] --> [Enseignement] --> [Liaisons Cinématiques]
 
 Une fenêtre s'ouvre avec 2 onglets.
-Je vous conseille de commencer par l'onglet [Options générales], puis de revenir sur [Choix Liaison]
+Je vous conseille de commencer par l'onglet [Options générales] (pour régler une fois pour toute la couleur, l'épaisseur des lignes, etc...), puis de revenir sur [Choix Liaison]
 
 Dans [Choix Liaison], les sous-onglets sont comme des "boutons" que vous sélectionnez :
 La liaison dessinées sera celle dont le sous-onglet est sélectionnée.

@@ -119,8 +119,8 @@ s2D_rayon_tiges_femelle = rayon_tiges_spherique		# Distance entre le centre de l
 
 # Sphérique 3D
 s3D_diametre = diametre_spherique			# Diamètre de la boule intérieure
-s3D_angle_ouverture = 120.				# Angle ouverture de la calotte femelle
-s3D_ecart = ecart_spherique * 0.05			# Interstice entre la sphère et la calotte femelle. Prend en compte l'épaisseur des traits
+s3D_angle_ouverture = 140.				# Angle ouverture de la calotte femelle
+s3D_ecart = ecart_spherique *0.5			# Interstice entre la sphère et la calotte femelle. Prend en compte l'épaisseur des traits
 s3D_rayon_tiges = rayon_tiges_spherique * 0.75		# Distance entre le centre de la sphère et le bout des tiges qui sortent de chaque pièce
 
 

@@ -1158,7 +1158,7 @@
 			</param>
 		</page>
 		<!-- MASSE -->
-		<page name="liaison_masse" gui-text="Référentiel">
+		<page name="liaison_masse" gui-text="Bâti">
 			<param name="liaison_masse_type" type="notebook">
 				<!-- 2D -->
 				<page name="liaison_masse_2D" gui-text="2D">
@@ -1280,13 +1280,13 @@
 			<param name="opt_gene_piece1_couleur" type="color" appearance="colorbutton" gui-text="Color:">65280</param>
 		</page>
 		<page name="opt_gene_piece2" gui-text="Pièce 2 (Femelle)">
-			<param name="opt_gene_lignes_epaisseur_2" type="float" _gui-text="Épaisseur du trait :"  precision="1" min="0" max="1000" >2</param>
+			<param name="opt_gene_lignes_epaisseur_2" type="float" _gui-text="Épaisseur du trait :"  precision="1" min="0" max="1000" >1</param>
 			<label appearance="header">Couleur :</label>
 			<param name="opt_gene_piece2_couleur" type="color" appearance="colorbutton" gui-text="Color:">4278190080</param>
 		</page>
 		<page name="opt_gene_A_Propos" gui-text="A Propos">
 			<label appearance="header">Crédit :</label>
-				<label>Extension "Liaison", Version du 12/08/20.</label>
+				<label>Extension "Liaison", Version du 21/08/20.</label>
 				<label></label>
 				<label>Créé dans le cadre d'Éduscol STI (https://eduscol.education.fr/sti/)</label>
 				<label>pour l'Éducation Nationale.</label>
